@@ -1,8 +1,9 @@
 #bbcode
 
-A regexp [BBCode](http://en.wikipedia.org/wiki/BBCode) parser using [preg_replace_callback()](http://php.net/preg_replace_callback),
+A recursive regexp [BBCode](http://en.wikipedia.org/wiki/BBCode) parser using [preg_replace_callback()](http://php.net/preg_replace_callback),
 based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member/69,mrniceguy) on
 [developers-guide.net](http://www.developers-guide.net/c/152-bbcode-parser-mit-noparse-tag-selbst-gemacht.html). 
+Handles nested tags aswell as matching brackets and doesn't stumble across invalid tags.
 
 ##Requirements
 
