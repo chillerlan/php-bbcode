@@ -53,9 +53,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 */
 	public function transform(){
 		$this->check_tag();
-
 		$this->_flash = $this->get_attribute('flash');
-
 		$provider = $this->_get_provider();
 		call_user_func([$this, $provider]);
 
@@ -67,10 +65,10 @@ class Video extends Html5BaseModule implements ModuleInterface{
 
 			if($this->_flash){
 				$object = '<object type="application/x-shockwave-flash" data="'.$this->_video_url.'">'
-						.'<param name="allowfullscreen" value="true">'
-						.'<param name="wmode" value="opaque" />'
-						.'<param name="movie" value="'.$this->_video_url.'" />'.
-						'</object>';
+					.'<param name="allowfullscreen" value="true">'
+					.'<param name="wmode" value="opaque" />'
+					.'<param name="movie" value="'.$this->_video_url.'" />'
+					.'</object>';
 			}
 
 			return '<div'.$this->get_css_class('bb-video').'>'.$object.'</div>';
@@ -94,7 +92,8 @@ class Video extends Html5BaseModule implements ModuleInterface{
 				return 'moddb';
 			case $this->tag === 'dmotion' || $_bbtag === 'dmotion' || in_array($this->_host, ['dailymotion.com', 'dai.ly']):
 				return 'dmotion';
-			default: return 'video';
+			default:
+				return 'video';
 		}
 	}
 
@@ -102,16 +101,19 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 *
 	 */
 	private function dmotion(){
-		if($this->_host === 'dailymotion.com'){
-			$x = explode('_', str_replace('/video/', '', $this->_url['path']), 2);
-			$id = $x[0];
+
+		switch($this->_host){
+			case 'dailymotion.com':
+				$id = explode('_', str_replace('/video/', '', $this->_url['path']), 2)[0];
+				break;
+			case 'dai.ly':
+				$id = $this->_url['path'];
+				break;
+			default:
+				$id = $this->content;
+				break;
 		}
-		else if($this->_host === 'dai.ly'){
-			$id = $this->_url['path'];
-		}
-		else{
-			$id = $this->content;
-		}
+
 		$this->_video_url = 'http://www.dailymotion.com/'.($this->_flash ? 'swf' : 'embed').'/video/'.preg_replace('#[^a-z\d]#i', '', $id);
 	}
 
@@ -119,12 +121,10 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 *
 	 */
 	private function moddb(){
-		if($this->_host === 'moddb.com' && strpos('http://www.moddb.com/media/', $this->content) === 0){
-			$id = $this->_url['path'];
-		}
-		else{
-			$id = $this->content;
-		}
+		$id = $this->_host === 'moddb.com' && strpos('http://www.moddb.com/media/', $this->content) === 0
+			? $this->_url['path']
+			: $this->content;
+
 		$this->_video_url = 'http://www.moddb.com/media/'.($this->_flash ? 'embed/' : 'iframe/').preg_replace('/[^\d]/', '', $id);
 	}
 
@@ -148,17 +148,22 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 *
 	 */
 	private function youtube(){
-		if($this->_host === 'youtube.com'){
-			parse_str($this->_url['query'], $q);
-			$id = $q['v'];
+
+		// check the video id if needed: http://gdata.youtube.com/feeds/api/videos/[VIDEO_ID]
+		// todo: support playlists
+		switch($this->_host){
+			case 'youtube.com':
+				parse_str($this->_url['query'], $q);
+				$id = $q['v'];
+				break;
+			case 'youtu.be':
+				$id = $this->_url['path'];
+				break;
+			default:
+				$id = $this->content;
+				break;
 		}
-		else if($this->_host === 'youtu.be'){
-			$id = $this->_url['path'];
-		}
-		else{
-			// check if needed: http://gdata.youtube.com/feeds/api/videos/[VIDEO_ID]
-			$id = $this->content;
-		}
+
 		// clean out any suspect characters -> #[^a-z\d-_]#i
 		$this->_video_url = 'https://www.youtube.com/'.($this->_flash ? 'v/' : 'embed/').preg_replace('/[^a-z\d-_]/i', '', $id);
 	}
