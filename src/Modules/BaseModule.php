@@ -91,6 +91,8 @@ class BaseModule implements BaseModuleInterface{
 		$this->attributes = $bbtemp->attributes;
 		$this->content = $bbtemp->content;
 		$this->options = $bbtemp->options;
+
+		return $this;
 	}
 
 	/**
