@@ -29,7 +29,7 @@ class Code extends Html5BaseModule implements ModuleInterface{
 	/**
 	 * @var array
 	 */
-	protected $noparse = ['code', 'pre', 'css', 'php', 'sql', 'xml', 'html', 'js', 'json', 'nsis'];
+	protected $noparse_tags = ['code', 'pre', 'css', 'php', 'sql', 'xml', 'html', 'js', 'json', 'nsis'];
 
 	/**
 	 * @var array

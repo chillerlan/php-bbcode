@@ -42,7 +42,7 @@ class Html5BaseModule extends MarkupBaseModule implements BaseModuleInterface{
 	/**
 	 * @var string
 	 */
-	protected $_eol = '<br />';
+	protected $eol_token = '<br />';
 
 	/**
 	 * @param $content

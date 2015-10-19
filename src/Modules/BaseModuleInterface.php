@@ -43,7 +43,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function get_eol();
+	public function get_eol_token();
 
 	/**
 	 * @param string $str

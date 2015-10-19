@@ -29,7 +29,7 @@ class Noparse extends Html5BaseModule implements ModuleInterface{
 	/**
 	 * @var array
 	 */
-	protected $noparse = ['noparse'];
+	protected $noparse_tags = ['noparse'];
 
 	/**
 	 * Returns the processed bbcode

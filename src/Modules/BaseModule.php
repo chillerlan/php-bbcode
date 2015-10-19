@@ -54,12 +54,12 @@ class BaseModule implements BaseModuleInterface{
 	/**
 	 * @var array
 	 */
-	protected $noparse = [];
+	protected $noparse_tags = [];
 
 	/**
 	 * @var string
 	 */
-	protected $_eol = PHP_EOL;
+	protected $eol_token = PHP_EOL;
 
 	/**
 	 * holds the encoder module
@@ -121,7 +121,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
 	public function get_noparse_tags(){
-		return $this->noparse;
+		return $this->noparse_tags;
 	}
 
 	/**
@@ -141,8 +141,8 @@ class BaseModule implements BaseModuleInterface{
 	/**
 	 * @return string
 	 */
-	public function get_eol(){
-		return $this->_eol;
+	public function get_eol_token(){
+		return $this->eol_token;
 	}
 
 	/**
@@ -162,7 +162,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return $this
 	 */
 	public function clear_eol($eol = null){
-		$eol = $eol ?: $this->_eol;
+		$eol = $eol ?: $this->eol_token;
 		$this->content = str_replace('__BBEOL__', $eol, $this->content);
 
 		return $this;

@@ -40,7 +40,7 @@ class Parser{
 	/**
 	 * @var array
 	 */
-	protected $noparse = [];
+	protected $noparse_tags = [];
 
 	/**
 	 * holds an array of allowed tags
@@ -49,12 +49,12 @@ class Parser{
 	 *
 	 * @var array
 	 */
-	protected $allowed = [];
+	protected $allowed_tags = [];
 
 	/**
 	 * @var string
 	 */
-	protected $eol = PHP_EOL;
+	protected $eol_token = PHP_EOL;
 
 	/**
 	 * @var bool
@@ -105,7 +105,7 @@ class Parser{
 		$this->nesting_limit = (int)$nesting_limit;
 
 		$this->parser_extension = new ParserExtension;
-		$this->eol = $this->base_module->get_eol();
+		$this->eol_token = $this->base_module->get_eol_token();
 
 		foreach($this->base_module->get_modules() as $module){
 			if(class_exists($module)){
@@ -116,7 +116,7 @@ class Parser{
 					}
 
 					$this->modules[$module] = $this->module;
-					$this->noparse = array_merge($this->noparse, $this->module->get_noparse_tags());
+					$this->noparse_tags = array_merge($this->noparse_tags, $this->module->get_noparse_tags());
 				}
 				else{
 					throw new BBCodeException($module.' is not of type ModuleInterface');
@@ -154,8 +154,8 @@ class Parser{
 	 *
 	 * @return array
 	 */
-	public function get_noparse(){
-		return $this->noparse;
+	public function get_noparse_tags(){
+		return $this->noparse_tags;
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Parser{
 		$bbcode = str_replace(["\r", "\n"], ['', '__BBEOL__'], $bbcode);
 		$bbcode = $this->_parse($bbcode);
 		$bbcode = $this->parser_extension->post($bbcode);
-		$bbcode = str_replace('__BBEOL__', $this->eol, $bbcode);
+		$bbcode = str_replace('__BBEOL__', $this->eol_token, $bbcode);
 
 		return $bbcode;
 	}
@@ -206,7 +206,7 @@ class Parser{
 		}
 
 		if(!empty($content)){
-			if($callback_count < $this->nesting_limit && !in_array($tag, $this->noparse)){ // && in_array($tag, $this->allowed)
+			if($callback_count < $this->nesting_limit && !in_array($tag, $this->noparse_tags)){ // && in_array($tag, $this->allowed)
 				$pattern = '#\[(?P<tag>\w+)(?P<attributes>(?:\s|=)[^]]*)?](?P<content>(?:[^[]|\[(?!/?\1((?:\s|=)[^]]*)?])|(?R))*)\[/\1]#';
 				$content = preg_replace_callback($pattern, __METHOD__, $content);
 			}
