@@ -1,0 +1,26 @@
+{
+	"name": "chillerlan/bbcode",
+	"description": "A regexp BBCode parser.",
+	"homepage": "https://github.com/chillerlan/bbcode",
+	"license": "MIT",
+	"keywords": [
+		"bbcode",
+		"parser"
+	],
+	"authors": [
+		{
+			"name": "Smiley",
+			"email": "smiley@chillerlan.net"
+		}
+	],
+	"require": {
+		"php": ">=5.6.0"
+	},
+	"require-dev": {
+	},
+	"autoload": {
+		"psr-4": {
+			"chillerlan\\bbcode\\": "src/"
+		}
+	}
+}
