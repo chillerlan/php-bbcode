@@ -27,11 +27,11 @@ interface BaseModuleInterface{
 	public function sanitize($content);
 
 	/**
-	 * Returns an array of tag -> module
+	 * Returns a list of the BaseModule's modules
 	 *
 	 * @return array
 	 */
-	public function get_tagmap();
+	public function get_modules();
 
 	/**
 	 * @return $this
@@ -102,5 +102,26 @@ interface BaseModuleInterface{
 	 * @return mixed
 	 */
 	public function attribute_key_in($name, array $array, $default = false);
+
+	/**
+	 * @param \chillerlan\bbcode\BBTemp $bbtemp
+	 *
+	 * @return $this
+	 */
+	public function set_bbtemp(BBTemp $bbtemp);
+
+	/**
+	 * Returns an array of tags which the module is able to process
+	 *
+	 * @return array an array of tagnames
+	 */
+	public function get_tags();
+
+	/**
+	 * Returns an array of noparse tags
+	 *
+	 * @return array
+	 */
+	public function get_noparse_tags();
 
 }

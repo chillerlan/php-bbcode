@@ -84,22 +84,49 @@ class Parser{
 	private $module;
 
 	/**
+	 * Holds the encoder module instances
+	 *
+	 * @var array of ModuleInterface
+	 */
+	private $modules = [];
+
+	/**
 	 * @param \chillerlan\bbcode\Modules\BaseModuleInterface $base_module
 	 * @param int  $nesting_limit
 	 * @param bool $sanitize_html you really don't want to set it to false, do you?
 	 *                            set to false in case you use something like HTML purifier or
 	 *                            a non-markup output module
+	 *
+	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	public function __construct(BaseModuleInterface $base_module, $nesting_limit = 100, $sanitize_html = true){
 		$this->base_module = $base_module;
 		$this->sanitize = (bool)$sanitize_html;
 		$this->nesting_limit = (int)$nesting_limit;
 
-		$tagmap = $this->base_module->get_tagmap();
-		$this->eol = $this->base_module->get_eol();
-		$this->tagmap = $tagmap['tags'];
-		$this->noparse = $tagmap['noparse'];
 		$this->parser_extension = new ParserExtension;
+		$this->eol = $this->base_module->get_eol();
+
+		foreach($this->base_module->get_modules() as $module){
+			if(class_exists($module)){
+				$this->module = new $module(new BBTemp);
+				if($this->module instanceof ModuleInterface){
+					foreach($this->module->get_tags() as $tag){
+						$this->tagmap[$tag] = $module;
+					}
+
+					$this->modules[$module] = $this->module;
+					$this->noparse = array_merge($this->noparse, $this->module->get_noparse_tags());
+				}
+				else{
+					throw new BBCodeException($module.' is not of type ModuleInterface');
+				}
+			}
+			else{
+				throw new BBCodeException('class '.$module.' doesn\'t exist');
+			}
+		}
+
 	}
 
 	/**
@@ -186,15 +213,14 @@ class Parser{
 
 			if($callback){
 				if(isset($this->tagmap[$tag])){
-					$module = $this->tagmap[$tag];
-
 					$bbtemp = new BBTemp;
 					$bbtemp->tag = $tag;
 					$bbtemp->attributes = $attributes;
 					$bbtemp->content = $content;
 					$bbtemp->options = [];
 
-					$this->module = new $module($bbtemp);
+					$this->module = $this->modules[$this->tagmap[$tag]];
+					$this->module->set_bbtemp($bbtemp);
 					$content = $this->module->transform();
 				}
 			}

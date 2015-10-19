@@ -73,51 +73,42 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * Sets tag, attributes and content
 	 *
-	 * @param \chillerlan\bbcode\BBTemp $bbcode
+	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
-	public function __construct(BBTemp $bbcode = null){
-		if($bbcode instanceof BBTemp){
-			$this->tag = $bbcode->tag;
-			$this->attributes = $bbcode->attributes;
-			$this->content = $bbcode->content;
-			$this->options = $bbcode->options;
+	public function __construct(BBTemp $bbtemp = null){
+		if($bbtemp instanceof BBTemp){
+			$this->set_bbtemp($bbtemp);
 		}
 	}
 
 	/**
-	 * Returns an array of tag -> module
-	 * @return array
-	 * @throws \chillerlan\bbcode\BBCodeException
+	 * @param \chillerlan\bbcode\BBTemp $bbtemp
+	 *
+	 * @return $this
 	 */
-	public function get_tagmap(){
-		$tags = [];
-		$noparse = [];
-		foreach($this->modules as $module){
-			if(class_exists($module)){
-				$this->encoder = new $module(new BBTemp);
-				if($this->encoder instanceof ModuleInterface){
-					foreach($this->encoder->_get_tags() as $tag){
-						$tags[$tag] = $module;
-					}
-					$noparse = array_merge($noparse, $this->encoder->_get_noparse_tags());
-				}
-				else{
-					throw new BBCodeException($module.' is not of type ModuleInterface');
-				}
-			}
-		}
+	public function set_bbtemp(BBTemp $bbtemp){
+		$this->tag = $bbtemp->tag;
+		$this->attributes = $bbtemp->attributes;
+		$this->content = $bbtemp->content;
+		$this->options = $bbtemp->options;
+	}
 
-		return ['tags' => $tags, 'noparse' => $noparse];
+	/**
+	 * Returns a list of the BaseModule's modules
+	 *
+	 * @return array
+	 */
+	public function get_modules(){
+		return $this->modules;
 	}
 
 	/**
 	 * Returns an array of tags which the module is able to process
 	 *
 	 * @return array an array of tagnames
-	 * @internal
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	public function _get_tags(){
+	public function get_tags(){
 		return $this->tags;
 	}
 
@@ -125,10 +116,9 @@ class BaseModule implements BaseModuleInterface{
 	 * Returns an array of noparse tags
 	 *
 	 * @return array
-	 * @internal
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	public function _get_noparse_tags(){
+	public function get_noparse_tags(){
 		return $this->noparse;
 	}
 
