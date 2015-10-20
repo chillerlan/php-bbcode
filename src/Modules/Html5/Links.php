@@ -37,7 +37,7 @@ class Links extends Html5BaseModule implements ModuleInterface{
 		$url = $this->check_url($this->bbtag() ? : $this->content);
 
 		$host = parse_url($url, PHP_URL_HOST);
-		$target = !empty($host) && $host === $_SERVER['SERVER_NAME'] || empty($host) ? 'self' : 'blank';
+		$target = !empty($host) && (isset($_SERVER['SERVER_NAME']) && $host === $_SERVER['SERVER_NAME']) || empty($host) ? 'self' : 'blank';
 
 		return '<a'.($url ? ' href="'.$url.'" target="_'.$target.'"' : '').$this->get_title().$this->get_css_class($target).'>'.$this->content.'</a>';
 	}
