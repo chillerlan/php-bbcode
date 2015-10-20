@@ -171,7 +171,7 @@ class BaseModule implements BaseModuleInterface{
 	/**
 	 * @return $this
 	 */
-	public function close_pseudo_tags(){
+	public function clear_pseudo_tags(){
 		$this->content = preg_replace('#\*\[/(br|hr|clear)]#is', '', $this->content);
 
 		return $this;

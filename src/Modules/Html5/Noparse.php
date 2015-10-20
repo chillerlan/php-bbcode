@@ -39,7 +39,7 @@ class Noparse extends Html5BaseModule implements ModuleInterface{
 	public function transform(){
 		// easy stuff: remove the pseudo closing single tags
 		$this->check_tag()
-		     ->close_pseudo_tags()
+		     ->clear_pseudo_tags()
 		     ->clear_eol(PHP_EOL);
 
 		// todo: <pre>?

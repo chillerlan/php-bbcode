@@ -36,7 +36,7 @@ interface BaseModuleInterface{
 	/**
 	 * @return $this
 	 */
-	public function close_pseudo_tags();
+	public function clear_pseudo_tags();
 
 	/**
 	 * Returns the module's EOL character(s)
