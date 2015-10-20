@@ -35,8 +35,8 @@ class Html5BaseModule extends MarkupBaseModule implements BaseModuleInterface{
 		__NAMESPACE__.'\\Simpletext',
 		__NAMESPACE__.'\\Singletags',
 		__NAMESPACE__.'\\Styledtext',
-#		__NAMESPACE__.'\\Tables',
-#		__NAMESPACE__.'\\Video',
+		__NAMESPACE__.'\\Tables',
+		__NAMESPACE__.'\\Video',
 	];
 
 	/**
