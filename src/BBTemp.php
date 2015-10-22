@@ -33,8 +33,7 @@ class BBTemp{
 	public $content = '';
 
 	/**
-	 * @todo: parser options
-	 * @var
+	 * @var \chillerlan\bbcode\ParserOptions
 	 */
 	public $options;
 

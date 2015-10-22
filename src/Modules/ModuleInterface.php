@@ -37,17 +37,9 @@ interface ModuleInterface{
 	/**
 	 * Returns an array of tags which the module is able to process
 	 *
-	 * @return array an array of tagnames
+	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::get_tags()
 	 */
 	public function get_tags();
-
-	/**
-	 * Returns an array of noparse tags
-	 *
-	 * @return array
-	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::get_tags()
-	 */
-	public function get_noparse_tags();
 
 }

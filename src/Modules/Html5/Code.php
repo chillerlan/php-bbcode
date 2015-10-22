@@ -57,7 +57,7 @@ class Code extends Html5BaseModule implements ModuleInterface{
 	 */
 	public function transform(){
 		$this->check_tag()
-		     ->clear_pseudo_tags()
+		     ->clear_pseudo_closing_tags()
 		     ->clear_eol(PHP_EOL);
 
 		$id = $this->random_id();

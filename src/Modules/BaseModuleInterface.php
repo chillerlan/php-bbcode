@@ -31,19 +31,12 @@ interface BaseModuleInterface{
 	 *
 	 * @return array
 	 */
-	public function get_modules();
+	public function get_info();
 
 	/**
 	 * @return $this
 	 */
-	public function clear_pseudo_tags();
-
-	/**
-	 * Returns the module's EOL character(s)
-	 *
-	 * @return string
-	 */
-	public function get_eol_token();
+	public function clear_pseudo_closing_tags();
 
 	/**
 	 * @param string $str
@@ -113,15 +106,8 @@ interface BaseModuleInterface{
 	/**
 	 * Returns an array of tags which the module is able to process
 	 *
-	 * @return array an array of tagnames
+	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 */
 	public function get_tags();
-
-	/**
-	 * Returns an array of noparse tags
-	 *
-	 * @return array
-	 */
-	public function get_noparse_tags();
 
 }

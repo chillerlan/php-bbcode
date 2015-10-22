@@ -7,6 +7,24 @@
  * @license      MIT
  */
 
+namespace Example;
+
+/**
+ * Autoloading - composer will most likely do that for you
+ */
+
+require_once 'Psr4AutoloaderClass.php';
+
+$loader = new Psr4AutoloaderClass;
+$loader->register();
+$loader->addNamespace('Example', './');
+$loader->addNamespace('chillerlan\bbcode', '../src');
+
+use chillerlan\bbcode\Parser;
+use chillerlan\bbcode\ParserOptions;
+use Example\ExampleParserExtension;
+
+
 header('Content-type: text/html;charset=utf-8;');
 
 ?>
@@ -25,49 +43,52 @@ header('Content-type: text/html;charset=utf-8;');
 <?php
 
 /**
- * Autoloading
- */
-
-require_once 'Psr4AutoloaderClass.php';
-
-$loader = new \Example\Psr4AutoloaderClass;
-$loader->register();
-$loader->addNamespace('Example', './');
-$loader->addNamespace('chillerlan\bbcode', '../src');
-
-use chillerlan\bbcode\Parser;
-use Example\ExampleParserExtension;
-
-/**
  * Run
  */
 
+// the encoder base modules - this part might end up in your config
 $modules = [
 	'Html5'    => '\\chillerlan\\bbcode\\Modules\\Html5\\Html5BaseModule',
 	'Markdown' => '\\chillerlan\\bbcode\\Modules\\Markdown\\MarkdownBaseModule',
 	'Text'     => '\\chillerlan\\bbcode\\Modules\\Text\\TextBaseModule',
 ];
 
-$bbcode = new Parser(new $modules['Html5'], 10);
-$content = $bbcode
-				->set_parser_extension(new ExampleParserExtension)
-				->parse(file_get_contents('bbcode.txt'));
+// create a new Parser instance
+
+$options = new ParserOptions;
+$options->base_module = $modules['Html5'];
+$options->parser_extension = __NAMESPACE__.'\\ExampleParserExtension';
+$options->nesting_limit = 10;
+
+$bbcode = new Parser($options);
 
 #var_dump($bbcode->get_tagmap());
-#var_dump($bbcode->get_noparse());
+#var_dump($bbcode->get_noparse_tags());
+
+$content = $bbcode->parse(file_get_contents('bbcode.txt'));
 
 echo $content.PHP_EOL;
 
 ?>
+<!-- let's assume you use a common js framework in your project -->
 <script src="//ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js"></script>
 <script src="js/prism.js"></script>
 <script>
 	(function(){
 		document.observe('dom:loaded', function(){
+			// open/close expanders
 			$$('.expander').invoke('observe', 'click', function(){
 				Effect.toggle(this.dataset.id, 'blind');
 			});
+
+			// force external links to open in a new window
+			$$('.ext-href').invoke('observe', 'click', function(ev){
+				Event.stop(ev);
+				window.open(this.readAttribute('href'));
+			});
+
+			// yada yada yada
 		});
 	})()
 </script>
