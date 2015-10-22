@@ -21,7 +21,15 @@ use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
  */
 class Singletags extends Html5BaseModule implements ModuleInterface{
 
-	protected $tags = ['br', 'hr', 'clear'];
+	/**
+	 * @var array
+	 */
+	protected $tags = ['br', 'clear', 'hr'];
+
+	/**
+	 * @var array
+	 */
+	protected $singletags = ['br', 'clear', 'hr'];
 
 	/**
 	 * Returns the processed bbcode
@@ -33,7 +41,8 @@ class Singletags extends Html5BaseModule implements ModuleInterface{
 
 		switch($this->tag){
 			case 'clear':
-				return '<br style="clear:both;" />';
+				$this->_style = ['clear' => $this->bbtag_in(['both', 'left', 'right'], 'both')];
+				return '<br'.$this->get_style().' />';
 			default:
 				return '<'.$this->tag.$this->get_css_class().' />';
 		}

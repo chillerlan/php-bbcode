@@ -15,6 +15,8 @@ namespace chillerlan\bbcode\Modules;
 use chillerlan\bbcode\BBCodeException;
 use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
+use chillerlan\bbcode\Modules\Tagmap;
+use chillerlan\bbcode\Modules\ModuleInfo;
 
 /**
  *
@@ -23,50 +25,57 @@ class BaseModule implements BaseModuleInterface{
 
 	/**
 	 * @var string
+	 * @see \chillerlan\bbcode\BBTemp::$tag
 	 */
 	protected $tag;
 
 	/**
 	 * @var array
+	 * @see \chillerlan\bbcode\BBTemp::$attributes
 	 */
 	protected $attributes;
 
 	/**
 	 * @var string
+	 * @see \chillerlan\bbcode\BBTemp::$content
 	 */
 	protected $content;
 
 	/**
-	 * @var array
+	 * @var \chillerlan\bbcode\ParserOptions
+	 * @see \chillerlan\bbcode\BBTemp::$options
 	 */
 	protected $options;
 
 	/**
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
 	protected $modules = [];
 
 	/**
+	 * @var string
+	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$eol_token
+	 */
+	protected $eol_token = PHP_EOL;
+
+	/**
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = [];
 
 	/**
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$noparse_tags
 	 */
 	protected $noparse_tags = [];
 
 	/**
-	 * @var string
+	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$singletags
 	 */
-	protected $eol_token = PHP_EOL;
-
-	/**
-	 * holds the encoder module
-	 *
-	 * @var \chillerlan\bbcode\Modules\ModuleInterface
-	 */
-	private $encoder;
+	protected $singletags = [];
 
 	/**
 	 * Constructor
@@ -87,10 +96,9 @@ class BaseModule implements BaseModuleInterface{
 	 * @return $this
 	 */
 	public function set_bbtemp(BBTemp $bbtemp){
-		$this->tag = $bbtemp->tag;
-		$this->attributes = $bbtemp->attributes;
-		$this->content = $bbtemp->content;
-		$this->options = $bbtemp->options;
+		foreach(['tag', 'attributes', 'content', 'options'] as $tmp){
+			$this->{$tmp} = $bbtemp->{$tmp};
+		}
 
 		return $this;
 	}
@@ -98,30 +106,29 @@ class BaseModule implements BaseModuleInterface{
 	/**
 	 * Returns a list of the BaseModule's modules
 	 *
-	 * @return array
+	 * @return \chillerlan\bbcode\Modules\ModuleInfo
 	 */
-	public function get_modules(){
-		return $this->modules;
+	public function get_info(){
+		$info = new ModuleInfo;
+		foreach(['modules', 'eol_token'] as $option){
+			$info->{$option} = $this->{$option};
+		}
+
+		return $info;
 	}
 
 	/**
 	 * Returns an array of tags which the module is able to process
 	 *
-	 * @return array an array of tagnames
+	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
 	public function get_tags(){
-		return $this->tags;
-	}
-
-	/**
-	 * Returns an array of noparse tags
-	 *
-	 * @return array
-	 * @see \chillerlan\bbcode\Modules\ModuleInterface
-	 */
-	public function get_noparse_tags(){
-		return $this->noparse_tags;
+		$tags = new Tagmap;
+		$tags->tags = $this->tags;
+		$tags->noparse_tags = $this->noparse_tags;
+		$tags->singletags = $this->singletags;
+		return $tags;
 	}
 
 	/**
@@ -139,13 +146,6 @@ class BaseModule implements BaseModuleInterface{
 	}
 
 	/**
-	 * @return string
-	 */
-	public function get_eol_token(){
-		return $this->eol_token;
-	}
-
-	/**
 	 * @param string $str
 	 * @param string $eol
 	 * @param int    $count
@@ -153,7 +153,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return string
 	 */
 	public function eol($str, $eol = '', $count = null){
-		return str_replace('__BBEOL__', $eol, $str, $count);
+		return str_replace($this->options->eol_placeholder, $eol, $str, $count);
 	}
 
 	/**
@@ -163,7 +163,7 @@ class BaseModule implements BaseModuleInterface{
 	 */
 	public function clear_eol($eol = null){
 		$eol = $eol ?: $this->eol_token;
-		$this->content = str_replace('__BBEOL__', $eol, $this->content);
+		$this->content = str_replace($this->options->eol_placeholder, $eol, $this->content);
 
 		return $this;
 	}
@@ -171,8 +171,8 @@ class BaseModule implements BaseModuleInterface{
 	/**
 	 * @return $this
 	 */
-	public function clear_pseudo_tags(){
-		$this->content = preg_replace('#\*\[/(br|hr|clear)]#is', '', $this->content);
+	public function clear_pseudo_closing_tags(){
+		$this->content = preg_replace('#\*\[/('.$this->options->singletags.')]#is', '', $this->content);
 
 		return $this;
 	}
@@ -242,7 +242,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return mixed $this->attributes['__BBTAG__']
 	 */
 	protected function bbtag($default = false){
-		return $this->get_attribute('__BBTAG__', $default);
+		return $this->get_attribute($this->options->bbtag_placeholder, $default);
 	}
 
 	/**
@@ -254,7 +254,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return mixed
 	 */
 	protected function bbtag_in(array $array, $default = false){
-		return $this->attribute_in('__BBTAG__', $array, $default);
+		return $this->attribute_in($this->options->bbtag_placeholder, $array, $default);
 	}
 
 }
