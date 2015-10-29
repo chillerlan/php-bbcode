@@ -102,7 +102,6 @@ class Parser{
 		foreach($module_info->modules as $module){
 			$this->module = $this->_load($module, __NAMESPACE__.'\\Modules\\ModuleInterface');
 
-			/** @var $tagmap \chillerlan\bbcode\Modules\Tagmap */
 			$tagmap = $this->module->get_tags();
 			foreach($tagmap->tags as $tag){
 				$this->tagmap[$tag] = $module;
@@ -171,7 +170,7 @@ class Parser{
 		}
 
 		$bbcode = $this->parser_extension->pre($bbcode);
-		$bbcode = preg_replace('#\[('.$this->options->singletags.')([^]]*)?]#is', '[$1$2]*[/$1]', $bbcode);
+		$bbcode = preg_replace('#\[('.$this->options->singletags.')((?:\s|=)[^]]*)?]#is', '[$1$2]*[/$1]', $bbcode);
 		$bbcode = str_replace(["\r", "\n"], ['', $this->options->eol_placeholder], $bbcode);
 		$bbcode = $this->_parse($bbcode);
 		$bbcode = $this->parser_extension->post($bbcode);
@@ -189,40 +188,49 @@ class Parser{
 	 */
 	private function _parse($bbcode){
 		static $callback_count = 0;
+		$callback = false;
 
-		if(is_array($bbcode) && isset($bbcode['tag'])){
-			$tag = strtolower($bbcode['tag']);
-			$attributes = $this->get_attributes($bbcode['attributes']);
-			$content = $bbcode['content'];
+		// testing/debug...
+		$preg_error = PREG_NO_ERROR;
+		$debug = ['tag' => null, 'attributes' => [], 'content' => '', 'parsed' => '', 'preg_err' => 0, 'callbacks' => 0];
 
+		if(is_array($bbcode) && isset($bbcode['tag'], $bbcode['attributes'], $bbcode['content'])){
+			$debug['tag'] = $tag = strtolower($bbcode['tag']);
+			$debug['attributes'] = $attributes = $this->get_attributes($bbcode['attributes']);
+			$debug['content'] = $content = $bbcode['content'];
+
+			$callback = true;
 			$callback_count++;
 		}
-		else{
-			$tag = false;
+		else if(is_string($bbcode) && !empty($bbcode)){
+			$tag = null;
 			$attributes = [];
 			$content = $bbcode;
 		}
-
-		if(!empty($content)){
-			if($callback_count < (int)$this->options->nesting_limit && !in_array($tag, $this->noparse_tags)){ // && in_array($tag, $this->allowed)
-				$pattern = '#\[(?P<tag>\w+)(?P<attributes>(?:\s|=)[^]]*)?](?P<content>(?:[^[]|\[(?!/?\1((?:\s|=)[^]]*)?])|(?R))*)\[/\1]#';
-				$content = preg_replace_callback($pattern, __METHOD__, $content);
-			}
-
-			if($tag){
-				if(isset($this->tagmap[$tag])){
-					$bbtemp = new BBTemp;
-					$bbtemp->tag = $tag;
-					$bbtemp->attributes = $attributes;
-					$bbtemp->content = $content;
-					$bbtemp->options = $this->options;
-
-					$this->module = $this->modules[$this->tagmap[$tag]];
-					$this->module->set_bbtemp($bbtemp);
-					$content = $this->module->transform();
-				}
-			}
+		else{
+			return '';
 		}
+
+		if(!empty($content) && $callback_count < (int)$this->options->nesting_limit && !in_array($tag, $this->noparse_tags)){
+			$pattern = '#\[(?P<tag>\w+)(?P<attributes>(?:\s|=)[^]]*)?](?P<content>(?:[^[]|\[(?!/?\1((?:\s|=)[^]]*)?])|(?R))*)\[/\1]#';
+			$content = preg_replace_callback($pattern, __METHOD__, $content);
+			$debug['preg_err'] = $preg_error = preg_last_error();
+		}
+
+		if($callback && isset($this->tagmap[$tag]) && $preg_error === PREG_NO_ERROR){
+			$bbtemp = new BBTemp;
+			$bbtemp->tag = $tag;
+			$bbtemp->attributes = $attributes;
+			$bbtemp->content = $content;
+			$bbtemp->options = $this->options;
+
+			$this->module = $this->modules[$this->tagmap[$tag]];
+			$this->module->set_bbtemp($bbtemp);
+			$debug['parsed'] = $content = $this->module->transform();
+		}
+
+		$debug['callbacks'] = $callback_count;
+#		var_dump($debug);
 
 		$callback_count = 0;
 
