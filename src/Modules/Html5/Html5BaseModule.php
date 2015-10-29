@@ -50,7 +50,7 @@ class Html5BaseModule extends MarkupBaseModule implements BaseModuleInterface{
 	 * @return string
 	 */
 	public function sanitize($content){
-		return htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED | ENT_HTML5, 'UTF-8', false);
+		return htmlspecialchars($content, ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED | ENT_HTML5, 'UTF-8', false);
 	}
 
 }
