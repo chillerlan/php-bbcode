@@ -46,6 +46,8 @@ header('Content-type: text/html;charset=utf-8;');
  * Run
  */
 
+$timer = microtime(true);
+
 // the encoder base modules - this part might end up in your config
 $modules = [
 	'Html5'    => '\\chillerlan\\bbcode\\Modules\\Html5\\Html5BaseModule',
@@ -68,6 +70,8 @@ $bbcode = new Parser($options);
 $content = $bbcode->parse(file_get_contents('bbcode.txt'));
 
 echo $content.PHP_EOL;
+
+echo '<!-- bbcode: '.round((microtime(true)-$timer), 5).'s -->'.PHP_EOL;
 
 ?>
 <!-- let's assume you use a common js framework in your project -->
