@@ -56,6 +56,10 @@ class Code extends Html5BaseModule implements ModuleInterface{
 	 * @todo translations
 	 */
 	public function transform(){
+		if(empty($this->content)){
+			return '';
+		}
+
 		$this->check_tag()
 		     ->clear_pseudo_closing_tags()
 		     ->clear_eol(PHP_EOL);

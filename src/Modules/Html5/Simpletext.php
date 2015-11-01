@@ -32,6 +32,10 @@ class Simpletext extends Html5BaseModule implements ModuleInterface{
 	 * @return string a HTML snippet
 	 */
 	public function transform(){
+		if(empty($this->content)){
+			return '';
+		}
+
 		$this->check_tag();
 
 		return '<'.$this->tag.$this->get_css_class().'>'.$this->content.'</'.$this->tag.'>';
