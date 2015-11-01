@@ -20,7 +20,7 @@ use \chillerlan\bbcode\BBTemp;
 interface ModuleInterface{
 
 	/**
-	 * Checks the tag and transforms the bbcode, called from BaseModuleInterface
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
 	 * @return string a transformed snippet
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
@@ -28,7 +28,7 @@ interface ModuleInterface{
 	public function _transform();
 
 	/**
-	 * Returns the processed bbcode, called from the parser
+	 * Checks the tag and returns the processed bbcode, called from the parser
 	 *
 	 * @return string
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
