@@ -226,7 +226,7 @@ class Parser{
 				6                          => 'PREG_JIT_STACKLIMIT_ERROR', // int to prevent a notice in php 5
 			][$preg_error];
 
-			throw new BBCodeException('preg_replace_callback() died due to a '.$err.' ('.$preg_error.')'.PHP_EOL.$content);
+			throw new BBCodeException('preg_replace_callback() died due to a '.$err.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true)));
 		}
 
 		if($callback && isset($this->tagmap[$tag])){
