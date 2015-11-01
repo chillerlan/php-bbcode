@@ -47,12 +47,11 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string a HTML snippet
 	 */
-	public function transform(){
+	public function _transform(){
 		if(empty($this->content)){
 			return '';
 		}
 
-		$this->check_tag();
 		call_user_func([$this, $this->tag]);
 		$id = $this->random_id();
 		$this->_style = ['display' => $this->_hide];

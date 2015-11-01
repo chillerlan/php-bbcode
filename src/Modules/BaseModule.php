@@ -257,4 +257,15 @@ class BaseModule implements BaseModuleInterface{
 		return $this->attribute_in($this->options->bbtag_placeholder, $array, $default);
 	}
 
+	/**
+	 * Called from within a module
+	 *
+	 * @return string
+	 */
+	public function transform(){
+		$this->check_tag();
+
+		/** @var $this \chillerlan\bbcode\Modules\ModuleInterface */
+		return $this->_transform();
+	}
 }

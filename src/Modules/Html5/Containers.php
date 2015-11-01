@@ -32,12 +32,10 @@ class Containers extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string a HTML snippet
 	 */
-	public function transform(){
+	public function _transform(){
 		if(empty($this->content)){
 			return '';
 		}
-
-		$this->check_tag();
 
 		$tag = $this->tag_in(['p', 'div'], 'p');
 

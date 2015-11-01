@@ -24,7 +24,7 @@ interface ModuleInterface{
 	 *
 	 * @return string a transformed snippet
 	 */
-	public function transform();
+	public function _transform();
 
 	/**
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp

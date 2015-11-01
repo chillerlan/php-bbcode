@@ -36,14 +36,13 @@ class Noparse extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string a HTML snippet
 	 */
-	public function transform(){
+	public function _transform(){
 		if(empty($this->content)){
 			return '';
 		}
 
 		// easy stuff: remove the pseudo closing single tags
-		$this->check_tag()
-		     ->clear_pseudo_closing_tags()
+		$this->clear_pseudo_closing_tags()
 		     ->clear_eol(PHP_EOL);
 
 		// todo: <pre>?

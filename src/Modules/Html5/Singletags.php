@@ -36,8 +36,7 @@ class Singletags extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string a HTML snippet
 	 */
-	public function transform(){
-		$this->check_tag();
+	public function _transform(){
 
 		switch($this->tag){
 			case 'clear':

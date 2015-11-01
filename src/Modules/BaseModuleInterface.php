@@ -110,4 +110,11 @@ interface BaseModuleInterface{
 	 */
 	public function get_tags();
 
+	/**
+	 * Called from within a module
+	 *
+	 * @return string
+	 */
+	public function transform();
+
 }
