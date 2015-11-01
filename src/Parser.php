@@ -185,19 +185,17 @@ class Parser{
 	 * @param string|array $bbcode BBCode as string or matches as array - callback from preg_replace_callback()
 	 *
 	 * @return array|string
+	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	private function _parse($bbcode){
 		static $callback_count = 0;
 		$callback = false;
-
-		// testing/debug...
 		$preg_error = PREG_NO_ERROR;
-		$debug = ['tag' => null, 'attributes' => [], 'content' => '', 'parsed' => '', 'preg_err' => 0, 'callbacks' => 0];
 
 		if(is_array($bbcode) && isset($bbcode['tag'], $bbcode['attributes'], $bbcode['content'])){
-			$debug['tag'] = $tag = strtolower($bbcode['tag']);
-			$debug['attributes'] = $attributes = $this->get_attributes($bbcode['attributes']);
-			$debug['content'] = $content = $bbcode['content'];
+			$tag = strtolower($bbcode['tag']);
+			$attributes = $this->get_attributes($bbcode['attributes']);
+			$content = $bbcode['content'];
 
 			$callback = true;
 			$callback_count++;
@@ -214,10 +212,24 @@ class Parser{
 		if(!empty($content) && $callback_count < (int)$this->options->nesting_limit && !in_array($tag, $this->noparse_tags)){
 			$pattern = '#\[(?P<tag>\w+)(?P<attributes>(?:\s|=)[^]]*)?](?P<content>(?:[^[]|\[(?!/?\1((?:\s|=)[^]]*)?])|(?R))*)\[/\1]#';
 			$content = preg_replace_callback($pattern, __METHOD__, $content);
-			$debug['preg_err'] = $preg_error = preg_last_error();
+			$preg_error = preg_last_error();
 		}
 
-		if($callback && isset($this->tagmap[$tag]) && $preg_error === PREG_NO_ERROR){
+		if($preg_error !== PREG_NO_ERROR){
+			// still testing...
+			$err = [
+				PREG_INTERNAL_ERROR        => 'PREG_INTERNAL_ERROR',
+				PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
+				PREG_RECURSION_LIMIT_ERROR => 'PREG_RECURSION_LIMIT_ERROR',
+				PREG_BAD_UTF8_ERROR        => 'PREG_BAD_UTF8_ERROR',
+				PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
+				6                          => 'PREG_JIT_STACKLIMIT_ERROR', // int to prevent a notice in php 5
+			][$preg_error];
+
+			throw new BBCodeException('preg_replace_callback() died due to a '.$err.' ('.$preg_error.')'.PHP_EOL.$content);
+		}
+
+		if($callback && isset($this->tagmap[$tag])){
 			$bbtemp = new BBTemp;
 			$bbtemp->tag = $tag;
 			$bbtemp->attributes = $attributes;
@@ -226,11 +238,8 @@ class Parser{
 
 			$this->module = $this->modules[$this->tagmap[$tag]];
 			$this->module->set_bbtemp($bbtemp);
-			$debug['parsed'] = $content = $this->module->transform();
+			$content = $this->module->transform();
 		}
-
-		$debug['callbacks'] = $callback_count;
-#		var_dump($debug);
 
 		$callback_count = 0;
 
