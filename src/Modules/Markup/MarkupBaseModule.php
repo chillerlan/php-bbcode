@@ -58,6 +58,34 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	]; // ban comic sans: 'Comic Sans MS',
 
 	/**
+	 * @var array
+	 */
+	protected $_text_align = [
+		'left',
+		'center',
+		'right',
+		'justify',
+		'start',
+		'end',
+		'inherit',
+	];
+
+	/**
+	 * @var array
+	 */
+	protected $_vertical_align = [
+		'baseline',
+		'sub',
+		'super',
+		'text-top',
+		'text-bottom',
+		'middle',
+		'top',
+		'bottom',
+		'inherit',
+	];
+
+	/**
 	 * @var
 	 * @todo? allowed colors -> options
 	 */
@@ -135,7 +163,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 				case in_array($property, ['background-color', 'color'])
 					&& !preg_match('/^#([a-f\d]{3}){1,2}$/i', $value):
 					// sizes
-				case in_array($property, ['font-size', 'line-height'])
+				case in_array($property, ['font-size', 'line-height', 'width', 'height'])
 					&& !preg_match('/^[\d\.]+(px|pt|em|%)$/', $value):
 					// yep, it's a merciless fall-through
 					$value = false;
