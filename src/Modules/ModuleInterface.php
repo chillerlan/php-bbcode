@@ -20,13 +20,24 @@ use \chillerlan\bbcode\BBTemp;
 interface ModuleInterface{
 
 	/**
-	 * Returns the processed bbcode
+	 * Checks the tag and transforms the bbcode, called from BaseModuleInterface
 	 *
 	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 */
 	public function _transform();
 
 	/**
+	 * Returns the processed bbcode, called from the parser
+	 *
+	 * @return string
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 */
+	public function transform();
+
+	/**
+	 * Sets $tag, $attribute, $content and $options
+	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 *
 	 * @return $this
