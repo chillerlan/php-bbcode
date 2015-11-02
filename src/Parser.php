@@ -194,7 +194,7 @@ class Parser{
 	 *
 	 * @return array
 	 */
-	public function get_noparse_tags(){
+	public function get_noparse(){
 		sort($this->noparse_tags);
 		return $this->noparse_tags;
 	}
