@@ -75,6 +75,13 @@ class ParserOptions{
 	public $parser_extension = '\\chillerlan\\bbcode\\ParserExtension';
 
 	/**
+	 * An array of allowed tagnames
+	 * 
+	 * @var array
+	 */
+	public $allowed_tags = [];
+
+	/**
 	 * The match string for singletags
 	 *
 	 * (tag0|tag1|...)
