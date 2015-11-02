@@ -1,5 +1,5 @@
 # chillerlan/bbcode
-[![Packagist](https://img.shields.io/packagist/v/chillerlan/bbcode.svg)](https://packagist.org/packages/chillerlan/bbcode)
+[![Packagist](https://img.shields.io/packagist/v/chillerlan/bbcode.svg?style=flat-square)](https://packagist.org/packages/chillerlan/bbcode)
 [![License](https://img.shields.io/packagist/l/chillerlan/bbcode.svg?style=flat-square)](LICENSE)
 
 A recursive regexp [BBCode](http://en.wikipedia.org/wiki/BBCode) parser using [preg_replace_callback()](http://php.net/preg_replace_callback),
@@ -11,7 +11,6 @@ Handles nested tags aswell as matching brackets and doesn't stumble across inval
 - PHP 5.6+, PHP 7
 
 ## Installation
-
 ### Using [composer](https://getcomposer.org)
 
 #### Terminal
@@ -79,9 +78,9 @@ echo $bbcode->parse($some_string_containing_bbcode);
 
 In case you need some diagnostics, here you go:
 ```php
-$bbcode->get_tagmap();
-$bbcode->get_allowed();
-$bbcode->get_noparse_tags();
+$bbcode->get_tagmap(); // map of tag -> module FQCN
+$bbcode->get_allowed(); // an array of all allowed tags
+$bbcode->get_noparse(); // an array of all noparse tags
 ```
 
 That's all!
@@ -89,15 +88,15 @@ That's all!
 ## Parser extension
 The parser features an extension which allows you to alter the bbcode during the parsing process,
 namely before and after the main parser unit runs. If you want to create your own parser extension,
-just implement `chillerlan\bbcode\ParserExtensionInterface` and you're done.
+just implement `chillerlan\bbcode\ParserExtensionInterface`, set it in the parser options and you're done.
 
 ## Create your own modules!
-In order to create your own modules, you'll first need an empty base module. The base module contains 
+### Base module
+In order to create your own modules, you'll first need an empty base module which contains 
 all basic settings and methods for each module. To do so, you'll need to extend `BaseModule` and 
-implement `BaseModuleInterface` (both in `chillerlan\bbcode\Modules`). There's really not much to do,
+implement `BaseModuleInterface` (both in `\chillerlan\bbcode\Modules`). There's really not much to do,
 the only and most important thing is to tell the parser which modules to use. Further, you need to specify
-a `sanitize()` method and maybe an EOL token.
-
+a `sanitize()` method and maybe an EOL token - the rest is up to you and may vary between output types.
 ```php
 namespace Example\MyModules;
 
@@ -119,6 +118,31 @@ class MyAwesomeBaseModule extends BaseModule implements BaseModuleInterface{
 }
 ```
 
+### Encoder module
+Now that we have our base module, we're able to create the encoder module, where the actual transform happens.
+Each encoder module extends a base module depending on output type (`MyAwesomeBaseModule` here) 
+and implements `chillerlan\bbcode\Modules\ModuleInterface`. The property `$tags` and the method `_transform()` are mandatory.
+In case your module supports noparse or single tags, you may set the respective properties `$noparse_tags` and `$singletags`.
+```php
+namespace Example\MyModules;
+
+use chillerlan\bbcode\Modules\ModuleInterface;
+use Example\MyModules\MyAwesomeBaseModule;
+
+class MyAwesomeModule extends MyAwesomeBaseModule implements ModuleInterface{
+
+	protected $tags = ['mybbcode', 'somebbcode', 'whatever'];
+
+	public function _transform(){
+		if(empty($this->content)){
+			return '';
+		}
+
+		return '<'.$this->tag.'>'.$this->content.'</'.$this->tag.'>';
+	}
+
+}
+```
 
 ## Disclaimer!
 I don't take responsibility for molten CPUs, smashed keyboards, broken screens etc.. Use at your own risk!
