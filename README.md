@@ -54,10 +54,10 @@ $options->sanitize = true;
 $options->nesting_limit = 10;
 $options->eol_placeholder = '__MYEOL__';
 $options->bbtag_placeholder = '__MYBBTAG__';
-$options->base_module = '\\Example\\MyHtmlBaseModule';
-$options->parser_extension = '\\Example\\ExampleParserExtension';
+$options->base_module = '\\Example\\MyModules\\MyAwesomeBaseModule';
+$options->parser_extension = '\\Example\\MyAwesomeParserExtension';
 $options->allowed_tags = ['mybbcode', 'somebbcode', 'whatever'];
-$options->allow_all = true;
+$options->allow_all = false;
 ```
 
 ### Parser
@@ -85,12 +85,7 @@ $bbcode->get_noparse(); // an array of all noparse tags
 
 That's all!
 
-## Parser extension
-The parser features an extension which allows you to alter the bbcode during the parsing process,
-namely before and after the main parser unit runs. If you want to create your own parser extension,
-just implement `chillerlan\bbcode\ParserExtensionInterface`, set it in the parser options and you're done.
-
-## Create your own modules!
+## Extend the parser
 ### Base module
 In order to create your own modules, you'll first need an empty base module which contains 
 all basic settings and methods for each module. To do so, you'll need to extend `BaseModule` and 
@@ -139,6 +134,39 @@ class MyAwesomeModule extends MyAwesomeBaseModule implements ModuleInterface{
 		}
 
 		return '<'.$this->tag.'>'.$this->content.'</'.$this->tag.'>';
+	}
+
+}
+```
+
+### Parser extension
+The parser features an extension which allows you to alter the bbcode during the parsing process,
+namely before and after the main parser unit runs. If you want to create your own parser extension,
+just implement `chillerlan\bbcode\ParserExtensionInterface`, set it in the parser options and you're done.
+```php
+namespace Example;
+
+use chillerlan\bbcode\ParserExtensionInterface;
+
+class MyAwesomeParserExtension implements ParserExtensionInterface{
+
+	public function pre($bbcode){
+
+		$search = [
+			"\t", // lets convert all tabs into 4 spaces
+		    '{__BASE_URL__}', // assume we use a special token for our base url
+		];
+
+		$replace = [
+			'    ',
+		    'https://your.base/url/'
+		];
+
+		return str_replace($search, $replace, $bbcode);
+	}
+
+	public function post($bbcode){
+		return $bbcode;
 	}
 
 }
