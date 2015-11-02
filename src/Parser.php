@@ -55,8 +55,6 @@ class Parser{
 	/**
 	 * Holds an array of allowed tags
 	 *
-	 * @todo allowed tags -> options
-	 *
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$allowed_tags
 	 */
@@ -95,18 +93,48 @@ class Parser{
 	 * Constructor.
 	 *
 	 * @param \chillerlan\bbcode\ParserOptions $options [optional]
+	 */
+	public function __construct(ParserOptions $options = null){
+		$this->set_options(!$options ? new ParserOptions : $options);
+	}
+
+	/**
+	 * A simple class loader
+	 *
+	 * @param string $class class FQCN
+	 * @param string $type  interface FQCN
+	 *
+	 * @return object
+	 * @throws \chillerlan\bbcode\BBCodeException
+	 */
+	private function _load($class, $type){
+		if(class_exists($class)){
+			$object = new $class;
+			if(!is_a($object, $type)){
+				throw new BBCodeException(get_class($object).' is not of type '.$type);
+			}
+
+			return $object;
+		}
+		else{
+			throw new BBCodeException($class.' doesn\'t exist.');
+		}
+	}
+
+	/**
+	 * Sets the parser options
+	 *
+	 * @param \chillerlan\bbcode\ParserOptions $options
 	 *
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function __construct(ParserOptions $options = null){
-		if(!$options){
-			$options = new ParserOptions;
-		}
+	public function set_options(ParserOptions $options){
+		$this->options = $options;
 
-		$this->_base_module = $this->_load($options->base_module, __NAMESPACE__.'\\Modules\\BaseModuleInterface');
+		$this->_base_module = $this->_load($this->options->base_module, __NAMESPACE__.'\\Modules\\BaseModuleInterface');
 
-		if($options->parser_extension){
-			$this->_parser_extension = $this->_load($options->parser_extension, __NAMESPACE__.'\\ParserExtensionInterface');
+		if($this->options->parser_extension){
+			$this->_parser_extension = $this->_load($this->options->parser_extension, __NAMESPACE__.'\\ParserExtensionInterface');
 		}
 
 		$module_info = $this->_base_module->get_info();
@@ -124,30 +152,20 @@ class Parser{
 			$singletags = array_merge($singletags, $tagmap->singletags);
 		}
 
-		$this->options = $options;
 		$this->options->eol_token = $module_info->eol_token;
 		$this->options->singletags = implode('|', $singletags);
-	}
 
-	/**
-	 * A simple class loader
-	 *
-	 * @param string $class
-	 * @param string $type
-	 *
-	 * @return object
-	 * @throws \chillerlan\bbcode\BBCodeException
-	 */
-	private function _load($class, $type){
-		if(class_exists($class)){
-			$object = new $class;
-			if(!is_a($object, $type)){
-				throw new BBCodeException(get_class($object).' is not of type '.$type);
+		if(is_array($this->options->allowed_tags) && !empty($this->options->allowed_tags)){
+			foreach($this->options->allowed_tags as $tag){
+				if(array_key_exists($tag, $this->tagmap)){
+					$this->allowed_tags[] = $tag;
+				}
 			}
-			return $object;
 		}
 		else{
-			throw new BBCodeException($class.' doesn\'t exist.');
+			if($this->options->allow_all){
+				$this->allowed_tags = array_keys($this->tagmap);
+			}
 		}
 	}
 
@@ -253,7 +271,7 @@ class Parser{
 			throw new BBCodeException('preg_replace_callback() died due to a '.$err.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true)));
 		}
 
-		if($callback && isset($this->tagmap[$tag])){
+		if($callback && isset($this->tagmap[$tag]) && in_array($tag, $this->allowed_tags)){
 			$bbtemp = new BBTemp;
 			$bbtemp->tag = $tag;
 			$bbtemp->attributes = $attributes;
