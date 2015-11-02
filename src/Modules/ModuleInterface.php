@@ -15,7 +15,7 @@ namespace chillerlan\bbcode\Modules;
 use \chillerlan\bbcode\BBTemp;
 
 /**
- *
+ * Implements the module specific functionality
  */
 interface ModuleInterface{
 
@@ -24,32 +24,39 @@ interface ModuleInterface{
 	 *
 	 * @return string a transformed snippet
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform();
 
 	/**
 	 * Checks the tag and returns the processed bbcode, called from the parser
 	 *
-	 * @return string
+	 * This method is implemented in BaseModuleInterface, no need to overide it.
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 *
+	 * @return string
 	 */
 	public function transform();
 
 	/**
-	 * Sets $tag, $attribute, $content and $options
+	 * Sets self::$tag, self::$attributes, self::$content and self::$options
+	 *
+	 * This method is implemented in BaseModuleInterface, no need to overide it.
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::set_bbtemp()
 	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 *
 	 * @return $this
-	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::set_bbtemp()
 	 */
 	public function set_bbtemp(BBTemp $bbtemp);
 
 	/**
 	 * Returns an array of tags which the module is able to process
 	 *
-	 * @return \chillerlan\bbcode\Modules\Tagmap
+	 * This method is implemented in BaseModuleInterface, no need to overide it.
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::get_tags()
+	 *
+	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 */
 	public function get_tags();
 

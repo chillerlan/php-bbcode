@@ -17,26 +17,34 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- * Tables, as HTML5 as possible...
+ * Transforms table tags into HTML5, as HTML5 as possible...
  *
  * @link http://www.w3.org/TR/html5/tabular-data.html
  */
 class Tables extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['col', 'colgroup', 'caption', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th'];
 
 	/**
+	 * An optional array of tags contained in self::$tags which are marked as "single tag"
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$singletags
 	 */
 	protected $singletags = ['col'];
 
 	/**
-	 * Returns the processed bbcode
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
-	 * @return string a HTML snippet
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 		switch(true){
@@ -50,6 +58,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
+	 * Processes [table]
+	 *
 	 * @return string
 	 */
 	private function table(){
@@ -65,6 +75,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
+	 * Processes [col]
+	 *
 	 * @return string
 	 */
 	private function col(){
@@ -74,6 +86,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
+	 * Processes [colgroup]
+	 *
 	 * @return string
 	 */
 	private function colgroup(){
@@ -83,6 +97,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
+	 * Processes [caption]
+	 *
 	 * @return string
 	 */
 	private function caption(){
@@ -90,6 +106,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
+	 * Processes [tr|thead|tbody|tfoot]
+	 *
 	 * @return string
 	 */
 	private function rows(){
@@ -97,6 +115,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
+	 * Processes [td|th]
+	 *
 	 * @return string
 	 */
 	private function cells(){

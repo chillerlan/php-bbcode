@@ -17,35 +17,45 @@ use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 
 /**
- *
+ * The base module implements the basic functionality for each module (HTML5)
  */
 class Html5BaseModule extends MarkupBaseModule implements BaseModuleInterface{
 
 	/**
+	 * Holds an array of FQN strings to the current base module's children
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
 	protected $modules = [
-		__NAMESPACE__.'\\Code',
-		__NAMESPACE__.'\\Containers',
-		__NAMESPACE__.'\\Expanders',
-		__NAMESPACE__.'\\Images',
-		__NAMESPACE__.'\\Links',
-		__NAMESPACE__.'\\Lists',
-		__NAMESPACE__.'\\Noparse',
-		__NAMESPACE__.'\\Simpletext',
-		__NAMESPACE__.'\\Singletags',
-		__NAMESPACE__.'\\Styledtext',
-		__NAMESPACE__.'\\Tables',
-		__NAMESPACE__.'\\Video',
+		// not using the __NAMESPACE__ constant here for phpdocumentor's sake
+		// --> Parse Error: Syntax error, unexpected '.', expecting ',' or ';'
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Code',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Containers',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Expanders',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Images',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Links',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Lists',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Noparse',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Simpletext',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Singletags',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Styledtext',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Tables',
+		'\\chillerlan\\bbcode\\Modules\\Html5\\Video',
 	];
 
 	/**
+	 * Holds the current base module's EOL token which will replace any newlines
+	 *
 	 * @var string
+	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$eol_token
 	 */
 	protected $eol_token = '<br />';
 
 	/**
-	 * @param $content
+	 * Sanitizes the content to prevent vulnerabilities or compatibility problems
+	 *
+	 * @param $content string to sanitize
 	 *
 	 * @return string
 	 */

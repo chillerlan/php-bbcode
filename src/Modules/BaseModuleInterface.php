@@ -15,44 +15,33 @@ namespace chillerlan\bbcode\Modules;
 use \chillerlan\bbcode\BBTemp;
 
 /**
- *
+ * Implements the basic functionality for each module
  */
 interface BaseModuleInterface{
 
 	/**
-	 * @param $content
+	 * Sets self::$tag, self::$attributes, self::$content and self::$options
 	 *
-	 * @return string
+	 * @param \chillerlan\bbcode\BBTemp $bbtemp
+	 *
+	 * @return $this
 	 */
-	public function sanitize($content);
+	public function set_bbtemp(BBTemp $bbtemp);
 
 	/**
 	 * Returns a list of the BaseModule's modules
 	 *
-	 * @return array
+	 * @return \chillerlan\bbcode\Modules\BaseModuleInfo
 	 */
 	public function get_info();
 
 	/**
-	 * @return $this
-	 */
-	public function clear_pseudo_closing_tags();
-
-	/**
-	 * @param string $str
-	 * @param string $eol
-	 * @param int    $count
+	 * Returns an array of tags which the module is able to process
 	 *
-	 * @return string
+	 * @return \chillerlan\bbcode\Modules\Tagmap
+	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	public function eol($str, $eol = '', $count = null);
-
-	/**
-	 * @param string $eol
-	 *
-	 * @return $this
-	 */
-	public function clear_eol($eol = '');
+	public function get_tags();
 
 	/**
 	 * Checks if the module supports the current tag
@@ -63,57 +52,89 @@ interface BaseModuleInterface{
 	public function check_tag();
 
 	/**
-	 * @param array $array
-	 * @param mixed $default
+	 * Replaces the EOL placeholder in the given string with a custom token
 	 *
-	 * @return mixed
+	 * @param string $str   haystack
+	 * @param string $eol   [optional] custom EOL token, default: ''
+	 * @param int    $count [optional] replace first $count occurences
+	 *
+	 * @return string
 	 */
-	public function tag_in(array $array, $default = false);
+	public function eol($str, $eol = '', $count = null);
 
 	/**
-	 * @param string $name
-	 * @param mixed  $default
+	 * Clears all EOL placeholders from self::$content with the base modules EOL token
 	 *
-	 * @return mixed
+	 * @param string $eol [optional] custom EOL token
+	 *
+	 * @return $this
+	 */
+	public function clear_eol($eol = '');
+
+	/**
+	 * Clears all pseudo closing single tag bbcodes like [/br]
+	 *
+	 * @return $this
+	 */
+	public function clear_pseudo_closing_tags();
+
+	/**
+	 * Retrieves an attribute's value by it's name
+	 *
+	 * @param string $name     the desired attributes name
+	 * @param mixed  $default  [optional] a default value in case the attribute isn't set, defaults to false
+	 *
+	 * @return mixed the attribute's value in case it exists, otherwise $default
 	 */
 	public function get_attribute($name, $default = false);
 
 	/**
-	 * @param string $name
-	 * @param array  $array
-	 * @param mixed  $default
+	 * Retrieves an attribute's value by it's name and checks if it's whitelisted
 	 *
-	 * @return mixed
+	 * @param string $name      the desired attributes name
+	 * @param array  $whitelist an array with whitelisted values
+	 * @param mixed  $default   [optional] a default value in case the attribute isn't set, defaults to false
+	 *
+	 * @return mixed boolean if no $default is set, otherwise the attribute's value in case it exists or $default
 	 */
-	public function attribute_in($name, array $array, $default = false);
+	public function attribute_in($name, array $whitelist, $default = false);
 
 	/**
-	 * @param string $name
-	 * @param array  $array
-	 * @param mixed  $default
+	 * Checks if an attribute exists and if it exists as key in a whitelist
+
+	 * @param string $name      the desired attributes name
+	 * @param array  $whitelist an array with whitelisted key -> value pairs
+	 * @param mixed  $default   [optional] a default value in case the attribute isn't set, defaults to false
 	 *
-	 * @return mixed
+	 * @return mixed boolean if no $default is set, otherwise the whitelist value to the given key in case it exists or $default
 	 */
-	public function attribute_key_in($name, array $array, $default = false);
+	public function attribute_key_in($name, array $whitelist, $default = false);
 
 	/**
-	 * @param \chillerlan\bbcode\BBTemp $bbtemp
+	 * Checks if the current tag is whitelisted
 	 *
-	 * @return $this
+	 * @param array $whitelist an array with whitelisted tag names
+	 * @param mixed $default   [optional] a default value in case the tag isn't whitelisted
+	 *
+	 * @return mixed boolean if no $default is set, otherwise the whitelisted tag or $default
 	 */
-	public function set_bbtemp(BBTemp $bbtemp);
+	public function tag_in(array $whitelist, $default = false);
 
 	/**
-	 * Returns an array of tags which the module is able to process
+	 * Sanitizes the content to prevent vulnerabilities or compatibility problems
 	 *
-	 * @return \chillerlan\bbcode\Modules\Tagmap
-	 */
-	public function get_tags();
-
-	/**
-	 * Called from within a module
+	 * @param $content string to sanitize
 	 *
 	 * @return string
+	 */
+	public function sanitize($content);
+
+	/**
+	 * Checks the tag and returns the processed bbcode, called from the parser within a module
+	 *
+	 * @return string
+	 * @see \chillerlan\bbcode\Modules\ModuleInterface::transform()
+	 * @internal
 	 */
 	public function transform();
 

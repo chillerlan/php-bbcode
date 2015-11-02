@@ -17,20 +17,24 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- *
+ * Transforms image tags into HTML5
  */
 class Images extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 *
 	 * @var array
-	 * @todo gallery?
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['img'];
 
 	/**
-	 * Returns the processed bbcode
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
-	 * @return string a HTML snippet
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 

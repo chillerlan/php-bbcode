@@ -17,39 +17,52 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- * @todo
+ * Transforms several video tags into HTML5
  */
 class Video extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['video', 'dmotion', 'vimeo', 'youtube', 'moddb'];
 
 	/**
-	 * @var
+	 * temp host
+	 *
+	 * @var string
 	 */
 	private $_host;
 
 	/**
-	 * @var
+	 * temp url
+	 *
+	 * @var array
 	 */
 	private $_url;
 
 	/**
-	 * @var
+	 * temp video url
+	 *
+	 * @var string
 	 */
 	private $_video_url;
 
 	/**
-	 * @var
+	 * temp flash
+	 *
+	 * @var string
 	 */
 	private $_flash;
 
 	/**
-	 * Returns the processed bbcode
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
-	 * @return string a HTML snippet
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 		$this->_flash = $this->get_attribute('flash');
@@ -75,6 +88,8 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
+	 * Gets the video provider
+	 *
 	 * @return string
 	 */
 	private function _get_provider(){
@@ -97,7 +112,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
-	 *
+	 * Processes Daily Motion videos
 	 */
 	private function dmotion(){
 
@@ -117,7 +132,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
-	 *
+	 * Processes ModDB videos
 	 */
 	private function moddb(){
 		$id = $this->_host === 'moddb.com' && strpos('http://www.moddb.com/media/', $this->content) === 0
@@ -128,7 +143,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
-	 *
+	 * Processes HTML5 video
 	 */
 	private function video(){
 		// todo: check video...
@@ -136,7 +151,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
-	 *
+	 * Processes Vimeo videos
 	 */
 	private function vimeo(){
 		// since the video id is the only numeric part in a common vimeo share url, we can safely strip anything which is not number
@@ -144,7 +159,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
-	 *
+	 * Processes YouTube videos
 	 */
 	private function youtube(){
 

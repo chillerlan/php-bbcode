@@ -17,29 +17,32 @@ use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 
 /**
- *
+ * The base module implements the basic functionality for each module (Markup: (X)HTML, XML, etc.)
  */
 class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 
 	/**
+	 * Holds an array of FQN strings to the current base module's children
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
-	protected $modules = [];
+	protected $modules = [
+
+	];
 
 	/**
+	 * Holds the current tag's style attributes
+	 *
 	 * @var array
 	 */
 	protected $_style = [];
 
 	/**
-	 * @var string
-	 * @todo
-	 */
-#	protected $_css_class_prefix = 'bbcode-';
-
-	/**
+	 * Allowed css fonts
+	 *
 	 * @var array
-	 * @todo: allowed fonts -> options
+	 * @todo allowed fonts -> options
 	 */
 	protected $_allowed_fonts = [
 		'Arial',
@@ -58,6 +61,8 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	]; // ban comic sans: 'Comic Sans MS',
 
 	/**
+	 * Allowed text-align modes
+	 *
 	 * @var array
 	 */
 	protected $_text_align = [
@@ -71,6 +76,8 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	];
 
 	/**
+	 * Allowed vertical-align modes
+	 *
 	 * @var array
 	 */
 	protected $_vertical_align = [
@@ -86,13 +93,21 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	];
 
 	/**
-	 * @var
-	 * @todo? allowed colors -> options
+	 * @todo allowed colors -> options?
+	 *
+	protected $css_colors = 'aliceblue,antiquewhite,aqua,aquamarine,...';
 	 */
-#	protected $css_colors = 'aliceblue,antiquewhite,aqua,aquamarine,...';
 
 	/**
-	 * @param $content
+	 * @todo css class prefix -> options?
+	 *
+	protected $_css_class_prefix = 'bbcode-';
+	 */
+
+	/**
+	 * Sanitizes the content to prevent vulnerabilities or compatibility problems
+	 *
+	 * @param string $content content to sanitize
 	 *
 	 * @return string
 	 */
@@ -101,7 +116,25 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	}
 
 	/**
-	 * @return string
+	 * Checks if an URL is valid using filter_var()
+	 *
+	 * @param string $url the URL to check
+	 *
+	 * @return bool|string the url if valid, otherwise false
+	 */
+	protected function check_url($url){
+		if(filter_var($url, FILTER_VALIDATE_URL) === false){
+			return false;
+		}
+		// todo: check against whitelist?
+
+		return $url;
+	}
+
+	/**
+	 * Returns a random crc32 hash
+	 *
+	 * @return string usable as (X)HTML/XML element id
 	 *
 	 * @see https://xkcd.com/221/
 	 */
@@ -110,24 +143,12 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	}
 
 	/**
+	 * Returns a cleaned string containing all given css classnames
+	 * (class bbcode attribute *and* parameter)
 	 *
-	 * @param $url
-	 *
-	 * @return string
-	 */
-	protected function check_url($url){
-		if(filter_var($url, FILTER_VALIDATE_URL) === false){
-			return false;
-		}
-		// todo: check against whitelist
-
-		return $url;
-	}
-
-	/**
 	 * @param string $additional_classes
 	 *
-	 * @return string
+	 * @return string usable as (X)HTML/XML class attribute
 	 */
 	protected function get_css_class($additional_classes = ''){
 		$classes = $this->get_attribute('class', '').' '.$additional_classes;
@@ -137,9 +158,12 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	}
 
 	/**
-	 * @param $title
+	 * Returns a string containing the given title
+	 * (class bbcode attribute *or* parameter)
 	 *
-	 * @return string
+	 * @param string $title
+	 *
+	 * @return string usable as (X)HTML/XML title attribute
 	 */
 	protected function get_title($title = ''){
 		$title = $this->get_attribute('title', $title);
@@ -150,7 +174,9 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	}
 
 	/**
-	 * @return string
+	 * Collects all properties of self::$_style and merges them into a css-style compatible string
+	 *
+	 * @return string usable as (X)HTML/XML style attribute
 	 */
 	protected function get_style(){
 		$style = [];

@@ -17,35 +17,46 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- *
+ * Transforms several expander tags into HTML5
  */
 class Expanders extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['expander', 'spoiler', 'quote'];
 
 	/**
+	 * temp css class
+	 *
 	 * @var string
 	 */
 	private $_class;
 
 	/**
+	 * temp header
+	 *
 	 * @var string
 	 */
 	private $_header;
 
 	/**
+	 * temp hide
+	 *
 	 * @var string
 	 */
 	private $_hide;
 
 	/**
-	 * Returns the processed bbcode
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 * @todo translations
 	 *
-	 * @return string a HTML snippet
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 		if(empty($this->content)){
@@ -61,7 +72,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
-	 *
+	 * Processes [quote]
 	 */
 	private function quote(){
 		// todo: $timestamp = $this->get_attribute('timestamp');
@@ -77,7 +88,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
-	 *
+	 * Processes [spoiler]
 	 */
 	private function spoiler(){
 		$desc = $this->get_attribute('desc');
@@ -88,7 +99,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	}
 
 	/**
-	 *
+	 * Processes [expander]
 	 */
 	private function expander(){
 		$this->_class = 'expander';

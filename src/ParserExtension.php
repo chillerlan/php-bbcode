@@ -15,13 +15,15 @@ namespace chillerlan\bbcode;
 use chillerlan\bbcode\ParserExtensionInterface;
 
 /**
- * An empty preparser as ground to start from
- * Implements pre-/post-parser methods, for example: parsing Smileys
+ * An empty parser extension as ground to start from
  */
 class ParserExtension implements ParserExtensionInterface{
 
 	/**
-	 * Do anything here, just don't touch newlines :P
+	 * Pre-parser
+	 *
+	 * The bbcode you receive is already sanitized, which means: any replacements you do here won't be sanitized any further. Take care!
+	 * Do anything here to the unparsed bbcode, just don't touch newlines - these will be replaced with a placeholder after this step.
 	 *
 	 * @param string $bbcode bbcode
 	 *
@@ -32,6 +34,18 @@ class ParserExtension implements ParserExtensionInterface{
 	}
 
 	/**
+	 * Post-parser
+	 *
+	 * Use this method in case you want to alter the parsed bbcode.
+	 * The newline placeholders are still available and any remaining will be removed in the last step before output
+	 *
+	 * Example: you want the "img" bbcode to use database images instead of user URLs.
+	 * You'd go and change the tag so that it only accepts digits like [img=123456]
+	 * and replace any occurence with a unique placeholder like {__IMG#ID__}.
+	 * Now the post-parser gets into play: you preg_match_all() out all your placeholders,
+	 * grab the images in a single query from the database and replace them with their respective <img> tag
+	 * or whatever replacement and any corrupt id with a placeholder image. Profit!
+	 *
 	 * @param string $bbcode bbcode
 	 *
 	 * @return string postparsed bbcode

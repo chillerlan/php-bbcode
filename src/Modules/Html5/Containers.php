@@ -17,20 +17,25 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- *
+ * Transforms several container tags into HTML5
  */
 class Containers extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 * @todo flex, inline?
+	 *
 	 * @var array
-	 * @todo: flex, inline?
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['p', 'div', 'left', 'right', 'center'];
 
 	/**
-	 * Returns the processed bbcode
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
-	 * @return string a HTML snippet
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 		if(empty($this->content)){

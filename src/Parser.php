@@ -12,47 +12,50 @@
 
 namespace chillerlan\bbcode;
 
+use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\BBCodeException;
 use chillerlan\bbcode\ParserExtension;
 use chillerlan\bbcode\ParserExtensionInterface;
-use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
+use chillerlan\bbcode\Modules\ModuleInterface;
 
 /**
  * Regexp BBCode parser
  *
  * idea and regexes from developers-guide.net years ago
- * rewritten to reduce memory consumption and limit nesting ;)
  *
  * @link http://www.developers-guide.net/c/152-bbcode-parser-mit-noparse-tag-selbst-gemacht.html
  */
 class Parser{
 
 	/**
+	 * Holds the parser options
+	 *
 	 * @var \chillerlan\bbcode\ParserOptions
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$options
 	 */
 	protected $options;
 
 	/**
-	 * map of Tag -> Module
+	 * Map of Tag -> Module
 	 *
 	 * @var array
 	 */
 	protected $tagmap = [];
 
 	/**
+	 * Holds an array of noparse tags
+	 *
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$noparse_tags
 	 */
 	protected $noparse_tags = [];
 
 	/**
-	 * holds an array of allowed tags
+	 * Holds an array of allowed tags
 	 *
-	 * @todo: allowed tags -> options
+	 * @todo allowed tags -> options
 	 *
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$allowed_tags
@@ -60,21 +63,18 @@ class Parser{
 	protected $allowed_tags = [];
 
 	/**
-	 * @var \chillerlan\bbcode\ParserExtensionInterface
-	 */
-	private $parser_extension;
-
-	/**
+	 * Holds the base module instance
+	 *
 	 * @var \chillerlan\bbcode\Modules\BaseModuleInterface
 	 */
-	private $base_module;
+	private $_base_module;
 
 	/**
-	 * holds the current encoder module
+	 * Holds the current encoder module
 	 *
 	 * @var \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	private $module;
+	private $_module;
 
 	/**
 	 * Holds an array of encoder module instances
@@ -82,32 +82,40 @@ class Parser{
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
-	private $modules = [];
+	private $_modules = [];
 
 	/**
+	 * Holds the parser extension instance
+	 *
+	 * @var \chillerlan\bbcode\ParserExtensionInterface
+	 */
+	private $_parser_extension;
+
+	/**
+	 * Constructor.
+	 *
 	 * @param \chillerlan\bbcode\ParserOptions $options
 	 *
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	public function __construct(ParserOptions $options){
-		$this->base_module = $this->_load($options->base_module, __NAMESPACE__.'\\Modules\\BaseModuleInterface');
+		$this->_base_module = $this->_load($options->base_module, __NAMESPACE__.'\\Modules\\BaseModuleInterface');
 
 		if($options->parser_extension){
-			$this->parser_extension = $this->_load($options->parser_extension, __NAMESPACE__.'\\ParserExtensionInterface');
+			$this->_parser_extension = $this->_load($options->parser_extension, __NAMESPACE__.'\\ParserExtensionInterface');
 		}
 
-		/** @var $module_info \chillerlan\bbcode\Modules\ModuleInfo */
-		$module_info = $this->base_module->get_info();
+		$module_info = $this->_base_module->get_info();
 		$singletags = [];
 		foreach($module_info->modules as $module){
-			$this->module = $this->_load($module, __NAMESPACE__.'\\Modules\\ModuleInterface');
+			$this->_module = $this->_load($module, __NAMESPACE__.'\\Modules\\ModuleInterface');
 
-			$tagmap = $this->module->get_tags();
+			$tagmap = $this->_module->get_tags();
 			foreach($tagmap->tags as $tag){
 				$this->tagmap[$tag] = $module;
 			}
 
-			$this->modules[$module] = $this->module;
+			$this->_modules[$module] = $this->_module;
 			$this->noparse_tags = array_merge($this->noparse_tags, $tagmap->noparse_tags);
 			$singletags = array_merge($singletags, $tagmap->singletags);
 		}
@@ -118,10 +126,12 @@ class Parser{
 	}
 
 	/**
+	 * A simple class loader
+	 *
 	 * @param string $class
 	 * @param string $type
 	 *
-	 * @return bool
+	 * @return object
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	private function _load($class, $type){
@@ -138,7 +148,7 @@ class Parser{
 	}
 
 	/**
-	 * returns the current tagmap
+	 * Returns the current tagmap
 	 *
 	 * @return array
 	 */
@@ -148,11 +158,22 @@ class Parser{
 	}
 
 	/**
-	 * returns the noparse tags
+	 * Returns the currently allowed tags
+	 *
+	 * @return array
+	 */
+	public function get_allowed(){
+		sort($this->allowed_tags);
+		return $this->allowed_tags;
+	}
+
+	/**
+	 * Returns the noparse tags
 	 *
 	 * @return array
 	 */
 	public function get_noparse_tags(){
+		sort($this->noparse_tags);
 		return $this->noparse_tags;
 	}
 
@@ -162,18 +183,17 @@ class Parser{
 	 * @param string $bbcode
 	 *
 	 * @return string
-	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	public function parse($bbcode){
 		if($this->options->sanitize){
-			$bbcode = $this->base_module->sanitize($bbcode);
+			$bbcode = $this->_base_module->sanitize($bbcode);
 		}
 
-		$bbcode = $this->parser_extension->pre($bbcode);
-		$bbcode = preg_replace('#\[('.$this->options->singletags.')((?:\s|=)[^]]*)?]#is', '[$1$2]*[/$1]', $bbcode);
+		$bbcode = $this->_parser_extension->pre($bbcode);
+		$bbcode = preg_replace('#\[('.$this->options->singletags.')((?:\s|=)[^]]*)?]#is', '[$1$2][/$1]', $bbcode);
 		$bbcode = str_replace(["\r", "\n"], ['', $this->options->eol_placeholder], $bbcode);
 		$bbcode = $this->_parse($bbcode);
-		$bbcode = $this->parser_extension->post($bbcode);
+		$bbcode = $this->_parser_extension->post($bbcode);
 		$bbcode = str_replace($this->options->eol_placeholder, $this->options->eol_token, $bbcode);
 
 		return $bbcode;
@@ -194,7 +214,7 @@ class Parser{
 
 		if(is_array($bbcode) && isset($bbcode['tag'], $bbcode['attributes'], $bbcode['content'])){
 			$tag = strtolower($bbcode['tag']);
-			$attributes = $this->get_attributes($bbcode['attributes']);
+			$attributes = $this->_get_attributes($bbcode['attributes']);
 			$content = $bbcode['content'];
 
 			$callback = true;
@@ -209,7 +229,7 @@ class Parser{
 			return '';
 		}
 
-		if(!empty($content) && $callback_count < (int)$this->options->nesting_limit && !in_array($tag, $this->noparse_tags)){
+		if($callback_count < (int)$this->options->nesting_limit && !in_array($tag, $this->noparse_tags)){
 			$pattern = '#\[(?P<tag>\w+)(?P<attributes>(?:\s|=)[^]]*)?](?P<content>(?:[^[]|\[(?!/?\1((?:\s|=)[^]]*)?])|(?R))*)\[/\1]#';
 			$content = preg_replace_callback($pattern, __METHOD__, $content);
 			$preg_error = preg_last_error();
@@ -236,9 +256,9 @@ class Parser{
 			$bbtemp->content = $content;
 			$bbtemp->options = $this->options;
 
-			$this->module = $this->modules[$this->tagmap[$tag]];
-			$this->module->set_bbtemp($bbtemp);
-			$content = $this->module->transform();
+			$this->_module = $this->_modules[$this->tagmap[$tag]];
+			$this->_module->set_bbtemp($bbtemp);
+			$content = $this->_module->transform();
 		}
 
 		$callback_count = 0;
@@ -254,7 +274,7 @@ class Parser{
 	 *
 	 * @return array
 	 */
-	private function get_attributes($attributes){
+	private function _get_attributes($attributes){
 		$attr = [];
 		$pattern = '#(?P<name>^|\w+)\=(\'?)(?P<value>[^\']*?)\2(?: |$)#';
 
@@ -263,7 +283,7 @@ class Parser{
 				$name = empty($attribute['name']) ? $this->options->bbtag_placeholder : strtolower(trim($attribute['name']));
 
 				$value = trim($attribute['value']);
-				$value = $this->base_module->sanitize($value);
+				$value = $this->_base_module->sanitize($value);
 
 				$attr[$name] = $value;
 			}

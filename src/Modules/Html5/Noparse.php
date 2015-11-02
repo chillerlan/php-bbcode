@@ -17,24 +17,39 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- *
+ * Transforms noparse tags into HTML5
  */
 class Noparse extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['noparse'];
 
 	/**
-	 * @var array
+	 * Constructor
+	 *
+	 * calls self::set_bbtemp() in case $bbtemp is set
+	 *
+	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
-	protected $noparse_tags = ['noparse'];
+	public function __construct(BBTemp $bbtemp = null){
+		parent::__construct($bbtemp);
+
+		// set self::$noparse_tags to self::$tags because none of these should be parsed
+		$this->noparse_tags = $this->tags;
+	}
+
 
 	/**
-	 * Returns the processed bbcode
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
-	 * @return string a HTML snippet
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 		if(empty($this->content)){

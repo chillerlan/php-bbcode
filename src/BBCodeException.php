@@ -15,7 +15,7 @@ namespace chillerlan\bbcode;
 use Exception;
 
 /**
- *
+ * Placeholder
  */
 class BBCodeException extends Exception{
 

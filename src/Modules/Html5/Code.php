@@ -17,43 +17,39 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- *
+ * Transforms several code tags into HTML5
  */
 class Code extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['code', 'pre', 'css', 'php', 'sql', 'xml', 'html', 'js', 'json', 'nsis'];
 
 	/**
-	 * @var array
+	 * Constructor
+	 *
+	 * calls self::set_bbtemp() in case $bbtemp is set
+	 *
+	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
-	protected $noparse_tags = ['code', 'pre', 'css', 'php', 'sql', 'xml', 'html', 'js', 'json', 'nsis'];
+	public function __construct(BBTemp $bbtemp = null){
+		parent::__construct($bbtemp);
+
+		// set self::$noparse_tags to self::$tags because none of these should be parsed
+		$this->noparse_tags = $this->tags;
+	}
 
 	/**
-	 * @var array
-	 *
-	 * @todo: improve
-	 */
-	private $_code = [
-		'css'  => 'Stylesheet/CSS',
-		'php'  => 'PHP',
-		'sql'  => 'SQL',
-		'xml'  => 'XML',
-		'html' => 'HTML',
-		'js'   => 'JavaScript',
-		'json' => 'JSON',
-		'pre'  => 'Code',
-		'code' => 'Code',
-		'nsis' => 'NullSoft Installer Script',
-	];
-
-	/**
-	 * Returns the processed bbcode
-	 *
-	 * @return string a HTML snippet
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 * @todo translations
+	 *
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 		if(empty($this->content)){
@@ -69,8 +65,25 @@ class Code extends Html5BaseModule implements ModuleInterface{
 
 		$this->_style = ['display' => $this->get_attribute('hide') ? 'none' : 'block'];
 
+		/**
+		 * Map of code tag -> display name
+		 * @todo improve, translate
+		 */
+		$code_display = [
+			'css'  => 'Stylesheet/CSS',
+			'php'  => 'PHP',
+			'sql'  => 'SQL',
+			'xml'  => 'XML',
+			'html' => 'HTML',
+			'js'   => 'JavaScript',
+			'json' => 'JSON',
+			'pre'  => 'Code',
+			'code' => 'Code',
+			'nsis' => 'NullSoft Installer Script',
+		][$this->tag];
+
 		return '<div data-id="'.$id.'" '.$this->get_title().$this->get_css_class('expander code-header '.$this->tag).'>'
-		.$this->_code[$this->tag]
+		.$code_display
 		.($file ? ' - contents of file "<span>'.$file.'</span>"' : '')
 		.($desc ? ' - <span>'.$desc.'</span>' : '')
 		.'</div>'

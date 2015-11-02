@@ -18,7 +18,7 @@ require_once 'Psr4AutoloaderClass.php';
 $loader = new Psr4AutoloaderClass;
 $loader->register();
 $loader->addNamespace('Example', './');
-$loader->addNamespace('chillerlan\bbcode', '../src');
+$loader->addNamespace('chillerlan\\bbcode', '../src');
 
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;

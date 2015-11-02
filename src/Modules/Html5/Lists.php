@@ -17,46 +17,55 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- *
+ * Transforms list tags into HTML5
  */
 class Lists extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['list'];
 
 	/**
-	 * @var array
+	 * Map of attribute value -> css property
 	 *
-	 * type attribute is invalid for xhtml 1.1 and HTML5, so using CSS here
+	 * @var array
 	 */
 	protected $types = [
-			'0' => 'decimal-leading-zero',
-			'1' => 'decimal',
-			'a' => 'lower-alpha',
-			'A' => 'upper-alpha',
-			'i' => 'lower-roman',
-			'I' => 'upper-roman',
-			'c' => 'circle',
-			's' => 'square',
-			'd' => 'disc',
+		'0' => 'decimal-leading-zero',
+		'1' => 'decimal',
+		'a' => 'lower-alpha',
+		'A' => 'upper-alpha',
+		'i' => 'lower-roman',
+		'I' => 'upper-roman',
+		'c' => 'circle',
+		's' => 'square',
+		'd' => 'disc',
 	];
 
 	/**
+	 * Unordered lists
+	 *
 	 * @var array
 	 */
 	protected $ul = ['c', 's'];
 
 	/**
+	 * Ordered lists
+	 *
 	 * @var array
 	 */
 	protected $ol = ['0', '1', 'a', 'A', 'i', 'I'];
 
 	/**
-	 * Returns the processed bbcode
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
-	 * @return string a HTML snippet
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 		if(empty($this->content)){

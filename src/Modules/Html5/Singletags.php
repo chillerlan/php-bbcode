@@ -17,24 +17,32 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
- * Processes single tag bbcodes
+ * Transforms several single tags into HTML5
  */
 class Singletags extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * An array of tags the module is able to process
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
 	protected $tags = ['br', 'clear', 'hr'];
 
 	/**
+	 * An optional array of tags contained in self::$tags which are marked as "single tag"
+	 *
 	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$singletags
 	 */
 	protected $singletags = ['br', 'clear', 'hr'];
 
 	/**
-	 * Returns the processed bbcode
+	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
-	 * @return string a HTML snippet
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
 	 */
 	public function _transform(){
 
