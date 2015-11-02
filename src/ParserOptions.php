@@ -76,10 +76,17 @@ class ParserOptions{
 
 	/**
 	 * An array of allowed tagnames
-	 * 
+	 *
 	 * @var array
 	 */
 	public $allowed_tags = [];
+
+	/**
+	 * Determines wether to allow all or no bbcodes in case self::$allowed_tags is empty
+	 *
+	 * @var bool
+	 */
+	public $allow_all = false;
 
 	/**
 	 * The match string for singletags
