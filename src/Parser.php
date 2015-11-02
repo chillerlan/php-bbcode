@@ -94,11 +94,15 @@ class Parser{
 	/**
 	 * Constructor.
 	 *
-	 * @param \chillerlan\bbcode\ParserOptions $options
+	 * @param \chillerlan\bbcode\ParserOptions $options [optional]
 	 *
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function __construct(ParserOptions $options){
+	public function __construct(ParserOptions $options = null){
+		if(!$options){
+			$options = new ParserOptions;
+		}
+
 		$this->_base_module = $this->_load($options->base_module, __NAMESPACE__.'\\Modules\\BaseModuleInterface');
 
 		if($options->parser_extension){
