@@ -116,22 +116,6 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	}
 
 	/**
-	 * Checks if an URL is valid using filter_var()
-	 *
-	 * @param string $url the URL to check
-	 *
-	 * @return bool|string the url if valid, otherwise false
-	 */
-	protected function check_url($url){
-		if(filter_var($url, FILTER_VALIDATE_URL) === false){
-			return false;
-		}
-		// todo: check against whitelist?
-
-		return $url;
-	}
-
-	/**
 	 * Returns a random crc32 hash
 	 *
 	 * @return string usable as (X)HTML/XML element id

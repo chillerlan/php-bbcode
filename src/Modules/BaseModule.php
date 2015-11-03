@@ -271,6 +271,20 @@ class BaseModule implements BaseModuleInterface{
 	}
 
 	/**
+	 * Checks the tag and returns the processed bbcode, called from the parser within a module
+	 *
+	 * @return string
+	 *
+	 * @see \chillerlan\bbcode\Modules\ModuleInterface::transform()
+	 */
+	public function transform(){
+		$this->check_tag();
+
+		/** @var $this \chillerlan\bbcode\Modules\ModuleInterface */
+		return $this->_transform();
+	}
+
+	/**
 	 * shorthand for self::get_attribute('__BBTAG__')
 	 *
 	 * @param mixed $default
@@ -294,16 +308,19 @@ class BaseModule implements BaseModuleInterface{
 	}
 
 	/**
-	 * Checks the tag and returns the processed bbcode, called from the parser within a module
+	 * Checks if an URL is valid using filter_var()
 	 *
-	 * @return string
+	 * @param string $url the URL to check
 	 *
-	 * @see \chillerlan\bbcode\Modules\ModuleInterface::transform()
+	 * @return bool|string the url if valid, otherwise false
 	 */
-	public function transform(){
-		$this->check_tag();
+	protected function check_url($url){
+		if(filter_var($url, FILTER_VALIDATE_URL) === false){
+			return false;
+		}
+		// todo: check against whitelist?
 
-		/** @var $this \chillerlan\bbcode\Modules\ModuleInterface */
-		return $this->_transform();
+		return $url;
 	}
+
 }
