@@ -12,12 +12,16 @@
 
 namespace chillerlan\bbcode\Modules\Markdown;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 
 /**
- * The base module implements the basic functionality for each module (Markdown)
+ * The base module implements the basic functionality for each module (GitHub flavoured Markdown)
+ *
+ * @link https://help.github.com/articles/markdown-basics/
+ * @link https://help.github.com/articles/github-flavored-markdown/
+ * @link https://help.github.com/articles/writing-on-github/
+ * @link https://guides.github.com/features/mastering-markdown/
  */
 class MarkdownBaseModule extends BaseModule implements BaseModuleInterface{
 
@@ -28,7 +32,13 @@ class MarkdownBaseModule extends BaseModule implements BaseModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
 	protected $modules = [
-
+		'\\chillerlan\\bbcode\\Modules\\Markdown\\Code',
+		'\\chillerlan\\bbcode\\Modules\\Markdown\\Headers',
+		'\\chillerlan\\bbcode\\Modules\\Markdown\\Images',
+		'\\chillerlan\\bbcode\\Modules\\Markdown\\Links',
+		'\\chillerlan\\bbcode\\Modules\\Markdown\\Noparse',
+		'\\chillerlan\\bbcode\\Modules\\Markdown\\Singletags',
+		'\\chillerlan\\bbcode\\Modules\\Markdown\\StyledText',
 	];
 
 	/**
@@ -40,7 +50,7 @@ class MarkdownBaseModule extends BaseModule implements BaseModuleInterface{
 	 */
 	public function sanitize($content){
 		// TODO: Implement sanitize() method.
-		return 'Implement sanitize() method!';
+		return $content;
 	}
 
 }
