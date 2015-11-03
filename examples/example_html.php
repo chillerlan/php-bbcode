@@ -48,24 +48,12 @@ header('Content-type: text/html;charset=utf-8;');
 
 $timer = microtime(true);
 
-// the encoder base modules - this part might end up in your config
-$modules = [
-	'MyModule' => '\\Example\\MyModules\\MyAwesomeBaseModule',
-	'Html5'    => '\\chillerlan\\bbcode\\Modules\\Html5\\Html5BaseModule',
-	'Markdown' => '\\chillerlan\\bbcode\\Modules\\Markdown\\MarkdownBaseModule',
-	'Text'     => '\\chillerlan\\bbcode\\Modules\\Text\\TextBaseModule',
-];
-
 // create a new Parser instance
 
 $options = new ParserOptions;
-$options->sanitize = true;
 $options->nesting_limit = 10;
-$options->eol_placeholder = '__BBEOL__';
-$options->bbtag_placeholder = '__BBTAG__';
-$options->base_module = $modules['Html5'];
+$options->base_module = '\\chillerlan\\bbcode\\Modules\\Html5\\Html5BaseModule';
 $options->parser_extension = __NAMESPACE__.'\\MyAwesomeParserExtension';
-$options->allowed_tags = [];
 $options->allow_all = true;
 
 $bbcode = new Parser($options);

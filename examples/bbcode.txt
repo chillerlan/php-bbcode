@@ -112,7 +112,7 @@ only if i want it to do so[/th][/tr]
 
 [h3]Lists[/h3]
 [list]
-[*]unordered[list][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]unordered[list][*]blah[*]blubb[*]foo[*][list][*]blah[*]blubb[*]foo[*]bar[/list][*]bar[/list]
 [*]circle[list type=c][*]blah[*]blubb[*]foo[*]bar[/list]
 [*]square[list type=s][*]blah[*]blubb[*]foo[*]bar[/list]
 [*]decimal[list type=1][*]blah[*]blubb[*]foo[*]bar[/list]
@@ -168,3 +168,57 @@ also support for "modern" iframe embed codes and native HTML5 video
 [h4]html5 video (mp4, ogg, webm)[/h4]
 [noparse][video wide=1]LINK_TO_YOUR_VIDEO[/video][/noparse]
 
+[php]<?php
+/**
+ * Class StyledText
+ *
+ * @filesource   Styledtext.php
+ * @created      03.11.2015
+ * @package      chillerlan\bbcode\Modules\Markdown
+ * @author       Smiley <smiley@chillerlan.net>
+ * @copyright    2015 Smiley
+ * @license      MIT
+ */
+
+namespace chillerlan\bbcode\Modules\Markdown;
+
+use chillerlan\bbcode\Modules\ModuleInterface;
+use chillerlan\bbcode\Modules\Markdown\MarkdownBaseModule;
+
+/**
+ * Transforms several styled text tags into Markdown
+ */
+class StyledText extends MarkdownBaseModule implements ModuleInterface{
+
+	/**
+	 * An array of tags the module is able to process
+	 *
+	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
+	 */
+	protected $tags = ['b', 'del', 'i', 's', 'strong'];
+
+	/**
+	 * Transforms the bbcode, called from BaseModuleInterface
+	 *
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
+	 */
+	public function _transform(){
+		if(empty($this->content)){
+			return '';
+		}
+
+		$str = [
+			'b'      => '**',
+			'del'    => '~~',
+			'i'      => '_',
+			's'      => '~~',
+			'strong' => '**',
+		][$this->tag];
+
+		return $str.$this->content.$str;
+	}
+
+}[/php]
