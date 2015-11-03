@@ -50,4 +50,11 @@ class BBTemp{
 	 */
 	public $options;
 
+	/**
+	 * The current callback depth
+	 *
+	 * @var int
+	 */
+	public $depth;
+
 }

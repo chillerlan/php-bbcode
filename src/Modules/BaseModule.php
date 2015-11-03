@@ -55,6 +55,15 @@ class BaseModule implements BaseModuleInterface{
 	 */
 	protected $options;
 
+
+	/**
+	 * The current callback depth
+	 *
+	 * @var int
+	 * @see \chillerlan\bbcode\BBTemp::$depth
+	 */
+	protected $depth;
+
 	/**
 	 * Holds an array of FQN strings to the current base module's children
 	 *
@@ -116,7 +125,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return $this
 	 */
 	public function set_bbtemp(BBTemp $bbtemp){
-		foreach(['tag', 'attributes', 'content', 'options'] as $var){
+		foreach(['tag', 'attributes', 'content', 'options', 'depth'] as $var){
 			$this->{$var} = $bbtemp->{$var};
 		}
 

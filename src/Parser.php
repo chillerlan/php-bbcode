@@ -212,6 +212,7 @@ class Parser{
 		}
 
 		$bbcode = $this->_parser_extension->pre($bbcode);
+		// todo: change/move potentially closed singletags before
 		$bbcode = preg_replace('#\[('.$this->options->singletags.')((?:\s|=)[^]]*)?]#is', '[$1$2][/$1]', $bbcode);
 		$bbcode = str_replace(["\r", "\n"], ['', $this->options->eol_placeholder], $bbcode);
 		$bbcode = $this->_parse($bbcode);
@@ -277,6 +278,7 @@ class Parser{
 			$bbtemp->attributes = $attributes;
 			$bbtemp->content = $content;
 			$bbtemp->options = $this->options;
+			$bbtemp->depth = $callback_count;
 
 			$this->_module = $this->_modules[$this->tagmap[$tag]];
 			$this->_module->set_bbtemp($bbtemp);
