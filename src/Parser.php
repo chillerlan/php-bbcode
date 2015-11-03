@@ -90,12 +90,20 @@ class Parser{
 	private $_parser_extension;
 
 	/**
+	 * Holds a BBTemp instance
+	 *
+	 * @var \chillerlan\bbcode\BBTemp
+	 */
+	private $_bbtemp;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param \chillerlan\bbcode\ParserOptions $options [optional]
 	 */
 	public function __construct(ParserOptions $options = null){
 		$this->set_options(!$options ? new ParserOptions : $options);
+		$this->_bbtemp = new BBTemp;
 	}
 
 	/**
@@ -273,15 +281,14 @@ class Parser{
 		}
 
 		if($callback && isset($this->tagmap[$tag]) && in_array($tag, $this->allowed_tags)){
-			$bbtemp = new BBTemp;
-			$bbtemp->tag = $tag;
-			$bbtemp->attributes = $attributes;
-			$bbtemp->content = $content;
-			$bbtemp->options = $this->options;
-			$bbtemp->depth = $callback_count;
+			$this->_bbtemp->tag = $tag;
+			$this->_bbtemp->attributes = $attributes;
+			$this->_bbtemp->content = $content;
+			$this->_bbtemp->options = $this->options;
+			$this->_bbtemp->depth = $callback_count;
 
 			$this->_module = $this->_modules[$this->tagmap[$tag]];
-			$this->_module->set_bbtemp($bbtemp);
+			$this->_module->set_bbtemp($this->_bbtemp);
 			$content = $this->_module->transform();
 		}
 
