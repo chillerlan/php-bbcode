@@ -47,6 +47,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function _transform(){
+		$this->_style = [];
+
 		switch(true){
 			case $this->tag_in(['tr', 'thead', 'tbody', 'tfoot']):
 				return $this->rows();
@@ -121,19 +123,22 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 */
 	private function cells(){
 
-		switch(true){
-			case $align = $this->get_attribute('align'):
-				$this->_style['text-align'] = in_array($align, $this->_text_align) ? $align : 'inherit';
-				break;
-			case $valign = $this->get_attribute('valign'):
-				$this->_style['vertical-align'] = in_array($valign, ['baseline', 'bottom', 'middle', 'top']) ? $valign : 'inherit';
-				break;
-			case $width = $this->get_attribute('width'):
-				$this->_style['width'] = $width;
-				break;
-			case $this->get_attribute('nowrap'):
-				$this->_style['white-space'] = 'nowrap';
-				break;
+		$align = $this->get_attribute('align');
+		if($align && in_array($align, $this->_text_align)){
+			$this->_style['text-align'] = $align;
+		}
+
+		$valign = $this->get_attribute('valign');
+		if($valign && in_array($valign, ['baseline', 'bottom', 'middle', 'top'])){
+			$this->_style['vertical-align'] = $valign;
+		}
+
+		if($width = $this->get_attribute('width')){
+			$this->_style['width'] = $width;
+		}
+
+		if($this->get_attribute('nowrap')){
+			$this->_style['white-space'] = 'nowrap';
 		}
 
 		$span = '';
