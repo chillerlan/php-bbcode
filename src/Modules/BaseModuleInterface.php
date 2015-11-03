@@ -138,4 +138,22 @@ interface BaseModuleInterface{
 	 */
 	public function transform();
 
+	/**
+	 * Checks if an URL is valid using filter_var()
+	 *
+	 * @param string $url the URL to check
+	 *
+	 * @return bool|string the url if valid, otherwise false
+	 */
+	public function check_url($url);
+
+	/**
+	 * Wraps the given content between the wrapper. Obvious, eh?
+	 *
+	 * @param string $content
+	 * @param string $wrapper
+	 *
+	 * @return string
+	 */
+	public function wrap($content, $wrapper);
 }

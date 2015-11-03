@@ -314,7 +314,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return bool|string the url if valid, otherwise false
 	 */
-	protected function check_url($url){
+	public function check_url($url){
 		if(filter_var($url, FILTER_VALIDATE_URL) === false){
 			return false;
 		}
@@ -331,7 +331,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	protected function wrap($content, $wrapper){
+	public function wrap($content, $wrapper){
 		return $wrapper.$content.$wrapper;
 	}
 
