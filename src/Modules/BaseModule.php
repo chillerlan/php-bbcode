@@ -323,4 +323,16 @@ class BaseModule implements BaseModuleInterface{
 		return $url;
 	}
 
+	/**
+	 * Wraps the given content between the wrapper. Obvious, eh?
+	 *
+	 * @param string $content
+	 * @param string $wrapper
+	 *
+	 * @return string
+	 */
+	protected function wrap($content, $wrapper){
+		return $wrapper.$content.$wrapper;
+	}
+
 }
