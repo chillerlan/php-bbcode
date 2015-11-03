@@ -148,6 +148,26 @@ class MyAwesomeModule extends MyAwesomeBaseModule implements ModuleInterface{
 }
 ```
 
+You can also extend one of the existing modules to alter their behaviour, for example if you want the module to support more bbcodes. 
+In this case, you should be aware that the module already extends a base module, which will be used instead of your own.
+However, the module information, EOL token and sanitize method of your base module will be used in the parser then 
+and should match the extended module's parent.
+```php
+namespace Example\MyModules;
+
+use chillerlan\bbcode\Modules\ModuleInterface;
+use chillerlan\bbcode\Modules\Html5\Simpletext;
+
+class MyAwesomeModule extends Simpletext implements ModuleInterface{
+
+	protected $tags = [
+		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'sub', 'sup', 'del', 'small', // default tags
+		'mybbcode', 'somebbcode', 'whatever', // your own tags
+	];
+
+}
+```
+
 #### Parser extension
 The parser features an extension which allows you to alter the bbcode during the parsing process,
 namely before and after the main parser unit runs. If you want to create your own parser extension,
