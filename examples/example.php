@@ -22,7 +22,7 @@ $loader->addNamespace('chillerlan\\bbcode', '../src');
 
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
-use Example\ExampleParserExtension;
+use Example\MyAwesomeParserExtension;
 
 
 header('Content-type: text/html;charset=utf-8;');
@@ -50,6 +50,7 @@ $timer = microtime(true);
 
 // the encoder base modules - this part might end up in your config
 $modules = [
+	'MyModule' => '\\Example\\MyModules\\MyAwesomeBaseModule',
 	'Html5'    => '\\chillerlan\\bbcode\\Modules\\Html5\\Html5BaseModule',
 	'Markdown' => '\\chillerlan\\bbcode\\Modules\\Markdown\\MarkdownBaseModule',
 	'Text'     => '\\chillerlan\\bbcode\\Modules\\Text\\TextBaseModule',
@@ -58,14 +59,20 @@ $modules = [
 // create a new Parser instance
 
 $options = new ParserOptions;
-$options->base_module = $modules['Html5'];
-$options->parser_extension = __NAMESPACE__.'\\ExampleParserExtension';
+$options->sanitize = true;
 $options->nesting_limit = 10;
+$options->eol_placeholder = '__BBEOL__';
+$options->bbtag_placeholder = '__BBTAG__';
+$options->base_module = $modules['Html5'];
+$options->parser_extension = __NAMESPACE__.'\\MyAwesomeParserExtension';
+$options->allowed_tags = [];
+$options->allow_all = true;
 
 $bbcode = new Parser($options);
 
-#var_dump($bbcode->get_tagmap());
-#var_dump($bbcode->get_noparse_tags());
+var_dump($bbcode->get_tagmap());
+var_dump($bbcode->get_allowed());
+var_dump($bbcode->get_noparse());
 
 $content = $bbcode->parse(file_get_contents('bbcode.txt'));
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * Class ExampleParserExtension
+ * Class MyAwesomeParserExtension
  *
- * @filesource   ExampleParserExtension.php
+ * @filesource   MyAwesomeParserExtension.php
  * @created      19.09.2015
  * @package      Example
  * @author       Smiley <smiley@chillerlan.net>
@@ -17,7 +17,7 @@ use chillerlan\bbcode\ParserExtensionInterface;
 /**
  * A tiny custom preparser as ground to start from
  */
-class ExampleParserExtension implements ParserExtensionInterface{
+class MyAwesomeParserExtension implements ParserExtensionInterface{
 
 	/**
 	 * Pre-parser

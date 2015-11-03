@@ -1,0 +1,170 @@
+[h1]BBCode examples[/h1]
+(note, these bbcodes are a little outdated, rewrite coming soon(tm))
+
+GitHub repo over here: [url]https://github.com/chillerlan/bbcode[/url]
+Source of this example: [url=bbcode.txt]bbcode.txt[/url] <-- filtered URL
+
+
+[h3]noparse:[/h3]
+[noparse][u][b]some unparsed bbcode[/b][/u][/noparse]
+
+
+[h3]unparsed text[/h3]
+some text.
+it requires some newlines...
+of course!
+
+or not?
+
+
+[h3]XSS/Sanitize[/h3]
+<script>alert('Hello, i am an XSS attempt!')</script>
+
+ok, that was easy. some more XSS checks (see [url=https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet]XSS Filter Evasion Cheat Sheet[/url] for more info):
+
+<img src="javascript:alert('XSS');" />
+this will not work too - but what if we use the IMG bbcode instead? [url=http://php.net/manual/function.filter-var.php]filter_var($var, FILTER_VALIDATE_URL)[/url] does the job. In doubt, we could use an additional [url=http://php.net/manual/filter.filters.sanitize.php]FILTER_SANITIZE_URL[/url].
+
+[img]JaVaScRiPt:alert('XSS');[/img] <- failed
+[img]""><SCRIPT>alert("XSS")</SCRIPT>"[/img] <- failed
+[img]&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;[/img] <- failed
+[img]¼script¾alert(¢XSS¢)¼/script¾[/img] <- failed
+[img]vbscript:msgbox("XSS")[/img] <- failed
+[img]&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041[/img] <- failed
+[url=https://octodex.github.com/images/privateinvestocat.jpg title=Privateinvestocat][img alt=Privateinvestocat]https://octodex.github.com/images/privateinvestocat.jpg[/img][/url] <-success
+
+Same goes for URL and VIDEO BBCodes. The BBCode attributes are htmlspechialchar'd, so these are not much of a problem.
+However, take care when using things like inline styles, aka. [code=html]<div style="backgound-image:url("javascript:alert('XSS')");"></div>[/code] (this way it would be invalid anyway because of the quotes)
+
+
+[h3]Mixed up tags[/h3]
+[font='Comic Sans MS'][h2][url=http://validator.w3.org/check?uri=referer][b]use [size=20px][color=#00A400]valid[/color] [color=blue]html(5)[/color] and[/size] the[/b] [color=#0910E0][b]W3C[/b][/color] [color=red][b][i]validator[/i][/b][/color] is your friend ;)[/url]
+[url=http://jigsaw.w3.org/css-validator/check/referer]it´s also nice if your [color=#00A400]stylesheet[/color] is valid, too :P[/url][b][s][i][u]mixed up [/b][/s]o.O[/u][/i][/font][/h2]
+(this will of course break the validator...)
+
+
+[h3]empty and unknown tags[/h3]
+[somebbcode]invalid bbcodes will be eaten :P[/somebbcode]
+[php][/php] same goes for empty bbcodes ;)
+
+
+[h3]Nesting[/h3]
+[quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1][quote hide=1]want more? there's a loop stopper at 10 nested tags...[/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote][/quote]
+
+[h3]Headers[/h3]
+[h1]h1 - text 200%[/h1]
+[h2]h2 - text 150%[/h2]
+[h3]h3 - text 125%[/h3]
+[h4]h4 - text 100%[/h4]
+[h5]h5 - text 85%[/h5]
+[h6]h6 - text 75%[/h6]
+
+
+[h3]Text[/h3]
+[font='Comic Sans MS']Comic Sans MS[/font]
+[i]italic[/i]
+[u]underline[/u]
+[b]bold[/b]
+[s]strikeout[/s]
+[tt]typewriter[/tt]
+[sub]subscript[/sub]
+[sup]superscript[/sup]
+[small]small[/small]
+[color=green]color=green[/color]
+[color=#ff0000]color=#ff0000[/color]
+[size=30px]size=30px[/size]
+[size=30pt]size=30pt[/size]
+[size=300%]size=300%[/size]
+
+
+[h3]Align using containers[/h3]
+[left]left[/left]
+[center]center[/center]
+[right]right[/right]
+
+
+[h3]Expanders[/h3]
+
+[h4]quotes[/h4]
+[quote author=smiley date='2009-02-15 17:43:56' link='http://smiley.chillerlan.net/chillerlan2k10/news/page/1'][quote author=someone date='2009-6-5'][code=pre]#some code...[quote]unparsed bbcode in here too[/quote][/code]blah[/quote]blubb[quote date=1234716236]blubblubb[/quote]blahblubb[/quote]
+
+[h4]spoiler[/h4]
+[spoiler desc='some really exciting stuff!' hide=1]#some unknown code...[quote]yeah![/quote][/spoiler]
+
+
+[h3]Tables[/h3]
+[table width=800px border=1]
+[thead align='center']
+[tr][th width='50px']a = 50px[/th][th align='right']b[/th][th]c[/th][/tr]
+[tr][th nowrap='1' colspan='3']this is a very long table header which should better be not wrapped to the next line -
+only if i want it to do so[/th][/tr]
+[/thead]
+[tfoot align='center']
+[tr][td]x[/td][td]y[/td][td]z[/td][/tr]
+[/tfoot]
+[tbody]
+[tr][td]1[/td][td]2[/td][td]3[/td][/tr]
+[tr][td]4[/td][td abbr='ab br !' colspan='2']5 + 6[/td][/tr]
+[tr][td]7[/td][td]8[/td][td]9[/td][/tr]
+[/tbody]
+[/table]
+
+
+[h3]Lists[/h3]
+[list]
+[*]unordered[list][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]circle[list type=c][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]square[list type=s][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]decimal[list type=1][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]decimal leading zero[list type=0][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]lower alpha[list type=a][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]upper alpha[list type=A][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]lower roman[list type=i][*]blah[*]blubb[*]foo[*]bar[/list]
+[*]upper roman[list type=I][*]blah[*]blubb[*]foo[*]bar[/list]
+[/list]
+
+
+[h3]Validator-friendly flash applets and HTML5 video[/h3]
+
+flash applets are xhtml strict/xhtml 1.1 (!) valid and tested in firefox, chrome, opera, ie7+
+also support for "modern" iframe embed codes and native HTML5 video
+
+[h4]vimeo[/h4]
+[noparse][video=vimeo flash=1 wide=1]80973511[/video]
+[vimeo flash=1 wide=1]80973511[/vimeo]
+[video wide=1]http://vimeo.com/80973511[/video]
+[video flash=1 wide=1]http://vimeo.com/80973511[/video][/noparse]
+
+[video flash=1 wide=1]http://vimeo.com/80973511[/video]
+
+[h4]youtube[/h4]
+[noparse][video flash=1 wide=1]https://www.youtube.com/watch?v=6ZrUBM5Ah10[/video]
+[video=youtube flash=1 wide=1]AFKgipi4Tc4[/video]
+[video wide=1]http://youtu.be/TH_73vzKSKg[/video]
+[youtube flash=1 wide=1]AFKgipi4Tc4[/youtube]
+[video flash=1 wide=1]http://youtu.be/TH_73vzKSKg[/video][/noparse]
+
+[video wide=1]https://www.youtube.com/watch?v=TH_73vzKSKg[/video]
+[youtube wide=1]AFKgipi4Tc4[/youtube]
+[video flash=1 wide=1]https://www.youtube.com/watch?v=6ZrUBM5Ah10[/video]
+
+[h4]dailymotion[/h4]
+[noparse][video wide=1]http://www.dailymotion.com/video/x179954_nirvana-rape-me-live-and-loud-best-sound_music[/video]
+[video flash=1 wide=1]http://dai.ly/x179954[/video]
+[video=dmotion flash=1 wide=1]xctl9j[/video]
+[dmotion flash=1 wide=1]xctl9j[/dmotion]
+[video wide=1]http://dai.ly/xctl9j[/video][/noparse]
+
+[video wide=1]http://dai.ly/xctl9j[/video]
+
+[h4]moddb[/h4]
+[noparse][video=moddb flash=1 wide=1]72159[/video]
+[moddb flash=1 wide=1]72159[/moddb]
+[video]http://www.moddb.com/media/embed/72159[/video]
+[video]http://www.moddb.com/media/iframe/72159[/video][/noparse]
+
+[video]http://www.moddb.com/media/iframe/72159[/video]
+
+[h4]html5 video (mp4, ogg, webm)[/h4]
+[noparse][video wide=1]LINK_TO_YOUR_VIDEO[/video][/noparse]
+
