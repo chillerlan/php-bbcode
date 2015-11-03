@@ -25,7 +25,7 @@ A documentation of the included BBCodes is planned and will be available on [the
 
 *Terminal*
 ```sh
-composer require chillerlan/bbcode
+composer require chillerlan/bbcode:dev-master
 ```
 
 *composer.json*
@@ -33,7 +33,7 @@ composer require chillerlan/bbcode
 {
 	"require": {
 		"php": ">=5.6.0",
-		"chillerlan/bbcode": "1.0.*"
+		"chillerlan/bbcode": "dev-master"
 	}
 }
 ```
