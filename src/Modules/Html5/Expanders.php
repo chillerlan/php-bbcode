@@ -26,7 +26,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
-	protected $tags = ['expander', 'spoiler', 'quote'];
+	protected $tags = ['expander', 'quote', 'spoiler', 'trigger'];
 
 	/**
 	 * temp css class
@@ -105,5 +105,17 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 		$this->_header = 'Expander';
 		$this->_hide = $this->get_attribute('hide') ? 'none' : 'block';
 	}
+
+	/**
+	 * Processes [trigger]
+	 *
+	 * @todo translation
+	 */
+	private function trigger(){
+		$this->_class = 'trigger';
+		$this->_header = 'Trigger warning! The following content may be harmful to sensitive audience!';
+		$this->_hide = 'none';
+	}
+
 
 }
