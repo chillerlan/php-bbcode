@@ -63,8 +63,8 @@ $options->sanitize = true;
 $options->nesting_limit = 10;
 $options->eol_placeholder = '__MYEOL__';
 $options->bbtag_placeholder = '__MYBBTAG__';
-$options->base_module = '\\Example\\MyModules\\MyAwesomeBaseModule';
-$options->parser_extension = '\\Example\\MyAwesomeParserExtension';
+$options->base_module = MyAwesomeBaseModule::class;
+$options->parser_extension = MyAwesomeParserExtension::class;
 $options->allowed_tags = ['mybbcode', 'somebbcode', 'whatever'];
 $options->allow_all = false;
 ```
@@ -125,7 +125,7 @@ class MyAwesomeBaseModule extends BaseModule implements BaseModuleInterface{
 #### Encoder module
 Now that we have our base module, we're able to create the encoder module, where the actual transform happens.
 Each encoder module extends a base module depending on output type (`MyAwesomeBaseModule` here) 
-and implements `chillerlan\bbcode\Modules\ModuleInterface`. The property `$tags` and the method `_transform()` are mandatory.
+and implements `\chillerlan\bbcode\Modules\ModuleInterface`. The property `$tags` and the method `_transform()` are mandatory.
 In case your module supports noparse or single tags, you may set the respective properties `$noparse_tags` and `$singletags`.
 ```php
 namespace Example\MyModules;
@@ -171,7 +171,7 @@ class MyAwesomeModule extends Simpletext implements ModuleInterface{
 #### Parser extension
 The parser features an extension which allows you to alter the bbcode during the parsing process,
 namely before and after the main parser unit runs. If you want to create your own parser extension,
-just implement `chillerlan\bbcode\ParserExtensionInterface`, set it in the parser options and you're done.
+just implement `\chillerlan\bbcode\ParserExtensionInterface`, set it in the parser options and you're done.
 ```php
 namespace Example;
 
