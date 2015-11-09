@@ -2,6 +2,9 @@
 /**
  * Class Parser
  *
+ * @version      1.1.0
+ * @date         03.11.2015
+ *
  * @filesource   Parser.php
  * @created      18.09.2015
  * @package      chillerlan\bbcode
@@ -12,10 +15,11 @@
 
 namespace chillerlan\bbcode;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\BBCodeException;
+use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\ParserExtension;
 use chillerlan\bbcode\ParserExtensionInterface;
+use chillerlan\bbcode\ParserOptions;
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\ModuleInterface;
@@ -65,14 +69,14 @@ class Parser{
 	 *
 	 * @var \chillerlan\bbcode\Modules\BaseModuleInterface
 	 */
-	private $_base_module;
+	protected $_base_module;
 
 	/**
 	 * Holds the current encoder module
 	 *
 	 * @var \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	private $_module;
+	protected $_module;
 
 	/**
 	 * Holds an array of encoder module instances
@@ -80,21 +84,35 @@ class Parser{
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
-	private $_modules = [];
+	protected $_modules = [];
 
 	/**
 	 * Holds the parser extension instance
 	 *
 	 * @var \chillerlan\bbcode\ParserExtensionInterface
 	 */
-	private $_parser_extension;
+	protected $_parser_extension;
 
 	/**
 	 * Holds a BBTemp instance
 	 *
 	 * @var \chillerlan\bbcode\BBTemp
 	 */
-	private $_bbtemp;
+	protected $_bbtemp;
+
+	/**
+	 * testing...
+	 *
+	 * @var array
+	 */
+	protected $preg_error = [
+		PREG_INTERNAL_ERROR        => 'PREG_INTERNAL_ERROR',
+		PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
+		PREG_RECURSION_LIMIT_ERROR => 'PREG_RECURSION_LIMIT_ERROR',
+		PREG_BAD_UTF8_ERROR        => 'PREG_BAD_UTF8_ERROR',
+		PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
+		6                          => 'PREG_JIT_STACKLIMIT_ERROR', // int key to prevent a notice in php 5
+	];
 
 	/**
 	 * Constructor.
@@ -109,24 +127,26 @@ class Parser{
 	/**
 	 * A simple class loader
 	 *
-	 * @param string $class class FQCN
-	 * @param string $type  interface FQCN
+	 * @param string $class     class FQCN
+	 * @param string $interface interface FQCN
 	 *
-	 * @return object
+	 * @param mixed  $params [optional] the following arguments are optional and will be passed to the class constructor if present.
+	 *
+	 * @return object of type $interface
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	private function _load($class, $type){
+	protected function _load($class, $interface, ...$params){ // phpDocumentor stumbles across the ... syntax
 		if(class_exists($class)){
-			$object = new $class;
-			if(!is_a($object, $type)){
-				throw new BBCodeException(get_class($object).' is not of type '.$type);
+			$object = new $class(...$params);
+
+			if(!is_a($object, $interface)){
+				throw new BBCodeException(get_class($object).' does not implement '.$interface);
 			}
 
 			return $object;
 		}
-		else{
-			throw new BBCodeException($class.' doesn\'t exist.');
-		}
+
+		throw new BBCodeException($class.' does not exist');
 	}
 
 	/**
@@ -136,19 +156,23 @@ class Parser{
 	 *
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function set_options(ParserOptions $options){
+	public function set_options($options){
+		if(!is_a($options, ParserOptions::class)){
+			throw new BBCodeException('Invalid options!');
+		}
+
 		$this->options = $options;
 
-		$this->_base_module = $this->_load($this->options->base_module, __NAMESPACE__.'\\Modules\\BaseModuleInterface');
+		$this->_base_module = $this->_load($this->options->base_module, BaseModuleInterface::class);
 
 		if($this->options->parser_extension){
-			$this->_parser_extension = $this->_load($this->options->parser_extension, __NAMESPACE__.'\\ParserExtensionInterface');
+			$this->_parser_extension = $this->_load($this->options->parser_extension, ParserExtensionInterface::class, $this->options);
 		}
 
 		$module_info = $this->_base_module->get_info();
 		$singletags = [];
 		foreach($module_info->modules as $module){
-			$this->_module = $this->_load($module, __NAMESPACE__.'\\Modules\\ModuleInterface');
+			$this->_module = $this->_load($module, ModuleInterface::class);
 
 			$tagmap = $this->_module->get_tags();
 			foreach($tagmap->tags as $tag){
@@ -220,7 +244,7 @@ class Parser{
 		}
 
 		$bbcode = $this->_parser_extension->pre($bbcode);
-		// todo: change/move potentially closed singletags before
+		// todo: change/move potentially closed singletags before -> base module
 		$bbcode = preg_replace('#\[('.$this->options->singletags.')((?:\s|=)[^]]*)?]#is', '[$1$2][/$1]', $bbcode);
 		$bbcode = str_replace(["\r", "\n"], ['', $this->options->eol_placeholder], $bbcode);
 		$bbcode = $this->_parse($bbcode);
@@ -235,10 +259,10 @@ class Parser{
 	 *
 	 * @param string|array $bbcode BBCode as string or matches as array - callback from preg_replace_callback()
 	 *
-	 * @return array|string
+	 * @return string
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	private function _parse($bbcode){
+	protected function _parse($bbcode){
 		static $callback_count = 0;
 		$callback = false;
 		$preg_error = PREG_NO_ERROR;
@@ -261,23 +285,16 @@ class Parser{
 		}
 
 		if($callback_count < (int)$this->options->nesting_limit && !in_array($tag, $this->noparse_tags)){
-			$pattern = '#\[(?P<tag>\w+)(?P<attributes>(?:\s|=)[^]]*)?](?P<content>(?:[^[]|\[(?!/?\1((?:\s|=)[^]]*)?])|(?R))*)\[/\1]#';
+			$pattern = '#\[(?<tag>\w+)(?<attributes>(?:\s|=)[^]]*)?](?<content>(?:[^[]|\[(?!/?\1((?:\s|=)[^]]*)?])|(?R))*)\[/\1]#';
 			$content = preg_replace_callback($pattern, __METHOD__, $content);
 			$preg_error = preg_last_error();
 		}
 
+		// still testing...
 		if($preg_error !== PREG_NO_ERROR){
-			// still testing...
-			$err = [
-				PREG_INTERNAL_ERROR        => 'PREG_INTERNAL_ERROR',
-				PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
-				PREG_RECURSION_LIMIT_ERROR => 'PREG_RECURSION_LIMIT_ERROR',
-				PREG_BAD_UTF8_ERROR        => 'PREG_BAD_UTF8_ERROR',
-				PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
-				6                          => 'PREG_JIT_STACKLIMIT_ERROR', // int to prevent a notice in php 5
-			][$preg_error];
 
-			throw new BBCodeException('preg_replace_callback() died due to a '.$err.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true)));
+			throw new BBCodeException('preg_replace_callback() died on ['.$tag.'] due to a '.$this->preg_error[$preg_error]
+					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true)));
 		}
 
 		if($callback && isset($this->tagmap[$tag]) && in_array($tag, $this->allowed_tags)){
@@ -301,13 +318,16 @@ class Parser{
 	 * The attributes parser
 	 *
 	 * @todo recognize attributes without value
+	 *
 	 * @param string $attributes
 	 *
 	 * @return array
+	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	private function _get_attributes($attributes){
+	protected function _get_attributes($attributes){
 		$attr = [];
-		$pattern = '#(?P<name>^|\w+)\=(\'?)(?P<value>[^\']*?)\2(?: |$)#';
+		$preg_error = PREG_NO_ERROR;
+		$pattern = '#(?<name>^|\w+)\=(\'?)(?<value>[^\']*?)\2(?: |$)#';
 
 		if(preg_match_all($pattern, $attributes, $matches, PREG_SET_ORDER) > 0){
 			foreach($matches as $attribute){
@@ -318,6 +338,11 @@ class Parser{
 
 				$attr[$name] = $value;
 			}
+		}
+
+		if($preg_error !== PREG_NO_ERROR){
+			throw new BBCodeException('preg_match_all() died due to a '.$this->preg_error[$preg_error]
+					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($attributes, true)));
 		}
 
 		return $attr;
