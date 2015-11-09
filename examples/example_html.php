@@ -7,18 +7,7 @@
  * @license      MIT
  */
 
-namespace Example;
-
-/**
- * Autoloading - composer will most likely do that for you
- */
-
-require_once 'Psr4AutoloaderClass.php';
-
-$loader = new Psr4AutoloaderClass;
-$loader->register();
-$loader->addNamespace('Example', './');
-$loader->addNamespace('chillerlan\\bbcode', '../src');
+require_once '../vendor/autoload.php';
 
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
