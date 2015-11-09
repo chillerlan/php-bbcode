@@ -14,6 +14,13 @@ namespace chillerlan\bbcode\Modules\Markdown;
 
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
+use chillerlan\bbcode\Modules\Markdown\Code;
+use chillerlan\bbcode\Modules\Markdown\Headers;
+use chillerlan\bbcode\Modules\Markdown\Images;
+use chillerlan\bbcode\Modules\Markdown\Links;
+use chillerlan\bbcode\Modules\Markdown\Noparse;
+use chillerlan\bbcode\Modules\Markdown\Singletags;
+use chillerlan\bbcode\Modules\Markdown\StyledText;
 
 /**
  * The base module implements the basic functionality for each module (GitHub flavoured Markdown)
@@ -32,13 +39,13 @@ class MarkdownBaseModule extends BaseModule implements BaseModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
 	protected $modules = [
-		'\\chillerlan\\bbcode\\Modules\\Markdown\\Code',
-		'\\chillerlan\\bbcode\\Modules\\Markdown\\Headers',
-		'\\chillerlan\\bbcode\\Modules\\Markdown\\Images',
-		'\\chillerlan\\bbcode\\Modules\\Markdown\\Links',
-		'\\chillerlan\\bbcode\\Modules\\Markdown\\Noparse',
-		'\\chillerlan\\bbcode\\Modules\\Markdown\\Singletags',
-		'\\chillerlan\\bbcode\\Modules\\Markdown\\StyledText',
+		Code::class,
+		Headers::class,
+		Images::class,
+		Links::class,
+		Noparse::class,
+		Singletags::class,
+		StyledText::class,
 	];
 
 	/**
