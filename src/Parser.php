@@ -23,6 +23,7 @@ use chillerlan\bbcode\ParserOptions;
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\ModuleInterface;
+use chillerlan\Framework\Core\Traits\ClassLoaderTrait;
 
 /**
  * Regexp BBCode parser
@@ -32,6 +33,7 @@ use chillerlan\bbcode\Modules\ModuleInterface;
  * @link http://www.developers-guide.net/c/152-bbcode-parser-mit-noparse-tag-selbst-gemacht.html
  */
 class Parser{
+	use ClassLoaderTrait;
 
 	/**
 	 * Holds the parser options
@@ -125,31 +127,6 @@ class Parser{
 	}
 
 	/**
-	 * A simple class loader
-	 *
-	 * @param string $class     class FQCN
-	 * @param string $interface interface FQCN
-	 *
-	 * @param mixed  $params [optional] the following arguments are optional and will be passed to the class constructor if present.
-	 *
-	 * @return object of type $interface
-	 * @throws \chillerlan\bbcode\BBCodeException
-	 */
-	protected function _load($class, $interface, ...$params){ // phpDocumentor stumbles across the ... syntax
-		if(class_exists($class)){
-			$object = new $class(...$params);
-
-			if(!is_a($object, $interface)){
-				throw new BBCodeException(get_class($object).' does not implement '.$interface);
-			}
-
-			return $object;
-		}
-
-		throw new BBCodeException($class.' does not exist');
-	}
-
-	/**
 	 * Sets the parser options
 	 *
 	 * @param \chillerlan\bbcode\ParserOptions $options
@@ -163,16 +140,16 @@ class Parser{
 
 		$this->options = $options;
 
-		$this->_base_module = $this->_load($this->options->base_module, BaseModuleInterface::class);
+		$this->_base_module = $this->load_class($this->options->base_module, BaseModuleInterface::class);
 
 		if($this->options->parser_extension){
-			$this->_parser_extension = $this->_load($this->options->parser_extension, ParserExtensionInterface::class, $this->options);
+			$this->_parser_extension = $this->load_class($this->options->parser_extension, ParserExtensionInterface::class, $this->options);
 		}
 
 		$module_info = $this->_base_module->get_info();
 		$singletags = [];
 		foreach($module_info->modules as $module){
-			$this->_module = $this->_load($module, ModuleInterface::class);
+			$this->_module = $this->load_class($module, ModuleInterface::class);
 
 			$tagmap = $this->_module->get_tags();
 			foreach($tagmap->tags as $tag){
