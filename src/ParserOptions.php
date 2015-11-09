@@ -12,6 +12,9 @@
 
 namespace chillerlan\bbcode;
 
+use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
+use chillerlan\bbcode\ParserExtension;
+
 /**
  * Holds the user defined options
  *
@@ -60,19 +63,16 @@ class ParserOptions{
 	/**
 	 * The base module to use (FQN)
 	 *
-	 * not using the __NAMESPACE__ constant here for phpdocumentor's sake
-	 * --> Parse Error: Syntax error, unexpected '.', expecting ',' or ';'
-	 *
 	 * @var string
 	 */
-	public $base_module = '\\chillerlan\\bbcode\\Modules\\Html5\\Html5BaseModule';
+	public $base_module = Html5BaseModule::class;
 
 	/**
 	 * The parser extension to use (FQN)
 	 *
 	 * @var string
 	 */
-	public $parser_extension = '\\chillerlan\\bbcode\\ParserExtension';
+	public $parser_extension = ParserExtension::class;
 
 	/**
 	 * An array of allowed tagnames
