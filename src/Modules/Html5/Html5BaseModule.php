@@ -12,9 +12,20 @@
 
 namespace chillerlan\bbcode\Modules\Html5;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
+use chillerlan\bbcode\Modules\Html5\Code;
+use chillerlan\bbcode\Modules\Html5\Containers;
+use chillerlan\bbcode\Modules\Html5\Expanders;
+use chillerlan\bbcode\Modules\Html5\Images;
+use chillerlan\bbcode\Modules\Html5\Links;
+use chillerlan\bbcode\Modules\Html5\Lists;
+use chillerlan\bbcode\Modules\Html5\Noparse;
+use chillerlan\bbcode\Modules\Html5\Simpletext;
+use chillerlan\bbcode\Modules\Html5\Singletags;
+use chillerlan\bbcode\Modules\Html5\Styledtext;
+use chillerlan\bbcode\Modules\Html5\Tables;
+use chillerlan\bbcode\Modules\Html5\Video;
 
 /**
  * The base module implements the basic functionality for each module (HTML5)
@@ -28,20 +39,18 @@ class Html5BaseModule extends MarkupBaseModule implements BaseModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
 	protected $modules = [
-		// not using the __NAMESPACE__ constant here for phpdocumentor's sake
-		// --> Parse Error: Syntax error, unexpected '.', expecting ',' or ';'
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Code',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Containers',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Expanders',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Images',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Links',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Lists',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Noparse',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Simpletext',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Singletags',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Styledtext',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Tables',
-		'\\chillerlan\\bbcode\\Modules\\Html5\\Video',
+		Code::class,
+		Containers::class,
+		Expanders::class,
+		Images::class,
+		Links::class,
+		Lists::class,
+		Noparse::class,
+		Simpletext::class,
+		Singletags::class,
+		Styledtext::class,
+		Tables::class,
+		Video::class,
 	];
 
 	/**
