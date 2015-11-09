@@ -22,6 +22,7 @@ $loader->addNamespace('chillerlan\\bbcode', '../src');
 
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
+use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 use Example\MyAwesomeParserExtension;
 
 
@@ -52,8 +53,8 @@ $timer = microtime(true);
 
 $options = new ParserOptions;
 $options->nesting_limit = 10;
-$options->base_module = '\\chillerlan\\bbcode\\Modules\\Html5\\Html5BaseModule';
-$options->parser_extension = __NAMESPACE__.'\\MyAwesomeParserExtension';
+$options->base_module = Html5BaseModule::class;
+$options->parser_extension = MyAwesomeParserExtension::class;
 $options->allow_all = true;
 
 $bbcode = new Parser($options);

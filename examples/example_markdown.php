@@ -22,6 +22,7 @@ $loader->addNamespace('chillerlan\\bbcode', '../src');
 
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
+use chillerlan\bbcode\Modules\Markdown\MarkdownBaseModule;
 use Example\MyAwesomeParserExtension;
 
 
@@ -38,8 +39,8 @@ $timer = microtime(true);
 $options = new ParserOptions;
 $options->sanitize = false;
 $options->nesting_limit = 10;
-$options->base_module = '\\chillerlan\\bbcode\\Modules\\Markdown\\MarkdownBaseModule';
-$options->parser_extension = __NAMESPACE__.'\\MyAwesomeParserExtension';
+$options->base_module = MarkdownBaseModule::class;
+$options->parser_extension = MyAwesomeParserExtension::class;
 $options->allow_all = true;
 
 $bbcode = new Parser($options);
