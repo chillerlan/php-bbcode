@@ -13,11 +13,26 @@
 namespace chillerlan\bbcode;
 
 use chillerlan\bbcode\ParserExtensionInterface;
+use chillerlan\bbcode\ParserOptions;
 
 /**
  * An empty parser extension as ground to start from
  */
 class ParserExtension implements ParserExtensionInterface{
+
+	/**
+	 * @var \chillerlan\bbcode\ParserOptions
+	 */
+	protected $options;
+
+	/**
+	 * ParserExtension constructor.
+	 *
+	 * @param \chillerlan\bbcode\ParserOptions $options
+	 */
+	public function __construct(ParserOptions $options){
+		$this->options = $options;
+	}
 
 	/**
 	 * Pre-parser
