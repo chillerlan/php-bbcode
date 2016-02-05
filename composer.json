@@ -14,12 +14,13 @@
 		}
 	],
 	"require": {
-		"php": ">=5.6.0",
-		"chillerlan/framework":"dev-master"
+		"php": ">=5.6.0"
 	},
 	"require-dev": {
+		"phpunit/phpunit": "5.*"
 	},
 	"suggest": {
+		"chillerlan/framework": "A simple framework featuring a PDO/MySQLi SQL wrapper and other cool stuff. PHP 5.6+, PHP 7",
 		"chillerlan/gw1-database": "A Guild Wars (not 2!) database including everything to parse GWBBcode, calculate skills, import/export templates, create maps etc.. PHP 5.6+, PHP 7"
 	},
 	"autoload": {
