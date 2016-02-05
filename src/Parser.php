@@ -23,7 +23,6 @@ use chillerlan\bbcode\ParserOptions;
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\Framework\Core\Traits\ClassLoaderTrait;
 
 /**
  * Regexp BBCode parser
@@ -33,7 +32,6 @@ use chillerlan\Framework\Core\Traits\ClassLoaderTrait;
  * @link http://www.developers-guide.net/c/152-bbcode-parser-mit-noparse-tag-selbst-gemacht.html
  */
 class Parser{
-	use ClassLoaderTrait;
 
 	/**
 	 * Holds the parser options
@@ -126,6 +124,34 @@ class Parser{
 		$this->_bbtemp = new BBTemp;
 	}
 
+
+	/**
+	 * A simple class loader
+	 *
+	 * @param string $class  class FQCN
+	 * @param string $type   type/interface/inheritor FQCN
+	 *
+	 * @param mixed  $params [optional] the following arguments are optional and will be passed to the class constructor if present.
+	 *
+	 * @link https://github.com/chillerlan/framework/blob/master/src/Core/Traits/ClassLoaderTrait.php
+	 *
+	 * @return object of type $interface
+	 * @throws \chillerlan\bbcode\BBCodeException
+	 */
+	private function __loadClass($class, $type, ...$params){ // phpDocumentor stumbles across the ... syntax
+		if(class_exists($class)){
+			$object = new $class(...$params);
+
+			if(!is_a($object, $type)){
+				throw new BBCodeException(get_class($object).' does not implement or inherit '.$type);
+			}
+
+			return $object;
+		}
+
+		throw new BBCodeException($class.' does not exist');
+	}
+
 	/**
 	 * Sets the parser options
 	 *
@@ -140,16 +166,16 @@ class Parser{
 
 		$this->options = $options;
 
-		$this->_base_module = $this->load_class($this->options->base_module, BaseModuleInterface::class);
+		$this->_base_module = $this->__loadClass($this->options->base_module, BaseModuleInterface::class);
 
 		if($this->options->parser_extension){
-			$this->_parser_extension = $this->load_class($this->options->parser_extension, ParserExtensionInterface::class, $this->options);
+			$this->_parser_extension = $this->__loadClass($this->options->parser_extension, ParserExtensionInterface::class, $this->options);
 		}
 
 		$module_info = $this->_base_module->get_info();
 		$singletags = [];
 		foreach($module_info->modules as $module){
-			$this->_module = $this->load_class($module, ModuleInterface::class);
+			$this->_module = $this->__loadClass($module, ModuleInterface::class);
 
 			$tagmap = $this->_module->get_tags();
 			foreach($tagmap->tags as $tag){
