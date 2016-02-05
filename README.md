@@ -1,6 +1,24 @@
 # chillerlan/bbcode
-[![Packagist](https://img.shields.io/packagist/v/chillerlan/bbcode.svg?style=flat-square)](https://packagist.org/packages/chillerlan/bbcode)
-[![License](https://img.shields.io/packagist/l/chillerlan/bbcode.svg?style=flat-square)](LICENSE)
+
+[![version][packagist-badge]][packagist]
+[![license][license-badge]][license]
+[![Travis][travis-badge]][travis]
+[![Coverage][coverage-badge]][coverage]
+[![Issues][issue-badge]][issues]
+[![SensioLabsInsight][sensio-badge]][sensio]
+
+[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/bbcode.svg?style=flat-square
+[packagist]: https://packagist.org/packages/chillerlan/bbcode
+[license-badge]: https://img.shields.io/packagist/l/chillerlan/bbcode.svg?style=flat-square
+[license]: https://github.com/chillerlan/bbcode/blob/master/LICENSE
+[travis-badge]: https://img.shields.io/travis/chillerlan/bbcode.svg?style=flat-square
+[travis]: https://travis-ci.org/chillerlan/bbcode
+[coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/bbcode.svg?style=flat-square
+[coverage]: https://codecov.io/github/chillerlan/bbcode
+[issue-badge]: https://img.shields.io/github/issues/chillerlan/bbcode.svg?style=flat-square
+[issues]: https://github.com/chillerlan/bbcode/issues
+[sensio-badge]: https://img.shields.io/sensiolabs/i/9daeaa2a-abdc-43a6-bb8c-945e52e34751.svg?style=flat-square
+[sensio]: https://insight.sensiolabs.com/projects/9daeaa2a-abdc-43a6-bb8c-945e52e34751
 
 A recursive regexp [BBCode](http://en.wikipedia.org/wiki/BBCode) parser using [preg_replace_callback()](http://php.net/preg_replace_callback),
 based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member/69,mrniceguy) on
