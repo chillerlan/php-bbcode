@@ -303,9 +303,8 @@ class Parser{
 
 		// still testing...
 		if($preg_error !== PREG_NO_ERROR){
-
 			throw new BBCodeException('preg_replace_callback() died on ['.$tag.'] due to a '.$this->preg_error[$preg_error]
-					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true)));
+					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true))); // @codeCoverageIgnore
 		}
 
 		if($callback && isset($this->tagmap[$tag]) && in_array($tag, $this->allowed_tags)){
@@ -353,7 +352,7 @@ class Parser{
 
 		if($preg_error !== PREG_NO_ERROR){
 			throw new BBCodeException('preg_match_all() died due to a '.$this->preg_error[$preg_error]
-					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($attributes, true)));
+					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($attributes, true)));  // @codeCoverageIgnore
 		}
 
 		return $attr;
