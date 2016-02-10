@@ -61,7 +61,7 @@ class Noparse extends Html5BaseModule implements ModuleInterface{
 		     ->clear_eol(PHP_EOL);
 
 		// todo: <pre>?
-		return '<pre class="bb-noparse">'.$this->content.'</pre>';
+		return '<pre class="bbcode noparse">'.$this->content.'</pre>';
 	}
 
 }
