@@ -161,11 +161,7 @@ class Parser{
 	 *
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function setOptions($options){
-		if(!is_a($options, ParserOptions::class)){
-			throw new BBCodeException('Invalid options!');
-		}
-
+	public function setOptions(ParserOptions $options){
 		$this->parserOptions = $options;
 		$this->baseModuleInterface = $this->__loadClass($this->parserOptions->base_module, BaseModuleInterface::class);
 
