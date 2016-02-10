@@ -12,20 +12,8 @@
 
 namespace chillerlan\bbcode\Modules\Html5;
 
-use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
-use chillerlan\bbcode\Modules\Html5\Code;
-use chillerlan\bbcode\Modules\Html5\Containers;
-use chillerlan\bbcode\Modules\Html5\Expanders;
-use chillerlan\bbcode\Modules\Html5\Images;
-use chillerlan\bbcode\Modules\Html5\Links;
-use chillerlan\bbcode\Modules\Html5\Lists;
-use chillerlan\bbcode\Modules\Html5\Noparse;
-use chillerlan\bbcode\Modules\Html5\Simpletext;
-use chillerlan\bbcode\Modules\Html5\Singletags;
-use chillerlan\bbcode\Modules\Html5\Styledtext;
-use chillerlan\bbcode\Modules\Html5\Tables;
-use chillerlan\bbcode\Modules\Html5\Video;
+use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
 
 /**
  * The base module implements the basic functionality for each module (HTML5)
@@ -48,7 +36,7 @@ class Html5BaseModule extends MarkupBaseModule implements BaseModuleInterface{
 		Noparse::class,
 		Simpletext::class,
 		Singletags::class,
-		Styledtext::class,
+		StyledText::class,
 		Tables::class,
 		Video::class,
 	];

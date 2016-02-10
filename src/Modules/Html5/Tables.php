@@ -13,7 +13,6 @@
 namespace chillerlan\bbcode\Modules\Html5;
 
 use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
  * Transforms table tags into HTML5, as HTML5 as possible...

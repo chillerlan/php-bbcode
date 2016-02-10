@@ -13,7 +13,6 @@
 namespace chillerlan\bbcode\Modules\Html5;
 
 use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
  * Transforms image tags into HTML5
