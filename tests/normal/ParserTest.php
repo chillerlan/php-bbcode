@@ -12,10 +12,15 @@
 namespace chillerlan\BBCodeTest\normal;
 
 use chillerlan\bbcode\Parser;
+use chillerlan\bbcode\ParserOptions;
 use ReflectionClass;
 
 class ParserTest extends \PHPUnit_Framework_TestCase{
 
+	/**
+	 * @var \chillerlan\bbcode\Parser
+	 */
+	protected $parser;
 	/**
 	 * @var \ReflectionClass
 	 */
@@ -26,8 +31,25 @@ class ParserTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testInstance(){
-		$this->assertInstanceOf(Parser::class, $this->reflectionClass->newInstance());
+		$this->parser = $this->reflectionClass->newInstance();
+		$this->assertInstanceOf(Parser::class, $this->parser);
 	}
 
+	public function testGetAllowed(){
+		$options = new ParserOptions;
+		$options->allowed_tags = ['noparse','code','img'];
+
+		$method = $this->reflectionClass->getMethod('getAllowed');
+		$this->parser = $this->reflectionClass->newInstanceArgs([$options]);
+		$this->assertEquals(['code','img','noparse'], $method->invoke($this->parser));
+	}
+
+	public function testGetNoparse(){
+		$noparse_tags = ['code','css','html','js','json','noparse','nsis','php','pre','sql','xml'];
+
+		$method = $this->reflectionClass->getMethod('getNoparse');
+		$this->parser = $this->reflectionClass->newInstance();
+		$this->assertEquals($noparse_tags, $method->invoke($this->parser));
+	}
 
 }
