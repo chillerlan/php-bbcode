@@ -34,6 +34,13 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 class Parser{
 
 	/**
+	 * Holds the preparsed BBCode
+	 *
+	 * @var string
+	 */
+	public $bbcode_pre;
+
+	/**
 	 * Holds the parser options
 	 *
 	 * @var \chillerlan\bbcode\ParserOptions
@@ -248,6 +255,7 @@ class Parser{
 
 		$bbcode = $this->_parser_extension->pre($bbcode);
 		// todo: change/move potentially closed singletags before -> base module
+		$this->bbcode_pre = $bbcode;
 		$bbcode = preg_replace('#\[('.$this->options->singletags.')((?:\s|=)[^]]*)?]#is', '[$1$2][/$1]', $bbcode);
 		$bbcode = str_replace(["\r", "\n"], ['', $this->options->eol_placeholder], $bbcode);
 		$bbcode = $this->_parse($bbcode);
