@@ -6,7 +6,7 @@ php:
 
 install: travis_retry composer install --no-interaction --prefer-source
 
-script: vendor/bin/phpunit --configuration phpunit.xml --coverage-clover clover.xml --whitelist src
+script: vendor/bin/phpunit --configuration phpunit.xml tests --coverage-clover clover.xml --whitelist src
 
 before_script: phpenv config-add travis-php.ini
 
