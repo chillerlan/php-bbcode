@@ -336,7 +336,6 @@ class Parser{
 	 */
 	protected function _get_attributes($attributes){
 		$attr = [];
-		$preg_error = PREG_NO_ERROR;
 		$pattern = '#(?<name>^|\w+)\=(\'?)(?<value>[^\']*?)\2(?: |$)#';
 
 		if(preg_match_all($pattern, $attributes, $matches, PREG_SET_ORDER) > 0){
@@ -349,6 +348,8 @@ class Parser{
 				$attr[$name] = $value;
 			}
 		}
+
+		$preg_error = preg_last_error();
 
 		if($preg_error !== PREG_NO_ERROR){
 			throw new BBCodeException('preg_match_all() died due to a '.$this->preg_error[$preg_error]
