@@ -1,0 +1,18 @@
+[js]
+(function(){
+	document.observe('dom:loaded', function(){
+		// open/close expanders
+		$$('.expander').invoke('observe', 'click', function(){
+			Effect.toggle(this.dataset.id, 'blind');
+		});
+
+		// force external links to open in a new window
+		$$('.ext-href').invoke('observe', 'click', function(ev){
+			Event.stop(ev);
+			window.open(this.readAttribute('href'));
+		});
+
+		// yada yada yada
+	});
+})()
+[/js]

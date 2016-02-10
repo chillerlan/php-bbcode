@@ -1,0 +1,18 @@
+<div data-id="abcdef12"  class="expander code-header js">JavaScript</div><pre id="abcdef12" class="code-body" style="display:block"><code class="language-js">
+(function(){
+	document.observe('dom:loaded', function(){
+		// open/close expanders
+		$$('.expander').invoke('observe', 'click', function(){
+			Effect.toggle(this.dataset.id, 'blind');
+		});
+
+		// force external links to open in a new window
+		$$('.ext-href').invoke('observe', 'click', function(ev){
+			Event.stop(ev);
+			window.open(this.readAttribute('href'));
+		});
+
+		// yada yada yada
+	});
+})()
+</code></pre>
