@@ -16,6 +16,14 @@ use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 
+/**
+ * Class BBCodeTagTest
+ *
+ * @link https://github.com/travis-ci/travis-ci/issues/4593
+ * @link https://github.com/travis-ci/travis-ci/issues/5039
+ * @link https://github.com/travis-ci/travis-ci/issues/5323
+ * @link https://github.com/travis-ci/travis-ci/issues/5332
+ */
 class BBCodeTagTest extends \PHPUnit_Framework_TestCase{
 
 	/**

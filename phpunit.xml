@@ -18,6 +18,10 @@
     <testsuites>
         <testsuite name="bbcode test suite">
             <directory suffix=".php">./tests/</directory>
-        </testsuite>
+			<file phpVersion="7.0.0" phpVersionOperator=">=">./tests/ParserPregJitTest.php</file>
+			<exclude>
+				<file>./tests/Modules/HTML5Test.php</file>
+			</exclude>
+		</testsuite>
     </testsuites>
 </phpunit>
