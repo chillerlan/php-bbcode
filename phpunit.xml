@@ -17,10 +17,10 @@
     </filter>
     <testsuites>
         <testsuite name="bbcode test suite">
-            <directory suffix=".php">./tests/</directory>
-			<file phpVersion="7.0.0" phpVersionOperator=">=">./tests/ParserPregJitTest.php</file>
+			<directory suffix=".php">./tests/normal</directory>
+			<directory suffix=".php" phpVersion="7.0.0" phpVersionOperator=">=">./tests/php7</directory>
 			<exclude>
-				<file>./tests/Modules/HTML5Test.php</file>
+				<directory suffix=".php">./tests/critical</directory>
 			</exclude>
 		</testsuite>
     </testsuites>

@@ -9,7 +9,7 @@
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest;
+namespace chillerlan\BBCodeTest\normal;
 
 use chillerlan\bbcode\Parser;
 use ReflectionClass;
