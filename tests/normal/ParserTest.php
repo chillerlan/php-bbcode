@@ -14,6 +14,7 @@ namespace chillerlan\BBCodeTest\normal;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 use ReflectionClass;
+use stdClass;
 
 class ParserTest extends \PHPUnit_Framework_TestCase{
 
@@ -50,6 +51,17 @@ class ParserTest extends \PHPUnit_Framework_TestCase{
 		$method = $this->reflectionClass->getMethod('getNoparse');
 		$this->parser = $this->reflectionClass->newInstance();
 		$this->assertEquals($noparse_tags, $method->invoke($this->parser));
+	}
+
+	/**
+	 * @expectedException \chillerlan\BBCode\BBCodeException
+	 * @expectedExceptionMessage stdClass does not implement chillerlan\bbcode\Modules\BaseModuleInterface
+	 */
+	public function testClassLoaderException(){
+		$options = new ParserOptions;
+		$options->base_module = stdClass::class;
+
+		$this->parser = $this->reflectionClass->newInstanceArgs([$options]);
 	}
 
 }
