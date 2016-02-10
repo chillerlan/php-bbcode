@@ -17,6 +17,7 @@ namespace chillerlan\bbcode;
 
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\ModuleInterface;
+use ReflectionClass;
 
 /**
  * Regexp BBCode parser
@@ -130,25 +131,25 @@ class Parser{
 	/**
 	 * A simple class loader
 	 *
-	 * @param string $class  class FQCN
-	 * @param string $type   type/interface/inheritor FQCN
+	 * @param string $class     FQCN
+	 * @param string $interface FQCN
 	 *
-	 * @param mixed  $params [optional] the following arguments are optional and will be passed to the class constructor if present.
+	 * @param mixed  $params    [optional] the following arguments are optional and will be passed to the class constructor if present.
 	 *
 	 * @link https://github.com/chillerlan/framework/blob/master/src/Core/Traits/ClassLoaderTrait.php
 	 *
 	 * @return object of type $interface
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	private function __loadClass($class, $type, ...$params){ // phpDocumentor stumbles across the ... syntax
+	private function __loadClass($class, $interface, ...$params){ // phpDocumentor stumbles across the ... syntax
 		if(class_exists($class)){
-			$object = new $class(...$params);
+			$reflectionClass = new ReflectionClass($class);
 
-			if(!is_a($object, $type)){
-				throw new BBCodeException(get_class($object).' does not implement or inherit '.$type);
+			if(!$reflectionClass->implementsInterface($interface)){
+				throw new BBCodeException($class.' does not implement '.$interface);
 			}
 
-			return $object;
+			return $reflectionClass->newInstanceArgs($params);
 		}
 
 		throw new BBCodeException($class.' does not exist');
@@ -294,8 +295,10 @@ class Parser{
 
 		// still testing...
 		if($preg_error !== PREG_NO_ERROR){
+			// @codeCoverageIgnoreStart
 			throw new BBCodeException('preg_replace_callback() died on ['.$tag.'] due to a '.$this->preg_error[$preg_error]
-					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true))); // @codeCoverageIgnore
+					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true)));
+			// @codeCoverageIgnoreEnd
 		}
 
 		if($callback && isset($this->tagmap[$tag]) && in_array($tag, $this->allowed_tags)){
@@ -341,8 +344,10 @@ class Parser{
 		$preg_error = preg_last_error();
 
 		if($preg_error !== PREG_NO_ERROR){
+			// @codeCoverageIgnoreStart
 			throw new BBCodeException('preg_match_all() died due to a '.$this->preg_error[$preg_error]
-					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($attributes, true)));  // @codeCoverageIgnore
+					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($attributes, true)));
+			// @codeCoverageIgnoreEnd
 		}
 
 		return $attr;
