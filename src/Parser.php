@@ -120,7 +120,7 @@ class Parser{
 	 * @param \chillerlan\bbcode\ParserOptions $options [optional]
 	 */
 	public function __construct(ParserOptions $options = null){
-		$this->set_options(!$options ? new ParserOptions : $options);
+		$this->setOptions(!$options ? new ParserOptions : $options);
 		$this->_bbtemp = new BBTemp;
 	}
 
@@ -159,7 +159,7 @@ class Parser{
 	 *
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function set_options($options){
+	public function setOptions($options){
 		if(!is_a($options, ParserOptions::class)){
 			throw new BBCodeException('Invalid options!');
 		}
@@ -209,7 +209,7 @@ class Parser{
 	 *
 	 * @return array
 	 */
-	public function get_tagmap(){
+	public function getTagmap(){
 		ksort($this->tagmap);
 		return $this->tagmap;
 	}
@@ -219,7 +219,7 @@ class Parser{
 	 *
 	 * @return array
 	 */
-	public function get_allowed(){
+	public function getAllowed(){
 		sort($this->allowed_tags);
 		return $this->allowed_tags;
 	}
@@ -229,7 +229,7 @@ class Parser{
 	 *
 	 * @return array
 	 */
-	public function get_noparse(){
+	public function getNoparse(){
 		sort($this->noparse_tags);
 		return $this->noparse_tags;
 	}
