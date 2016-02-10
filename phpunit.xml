@@ -19,9 +19,9 @@
         <testsuite name="bbcode test suite">
 			<directory suffix=".php">./tests/normal</directory>
 			<directory suffix=".php" phpVersion="7.0.0" phpVersionOperator=">=">./tests/php7</directory>
-			<!--<exclude>
+			<exclude>
 				<directory suffix=".php">./tests/critical</directory>
-			</exclude>-->
+			</exclude>
 		</testsuite>
     </testsuites>
 </phpunit>
