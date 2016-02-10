@@ -6,8 +6,10 @@ php:
 
 install: travis_retry composer install --no-interaction --prefer-source
 
-script: vendor/bin/phpunit tests --coverage-clover clover.xml --whitelist src
+script: phpdbg -qrr vendor/bin/phpunit tests --coverage-clover clover.xml --whitelist src
 
-before_script: phpenv config-add travis-php.ini
+before_script:
+  - phpenv config-rm xdebug.ini
+  - phpenv config-add travis-php.ini
 
 after_script: bash <(curl -s https://codecov.io/bash)
