@@ -13,7 +13,6 @@
 namespace chillerlan\bbcode\Modules\Markdown;
 
 use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\bbcode\Modules\Markdown\MarkdownBaseModule;
 
 /**
  * Transforms several simple text tags into Markdown

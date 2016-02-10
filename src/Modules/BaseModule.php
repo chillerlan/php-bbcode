@@ -12,11 +12,8 @@
 
 namespace chillerlan\bbcode\Modules;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\BBCodeException;
-use chillerlan\bbcode\Modules\BaseModuleInfo;
-use chillerlan\bbcode\Modules\BaseModuleInterface;
-use chillerlan\bbcode\Modules\Tagmap;
+use chillerlan\bbcode\BBTemp;
 
 /**
  * The base module implements the basic functionality for each module

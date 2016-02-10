@@ -14,7 +14,6 @@ namespace chillerlan\bbcode\Modules\Markdown;
 
 use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\bbcode\Modules\Markdown\MarkdownBaseModule;
 
 /**
  * Transforms noparse tags into Markdown

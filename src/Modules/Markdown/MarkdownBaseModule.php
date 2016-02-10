@@ -14,13 +14,6 @@ namespace chillerlan\bbcode\Modules\Markdown;
 
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
-use chillerlan\bbcode\Modules\Markdown\Code;
-use chillerlan\bbcode\Modules\Markdown\Headers;
-use chillerlan\bbcode\Modules\Markdown\Images;
-use chillerlan\bbcode\Modules\Markdown\Links;
-use chillerlan\bbcode\Modules\Markdown\Noparse;
-use chillerlan\bbcode\Modules\Markdown\Singletags;
-use chillerlan\bbcode\Modules\Markdown\StyledText;
 
 /**
  * The base module implements the basic functionality for each module (GitHub flavoured Markdown)

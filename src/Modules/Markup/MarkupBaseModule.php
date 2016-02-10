@@ -12,7 +12,6 @@
 
 namespace chillerlan\bbcode\Modules\Markup;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 

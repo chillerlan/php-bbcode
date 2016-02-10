@@ -13,7 +13,6 @@
 namespace chillerlan\bbcode;
 
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
-use chillerlan\bbcode\ParserExtension;
 
 /**
  * Holds the user defined options

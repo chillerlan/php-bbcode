@@ -12,7 +12,6 @@
 
 namespace chillerlan\bbcode\Modules\Text;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 

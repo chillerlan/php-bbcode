@@ -12,9 +12,6 @@
 
 namespace chillerlan\bbcode;
 
-use chillerlan\bbcode\ParserExtensionInterface;
-use chillerlan\bbcode\ParserOptions;
-
 /**
  * An empty parser extension as ground to start from
  */
