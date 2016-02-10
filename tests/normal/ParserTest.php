@@ -57,9 +57,20 @@ class ParserTest extends \PHPUnit_Framework_TestCase{
 	 * @expectedException \chillerlan\BBCode\BBCodeException
 	 * @expectedExceptionMessage stdClass does not implement chillerlan\bbcode\Modules\BaseModuleInterface
 	 */
-	public function testClassLoaderException(){
+	public function testClassLoaderDoesNotImplementException(){
 		$options = new ParserOptions;
 		$options->base_module = stdClass::class;
+
+		$this->parser = $this->reflectionClass->newInstanceArgs([$options]);
+	}
+
+	/**
+	 * @expectedException \chillerlan\BBCode\BBCodeException
+	 * @expectedExceptionMessage foobar does not exist
+	 */
+	public function testClassLoaderDoesNotExistException(){
+		$options = new ParserOptions;
+		$options->base_module = 'foobar';
 
 		$this->parser = $this->reflectionClass->newInstanceArgs([$options]);
 	}
