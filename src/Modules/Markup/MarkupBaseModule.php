@@ -135,7 +135,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 * @return string usable as (X)HTML/XML class attribute
 	 */
 	protected function get_css_class($additional_classes = ''){
-		$classes = $this->get_attribute('class', '').' '.$additional_classes;
+		$classes = $this->getAttribute('class', '').' '.$additional_classes;
 		$classes = trim(preg_replace('/[^a-z\d\- ]/i', '', $classes));
 
 		return !empty($classes) ? ' class="'.$classes.'"' : '';
@@ -150,7 +150,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 * @return string usable as (X)HTML/XML title attribute
 	 */
 	protected function get_title($title = ''){
-		$title = $this->get_attribute('title', $title);
+		$title = $this->getAttribute('title', $title);
 
 		// todo: filter
 

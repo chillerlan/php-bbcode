@@ -26,14 +26,14 @@ interface BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function set_bbtemp(BBTemp $bbtemp);
+	public function setBBTemp(BBTemp $bbtemp);
 
 	/**
 	 * Returns a list of the BaseModule's modules
 	 *
 	 * @return \chillerlan\bbcode\Modules\BaseModuleInfo
 	 */
-	public function get_info();
+	public function getInfo();
 
 	/**
 	 * Returns an array of tags which the module is able to process
@@ -41,7 +41,7 @@ interface BaseModuleInterface{
 	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	public function get_tags();
+	public function getTags();
 
 	/**
 	 * Checks if the module supports the current tag
@@ -49,7 +49,7 @@ interface BaseModuleInterface{
 	 * @return $this
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function check_tag();
+	public function checkTag();
 
 	/**
 	 * Replaces the EOL placeholder in the given string with a custom token
@@ -69,14 +69,14 @@ interface BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function clear_eol($eol = '');
+	public function clearEol($eol = '');
 
 	/**
 	 * Clears all pseudo closing single tag bbcodes like [/br]
 	 *
 	 * @return $this
 	 */
-	public function clear_pseudo_closing_tags();
+	public function clearPseudoClosingTags();
 
 	/**
 	 * Retrieves an attribute's value by it's name
@@ -86,7 +86,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return mixed the attribute's value in case it exists, otherwise $default
 	 */
-	public function get_attribute($name, $default = false);
+	public function getAttribute($name, $default = false);
 
 	/**
 	 * Retrieves an attribute's value by it's name and checks if it's whitelisted
@@ -97,7 +97,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the attribute's value in case it exists or $default
 	 */
-	public function attribute_in($name, array $whitelist, $default = false);
+	public function attributeIn($name, array $whitelist, $default = false);
 
 	/**
 	 * Checks if an attribute exists and if it exists as key in a whitelist
@@ -108,7 +108,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the whitelist value to the given key in case it exists or $default
 	 */
-	public function attribute_key_in($name, array $whitelist, $default = false);
+	public function attributeKeyIn($name, array $whitelist, $default = false);
 
 	/**
 	 * Checks if the current tag is whitelisted
@@ -118,7 +118,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the whitelisted tag or $default
 	 */
-	public function tag_in(array $whitelist, $default = false);
+	public function tagIn(array $whitelist, $default = false);
 
 	/**
 	 * Sanitizes the content to prevent vulnerabilities or compatibility problems
@@ -145,7 +145,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return bool|string the url if valid, otherwise false
 	 */
-	public function check_url($url);
+	public function checkUrl($url);
 
 	/**
 	 * Wraps the given content between the wrapper. Obvious, eh?

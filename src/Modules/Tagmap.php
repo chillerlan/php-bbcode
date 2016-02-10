@@ -15,7 +15,7 @@ namespace chillerlan\bbcode\Modules;
 /**
  * Holds the tags which a module is able to process
  *
- * @see \chillerlan\bbcode\Modules\BaseModuleInterface::get_tags()
+ * @see \chillerlan\bbcode\Modules\BaseModuleInterface::getTags()
  */
 class Tagmap{
 

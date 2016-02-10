@@ -34,13 +34,13 @@ class Images extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 
-		if(!$url = $this->check_url($this->content)){
+		if(!$url = $this->checkUrl($this->content)){
 			return '';
 		}
 
-		$alt = $this->get_attribute('alt');
+		$alt = $this->getAttribute('alt');
 
 		return '<img src="'.$url.'" '.($alt ? 'alt="'.$alt.'"' : 'alt').$this->get_title().$this->get_css_class('bb-image').' />';
 	}

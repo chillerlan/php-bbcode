@@ -56,7 +56,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 		if(empty($this->content)){
 			return '';
 		}
@@ -73,23 +73,23 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 * Processes [quote]
 	 */
 	private function quote(){
-		// todo: $timestamp = $this->get_attribute('timestamp');
-		$name = $this->get_attribute('name');
+		// todo: $timestamp = $this->getAttribute('timestamp');
+		$name = $this->getAttribute('name');
 		$header = $name ? ': '.$name : '';
 
-		$url = $this->check_url($this->get_attribute('url'));
+		$url = $this->checkUrl($this->getAttribute('url'));
 		$header .= $url ? ' <small>[<a href="'.$url.'">source</a>]<small>' : '';
 
 		$this->_class = 'quote';
 		$this->_header = 'Quote'.$header;
-		$this->_hide = $this->get_attribute('hide') ? 'none' : 'block';
+		$this->_hide = $this->getAttribute('hide') ? 'none' : 'block';
 	}
 
 	/**
 	 * Processes [spoiler]
 	 */
 	private function spoiler(){
-		$desc = $this->get_attribute('desc');
+		$desc = $this->getAttribute('desc');
 
 		$this->_class = 'spoiler';
 		$this->_header = 'Spoiler'.($desc ? ': <span>'.$desc.'</span>' : '');
@@ -102,7 +102,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	private function expander(){
 		$this->_class = 'expander';
 		$this->_header = 'Expander';
-		$this->_hide = $this->get_attribute('hide') ? 'none' : 'block';
+		$this->_hide = $this->getAttribute('hide') ? 'none' : 'block';
 	}
 
 	/**

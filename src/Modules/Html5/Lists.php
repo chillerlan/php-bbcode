@@ -65,18 +65,18 @@ class Lists extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 		if(empty($this->content)){
 			return '';
 		}
 
 		$start = $this->bbtag();
-		$start = is_numeric($start) && $this->attribute_in('type', $this->ol) ? ' start="'.ceil($start).'"' : '';
+		$start = is_numeric($start) && $this->attributeIn('type', $this->ol) ? ' start="'.ceil($start).'"' : '';
 
-		$list_tag = count($this->attributes) === 0 || $this->attribute_in('type', $this->ul) ? 'ul' : 'ol';
-		$reversed = $this->get_attribute('reverse') && $this->attribute_in('type', $this->ol) ? ' reversed="true"' : '';
+		$list_tag = count($this->attributes) === 0 || $this->attributeIn('type', $this->ul) ? 'ul' : 'ol';
+		$reversed = $this->getAttribute('reverse') && $this->attributeIn('type', $this->ol) ? ' reversed="true"' : '';
 
-		$this->_style = ['list-style-type' => $this->attribute_key_in('type', $this->types, 'disc')];
+		$this->_style = ['list-style-type' => $this->attributeKeyIn('type', $this->types, 'disc')];
 
 		return '<'.$list_tag.$start.$reversed.$this->get_title().$this->get_css_class().$this->get_style().'>'
 		.'<li>'.implode(array_slice(explode('[*]', $this->content), true), '</li><li>').'</li>' // nasty

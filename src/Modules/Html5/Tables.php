@@ -44,13 +44,13 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 		$this->_style = [];
 
 		switch(true){
-			case $this->tag_in(['tr', 'thead', 'tbody', 'tfoot']):
+			case $this->tagIn(['tr', 'thead', 'tbody', 'tfoot']):
 				return $this->rows();
-			case $this->tag_in(['td', 'th']):
+			case $this->tagIn(['td', 'th']):
 				return $this->cells();
 			default:
 				return call_user_func([$this, $this->tag]);
@@ -68,7 +68,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 		}
 
 		$this->_style = [
-			'width' => $this->get_attribute('width'),
+			'width' => $this->getAttribute('width'),
 		];
 
 		return '<table'.$this->get_css_class('bb-table').$this->get_style().'>'.$this->eol($this->content).'</table>';
@@ -80,7 +80,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @return string
 	 */
 	private function col(){
-		$span = $this->get_attribute('span');
+		$span = $this->getAttribute('span');
 
 		return '<col'.($span ? ' span="'.intval($span).'"' : '').$this->get_css_class().' />';
 	}
@@ -91,7 +91,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @return string
 	 */
 	private function colgroup(){
-		$span = $this->get_attribute('span');
+		$span = $this->getAttribute('span');
 
 		return '<colgroup'.($span ? ' span="'.intval($span).'"' : '').$this->get_css_class().'>'.$this->eol($this->content).'</colgroup>';
 	}
@@ -121,33 +121,33 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 */
 	private function cells(){
 
-		$align = $this->get_attribute('align');
+		$align = $this->getAttribute('align');
 		if($align && in_array($align, $this->_text_align)){
 			$this->_style['text-align'] = $align;
 		}
 
-		$valign = $this->get_attribute('valign');
+		$valign = $this->getAttribute('valign');
 		if($valign && in_array($valign, ['baseline', 'bottom', 'middle', 'top'])){
 			$this->_style['vertical-align'] = $valign;
 		}
 
-		if($width = $this->get_attribute('width')){
+		if($width = $this->getAttribute('width')){
 			$this->_style['width'] = $width;
 		}
 
-		if($this->get_attribute('nowrap')){
+		if($this->getAttribute('nowrap')){
 			$this->_style['white-space'] = 'nowrap';
 		}
 
 		$span = '';
 		foreach(['colspan', 'rowspan'] as $s){
-			$_span = $this->get_attribute($s);
+			$_span = $this->getAttribute($s);
 			$span .=  $_span ? ' '.$s.'="'.intval($_span).'"' : '';
 		}
 
 		$abbr  = '';
 		if($this->tag === 'th'){
-			$_abbr = $this->get_attribute('abbr');
+			$_abbr = $this->getAttribute('abbr');
 			$abbr = $_abbr ? ' abbr="'.$_abbr.'"' : '';
 		}
 

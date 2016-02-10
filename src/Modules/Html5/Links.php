@@ -34,8 +34,8 @@ class Links extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
-		$url = $this->check_url($this->bbtag() ? : $this->content);
+	public function __transform(){
+		$url = $this->checkUrl($this->bbtag() ? : $this->content);
 
 		$host = parse_url($url, PHP_URL_HOST);
 		$target = !empty($host) && (isset($_SERVER['SERVER_NAME']) && $host === $_SERVER['SERVER_NAME']) || empty($host) ? 'self' : 'blank';

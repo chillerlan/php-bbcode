@@ -107,13 +107,13 @@ class BaseModule implements BaseModuleInterface{
 	/**
 	 * Constructor
 	 *
-	 * calls self::set_bbtemp() in case $bbtemp is set
+	 * calls self::setBBTemp() in case $bbtemp is set
 	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
 	public function __construct(BBTemp $bbtemp = null){
 		if($bbtemp instanceof BBTemp){
-			$this->set_bbtemp($bbtemp);
+			$this->setBBTemp($bbtemp);
 		}
 	}
 
@@ -124,7 +124,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function set_bbtemp(BBTemp $bbtemp){
+	public function setBBTemp(BBTemp $bbtemp){
 		foreach(['tag', 'attributes', 'content', 'options', 'depth'] as $var){
 			$this->{$var} = $bbtemp->{$var};
 		}
@@ -137,7 +137,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return \chillerlan\bbcode\Modules\BaseModuleInfo
 	 */
-	public function get_info(){
+	public function getInfo(){
 		$info = new BaseModuleInfo;
 		foreach(['modules', 'eol_token'] as $option){
 			$info->{$option} = $this->{$option};
@@ -152,7 +152,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	public function get_tags(){
+	public function getTags(){
 		$tags = new Tagmap;
 		$tags->tags = $this->tags;
 		$tags->noparse_tags = $this->noparse_tags;
@@ -166,7 +166,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return $this
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function check_tag(){
+	public function checkTag(){
 		if(!$this->tag || !in_array($this->tag, $this->tags)){
 			throw new BBCodeException('tag ['.$this->tag.'] not supported.');
 		}
@@ -194,7 +194,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function clear_eol($eol = null){
+	public function clearEol($eol = null){
 		$eol = $eol ?: $this->eol_token;
 		$this->content = str_replace($this->options->eol_placeholder, $eol, $this->content);
 
@@ -206,7 +206,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function clear_pseudo_closing_tags(){
+	public function clearPseudoClosingTags(){
 		$this->content = preg_replace('#\[/('.$this->options->singletags.')]#is', '', $this->content);
 
 		return $this;
@@ -220,7 +220,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return mixed the attribute's value in case it exists, otherwise $default
 	 */
-	public function get_attribute($name, $default = false){
+	public function getAttribute($name, $default = false){
 		return isset($this->attributes[$name]) && !empty($this->attributes[$name]) ? $this->attributes[$name] : $default;
 	}
 
@@ -233,7 +233,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the attribute's value in case it exists and is whitelisted or $default
 	 */
-	public function attribute_in($name, array $whitelist, $default = false){
+	public function attributeIn($name, array $whitelist, $default = false){
 		return isset($this->attributes[$name]) && in_array($this->attributes[$name], $whitelist)
 			? $default !== false ? $this->attributes[$name] : true
 			: $default;
@@ -248,7 +248,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the whitelist value to the given key in case it exists or $default
 	 */
-	public function attribute_key_in($name, array $whitelist, $default = false){
+	public function attributeKeyIn($name, array $whitelist, $default = false){
 		return isset($this->attributes[$name]) && array_key_exists($this->attributes[$name], $whitelist)
 				? $default !== false ? $whitelist[$this->attributes[$name]] : true
 				: $default;
@@ -262,7 +262,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the whitelisted tag or $default
 	 */
-	public function tag_in(array $whitelist, $default = false){
+	public function tagIn(array $whitelist, $default = false){
 		return in_array($this->tag, $whitelist)
 				? $default !== false ? $this->tag : true
 				: $default;
@@ -287,25 +287,25 @@ class BaseModule implements BaseModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface::transform()
 	 */
 	public function transform(){
-		$this->check_tag();
+		$this->checkTag();
 
 		/** @var $this \chillerlan\bbcode\Modules\ModuleInterface */
-		return $this->_transform();
+		return $this->__transform();
 	}
 
 	/**
-	 * shorthand for self::get_attribute('__BBTAG__')
+	 * shorthand for self::getAttribute('__BBTAG__')
 	 *
 	 * @param mixed $default
 	 *
 	 * @return mixed $this->attributes['__BBTAG__']
 	 */
 	protected function bbtag($default = false){
-		return $this->get_attribute($this->options->bbtag_placeholder, $default);
+		return $this->getAttribute($this->options->bbtag_placeholder, $default);
 	}
 
 	/**
-	 * shorthand for self::attribute_in('__BBTAG__', $array)
+	 * shorthand for self::attributeIn('__BBTAG__', $array)
 	 *
 	 * @param array $array
 	 * @param mixed $default
@@ -313,7 +313,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return mixed
 	 */
 	protected function bbtag_in(array $array, $default = false){
-		return $this->attribute_in($this->options->bbtag_placeholder, $array, $default);
+		return $this->attributeIn($this->options->bbtag_placeholder, $array, $default);
 	}
 
 	/**
@@ -323,7 +323,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return bool|string the url if valid, otherwise false
 	 */
-	public function check_url($url){
+	public function checkUrl($url){
 		if(filter_var($url, FILTER_VALIDATE_URL) === false){
 			return false;
 		}

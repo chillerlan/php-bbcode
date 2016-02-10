@@ -31,7 +31,7 @@ class Noparse extends Html5BaseModule implements ModuleInterface{
 	/**
 	 * Constructor
 	 *
-	 * calls self::set_bbtemp() in case $bbtemp is set
+	 * calls self::setBBTemp() in case $bbtemp is set
 	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
@@ -50,14 +50,14 @@ class Noparse extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 		if(empty($this->content)){
 			return '';
 		}
 
 		// easy stuff: remove the pseudo closing single tags
-		$this->clear_pseudo_closing_tags()
-		     ->clear_eol(PHP_EOL);
+		$this->clearPseudoClosingTags()
+		     ->clearEol(PHP_EOL);
 
 		// todo: <pre>?
 		return '<pre class="bbcode noparse">'.$this->content.'</pre>';

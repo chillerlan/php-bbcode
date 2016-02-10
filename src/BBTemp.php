@@ -18,7 +18,7 @@ namespace chillerlan\bbcode;
  * @todo rename?
  *
  * @see \chillerlan\bbcode\Parser::__parse()
- * @see \chillerlan\bbcode\Modules\BaseModule::set_bbtemp()
+ * @see \chillerlan\bbcode\Modules\BaseModule::setBBTemp()
  */
 class BBTemp{
 

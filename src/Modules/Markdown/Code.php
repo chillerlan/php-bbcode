@@ -32,7 +32,7 @@ class Code extends MarkdownBaseModule implements ModuleInterface{
 	/**
 	 * Constructor
 	 *
-	 * calls self::set_bbtemp() in case $bbtemp is set
+	 * calls self::setBBTemp() in case $bbtemp is set
 	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
@@ -51,13 +51,13 @@ class Code extends MarkdownBaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 		if(empty($this->content)){
 			return '';
 		}
 
-		$this->clear_pseudo_closing_tags()
-		     ->clear_eol(PHP_EOL);
+		$this->clearPseudoClosingTags()
+		     ->clearEol(PHP_EOL);
 
 		$exceptions = [
 			'js'   => 'javascript',

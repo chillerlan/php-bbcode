@@ -15,7 +15,7 @@ namespace chillerlan\bbcode\Modules;
 /**
  * Holds the current base module's capabilities info
  *
- * @see \chillerlan\bbcode\Modules\BaseModule::get_info()
+ * @see \chillerlan\bbcode\Modules\BaseModule::getInfo()
  */
 class BaseModuleInfo{
 

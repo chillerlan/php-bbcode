@@ -174,12 +174,12 @@ class Parser{
 				$this->__loadClass($this->parserOptions->parser_extension, ParserExtensionInterface::class, $this->parserOptions);
 		}
 
-		$module_info = $this->baseModuleInterface->get_info();
+		$module_info = $this->baseModuleInterface->getInfo();
 		$singletags = [];
 		foreach($module_info->modules as $module){
 			$this->module = $this->__loadClass($module, ModuleInterface::class);
 
-			$tagmap = $this->module->get_tags();
+			$tagmap = $this->module->getTags();
 			foreach($tagmap->tags as $tag){
 				$this->tagmap[$tag] = $module;
 			}
@@ -310,7 +310,7 @@ class Parser{
 			$this->BBTemp->depth      = $callback_count;
 
 			$this->module = $this->modules[$this->tagmap[$tag]];
-			$this->module->set_bbtemp($this->BBTemp);
+			$this->module->setBBTemp($this->BBTemp);
 			$content = $this->module->transform();
 		}
 

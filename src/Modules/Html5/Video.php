@@ -62,8 +62,8 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
-		$this->_flash = $this->get_attribute('flash');
+	public function __transform(){
+		$this->_flash = $this->getAttribute('flash');
 		$provider = $this->_get_provider();
 		call_user_func([$this, $provider]);
 

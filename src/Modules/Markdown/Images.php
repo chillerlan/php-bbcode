@@ -35,13 +35,13 @@ class Images extends MarkdownBaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 
-		if(empty($this->content) || !$this->check_url($this->content)){
+		if(empty($this->content) || !$this->checkUrl($this->content)){
 			return '';
 		}
 
-		$alt = $this->get_attribute('alt', 'image');
+		$alt = $this->getAttribute('alt', 'image');
 
 		return '!['.$alt.']('.$this->content.')';
 	}

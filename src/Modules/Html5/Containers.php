@@ -35,16 +35,16 @@ class Containers extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 		if(empty($this->content)){
 			return '';
 		}
 
-		$tag = $this->tag_in(['p', 'div'], 'p');
+		$tag = $this->tagIn(['p', 'div'], 'p');
 
-		$align = $this->tag_in($this->_text_align, '');
+		$align = $this->tagIn($this->_text_align, '');
 		if(!$align){
-			$align = $this->attribute_in('align', $this->_text_align, 'left');
+			$align = $this->attributeIn('align', $this->_text_align, 'left');
 		}
 
 		$this->_style = [

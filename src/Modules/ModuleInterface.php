@@ -26,7 +26,7 @@ interface ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform();
+	public function __transform();
 
 	/**
 	 * Checks the tag and returns the processed bbcode, called from the parser
@@ -42,22 +42,22 @@ interface ModuleInterface{
 	 * Sets self::$tag, self::$attributes, self::$content and self::$options
 	 *
 	 * This method is implemented in BaseModuleInterface, no need to overide it.
-	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::set_bbtemp()
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::setBBTemp()
 	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 *
 	 * @return $this
 	 */
-	public function set_bbtemp(BBTemp $bbtemp);
+	public function setBBTemp(BBTemp $bbtemp);
 
 	/**
 	 * Returns an array of tags which the module is able to process
 	 *
 	 * This method is implemented in BaseModuleInterface, no need to overide it.
-	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::get_tags()
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::getTags()
 	 *
 	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 */
-	public function get_tags();
+	public function getTags();
 
 }

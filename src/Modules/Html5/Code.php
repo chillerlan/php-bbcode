@@ -31,7 +31,7 @@ class Code extends Html5BaseModule implements ModuleInterface{
 	/**
 	 * Constructor
 	 *
-	 * calls self::set_bbtemp() in case $bbtemp is set
+	 * calls self::setBBTemp() in case $bbtemp is set
 	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
@@ -50,19 +50,19 @@ class Code extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 		if(empty($this->content)){
 			return '';
 		}
 
-		$this->clear_pseudo_closing_tags()
-		     ->clear_eol(PHP_EOL);
+		$this->clearPseudoClosingTags()
+		     ->clearEol(PHP_EOL);
 
 		$id = $this->random_id();
-		$file = $this->get_attribute('file');
-		$desc = $this->get_attribute('desc');
+		$file = $this->getAttribute('file');
+		$desc = $this->getAttribute('desc');
 
-		$this->_style = ['display' => $this->get_attribute('hide') ? 'none' : 'block'];
+		$this->_style = ['display' => $this->getAttribute('hide') ? 'none' : 'block'];
 
 		/**
 		 * Map of code tag -> display name

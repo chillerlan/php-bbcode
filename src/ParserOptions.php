@@ -96,7 +96,7 @@ class ParserOptions{
 	 * @var string
 	 * @see \chillerlan\bbcode\Parser::__construct()
 	 * @see \chillerlan\bbcode\Parser::parse()
-	 * @see \chillerlan\bbcode\Modules\BaseModule::clear_pseudo_closing_tags()
+	 * @see \chillerlan\bbcode\Modules\BaseModule::clearPseudoClosingTags()
 	 * @internal
 	 */
 	public $singletags;
