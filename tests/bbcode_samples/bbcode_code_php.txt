@@ -1,382 +1,47 @@
 [php]
-<?php
 /**
+ * Class MyMySimpletext
  *
+ * @filesource   MyAwesomeModule.php
+ * @created      02.11.2015
+ * @package      Example\MyModules
+ * @author       Smiley <smiley@chillerlan.net>
+ * @copyright    2015 Smiley
+ * @license      MIT
  */
 
-// some settings
-$config['path_background'] = 'img/background/'; // trailing slash!
-$config['path_foreground'] = 'img/foreground/';
-$config['path_cache'] = 'img/cache/';
-$config['path_cacert'] = 'cert/cacert.pem';
-$config['image_error'] = 'img/404-quaggan.png'; // 256x256
+namespace Example\MyModules;
+
+use chillerlan\bbcode\Modules\ModuleInterface;
+use Example\MyModules\MyAwesomeBaseModule;
 
 /**
- * Matrix-multiply
- *
- * adapted from
- * @link http://sickel.net/blogg/?p=907
- *
- * @param $m1
- * @param $m2
- *
- * @return array|bool
+ * Transforms several simple text tags into HTML5 (custom)
  */
-function matrix_multiply($m1, $m2){
-	$r = count($m1);
-	$c = count($m2[0]);
-	$p = count($m2);
-	if(count($m1[0]) !== $p){
-		return false; //incompatible matrix
-	}
-	$m3 = [];
-	for($i = 0; $i < $r; $i++){
-		for($j = 0; $j < $c; $j++){
-			$m3[$i][$j] = 0;
-			for($k = 0; $k < $p; $k++){
-				$m3[$i][$j] += $m1[$i][$k]*$m2[$k][$j];
-			}
+class MyAwesomeModule extends MyAwesomeBaseModule implements ModuleInterface{
+
+	/**
+	 * An array of tags the module is able to process
+	 *
+	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
+	 */
+	protected $tags = ['mybbcode', 'somebbcode', 'whatever'];
+
+	/**
+	 * Transforms the bbcode, called from BaseModuleInterface
+	 *
+	 * @return string a transformed snippet
+	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
+	 * @internal
+	 */
+	public function _transform(){
+		if(empty($this->content)){
+			return '';
 		}
-	}
-	return ($m3);
-}
 
-/**
- * Color Matrix calculation
- *
- * An approach to get the correct RGB values from the GW2 color API as Cliff Spradlin described on the GW2 API forums.
- * The described function was split up in 2 functions to improve performance within long run loops e.g. image processing
- * as suggested by Dr Ishmael.
- *
- * @link https://forum-en.guildwars2.com/forum/community/api/How-To-Colors-API/2148826 Cliff's second description
- * @link https://forum-en.guildwars2.com/forum/community/api/API-Suggestion-Guilds/2155578 Dr Ishmael's suggestion
- *
- * @see  apply_color_transform()
- *
- * @param array $hslbc the content of the arrays [cloth,leather,metal] which are returned by the API
- *
- * @return array matrix for calculation in apply_color_transform()
- */
-function get_color_matrix($hslbc){
-	$h = ($hslbc['hue']*pi())/180;
-	$s = $hslbc['saturation'];
-	$l = $hslbc['lightness'];
-	$b = $hslbc['brightness']/128;
-	$c = $hslbc['contrast'];
-
-	// 4x4 identity matrix
-	$matrix = [
-		[1, 0, 0, 0],
-		[0, 1, 0, 0],
-		[0, 0, 1, 0],
-		[0, 0, 0, 1]
-	];
-
-	if($b !== 0 || $c !== 1){
-		// process brightness and contrast
-		$t = 128*(2*$b+1-$c);
-		$mult = [
-			[$c, 0, 0, $t],
-			[0, $c, 0, $t],
-			[0, 0, $c, $t],
-			[0, 0, 0, 1]
-		];
-		$matrix = matrix_multiply($mult, $matrix);
-	}
-
-	if($h !== 0 || $s !== 1 || $l !== 1){
-		// transform to HSL
-		$multRgbToHsl = [
-			[0.707107, 0, -0.707107, 0],
-			[-0.408248, 0.816497, -0.408248, 0],
-			[0.577350, 0.577350, 0.577350, 0],
-			[0, 0, 0, 1]
-		];
-		$matrix = matrix_multiply($multRgbToHsl, $matrix);
-
-		// process adjustments
-		$cosHue = cos($h);
-		$sinHue = sin($h);
-		$mult = [
-			[$cosHue*$s, $sinHue*$s, 0, 0],
-			[-$sinHue*$s, $cosHue*$s, 0, 0],
-			[0, 0, $l, 0],
-			[0, 0, 0, 1]
-		];
-		$matrix = matrix_multiply($mult, $matrix);
-
-		// transform back to RGB
-		$multHslToRgb = [
-			[0.707107, -0.408248, 0.577350, 0],
-			[0, 0.816497, 0.577350, 0],
-			[-0.707107, -0.408248, 0.577350, 0],
-			[0, 0, 0, 1]
-		];
-		$matrix = matrix_multiply($multHslToRgb, $matrix);
-	}
-
-	return $matrix;
-}
-
-/**
- * Apply color transform
- *
- * @param array $matrix the matrix returned by get_color_matrix()
- * @param array $base   the base color provided in the API response, or calculated for the emblem colors
- *
- * @return array calculated RGB values
- */
-function apply_color_transform($matrix, $base){
-	// apply the color transformation
-	$bgrVector = [
-		[$base[2]],
-		[$base[1]],
-		[$base[0]],
-		[1]
-	];
-	$matrix = matrix_multiply($matrix, $bgrVector);
-
-	// clamp the values
-	$rgb = [
-		floor(max(0, min(255, $matrix[2][0]))),
-		floor(max(0, min(255, $matrix[1][0]))),
-		floor(max(0, min(255, $matrix[0][0])))
-	];
-
-	return $rgb;
-}
-
-/**
- * Image hue calculation
- *
- * @author Moturdrn.2837
- * @link   https://gist.github.com/moturdrn/9d03a0cd4967828ac6cc
- *
- * @param resource $im  image
- * @param array    $col the [material] array from the color API response
- */
-function imagehue($im, $col){
-	$w = imagesx($im);
-	$h = imagesy($im);
-	$m = get_color_matrix($col);
-	for($x = 0; $x < $w; $x++){
-		for($y = 0; $y < $h; $y++){
-			$ci = imagecolorsforindex($im, imagecolorat($im, $x, $y));
-			if($ci['alpha'] < 127){
-				$rgb = apply_color_transform($m, [$ci['red'], $ci['green'], $ci['blue']]);
-				imagesetpixel($im, $x, $y, imagecolorallocatealpha($im, $rgb[0], $rgb[1], $rgb[2], $ci['alpha']));
-			}
-		}
-	}
-}
-
-/**
- * Based on the script by Moturdrn.2837
- * https://gist.github.com/moturdrn/9d03a0cd4967828ac6cc
- *
- * @param resource $img
- * @param bool     $vertical
- *
- * @return resource
- */
-function image_flip($img, $vertical = false){
-	$w = imagesx($img);
-	$h = imagesy($img);
-	$dest = imagecreatetruecolor($w, $h);
-	imagesavealpha($dest, true);
-	imagefill($dest, 0, 0, imagecolorallocatealpha($dest, 0, 0, 0, 127));
-	if($vertical){
-		for($i = 0; $i < $h; $i++){
-			imagecopy($dest, $img, 0, ($h-$i-1), 0, $i, $w, 1);
-		}
-	}
-	else{
-		for($i = 0; $i < $w; $i++){
-			imagecopy($dest, $img, ($w-$i-1), 0, $i, 0, 1, $h);
-		}
-	}
-	return $dest;
-}
-
-/**
- * An error image
- *
- * @param $size
- */
-function image_error($size){
-	global $config;
-	header('Content-type: image/png');
-	$img = imagecreatefrompng($config['image_error']);
-	$thumb = imagecreatetruecolor($size, $size);
-	imagecopyresampled($thumb, $img, 0, 0, 0, 0, $size, $size, 256, 256);
-	imagepng($thumb);
-	imagedestroy($thumb);
-	exit();
-}
-
-/**
- * GW2 API request
- *
- * sends a request to the given API endpoint and fills $api_response on success
- *
- * @param string $endpoint
- * @param array  $params
- * @param string $apikey
- *
- * @return array|bool
- */
-function api_request($endpoint, array $params = [], $apikey = ''){
-	global $config;
-
-	$url = 'https://api.guildwars2.com/'.$endpoint;
-	$url .= count($params) > 0 ? '?'.http_build_query($params) : '';
-
-	$options = [
-		CURLOPT_URL            => $url,
-#		CURLOPT_VERBOSE        => true,
-#		CURLOPT_HEADER         => true,
-		CURLOPT_SSL_VERIFYPEER => true,
-		CURLOPT_SSL_VERIFYHOST => 2,
-		CURLOPT_CAINFO         => dirname(__FILE__).'/'.$config['path_cacert'],
-		CURLOPT_RETURNTRANSFER => true,
-	];
-
-	// since the format of an API key may change, we just check if it's present
-	if(!empty($apikey)){
-		$options += [
-			CURLOPT_HTTPHEADER => [
-				'Authorization: Bearer '.$apikey,
-			]
-		];
-	}
-
-	$ch = curl_init();
-	curl_setopt_array($ch, $options);
-
-	$data = curl_exec($ch);
-	$info = curl_getinfo($ch);
-	$errno = curl_errno($ch);
-	$errstr = curl_error($ch);
-
-	curl_close($ch);
-
-	if(in_array($info['http_code'], [200, 206], true)){
-		return json_decode($data, true);
-	}
-	else{
-		return 'connection error: '.$errno.', '.$errstr."\n".print_r($info, true);
+		return '<'.$this->tag.'>'.$this->content.'</'.$this->tag.'>';
 	}
 
 }
-
-/*********************
- * There be dragons. *
- *********************/
-
-// get the size and clamp if needed
-$size = isset($_GET['size']) && !empty($_GET['size']) ? max(40, min(256, intval($_GET['size']))) : 256;
-
-// i cant't work without guild data...
-if(!isset($_GET['guild_id']) || empty($_GET['guild_id'])){
-	image_error($size);
-}
-
-// cache path/image name
-$cachefile = $config['path_cache'].sha1($_GET['guild_id'].$size).'.png';
-
-// first check if there is a cached image
-#if(is_file($cachefile)){
-#	header('Content-type: image/png');
-#	readfile($cachefile);
-#	exit;
-#}
-
-// get guild data. it's recommended to build a local guild database to increase performance
-$guild_data = api_request('v1/guild_details.json', ['guild_id' => $_GET['guild_id']]);
-
-if(!$guild_data || !is_array($guild_data) || in_array('error', $guild_data)){
-	image_error($size);
-}
-
-// determine the filenames+path
-$file_background = $config['path_background'].$guild_data['emblem']['background_id'].'.png';
-$file_foreground1 = $config['path_foreground'].$guild_data['emblem']['foreground_id'].'a.png';
-$file_foreground2 = $config['path_foreground'].$guild_data['emblem']['foreground_id'].'b.png';
-
-if(!is_file($file_background) || !is_file($file_foreground1) || !is_file($file_foreground2)){
-	image_error($size);
-}
-
-// it's highly recommended to pull the color data (~160kb API response)
-// from a database or local .json since it's pretty static anyway.
-$color_data = api_request('v2/colors', ['ids' => 'all']);
-$color_data = array_combine(array_column($color_data, 'id'), $color_data);
-
-// get the colors
-$colors = [
-	'background'  => $color_data[$guild_data['emblem']['background_color_id']]['cloth'],
-	'foreground1' => $color_data[$guild_data['emblem']['foreground_primary_color_id']]['cloth'],
-	'foreground2' => $color_data[$guild_data['emblem']['foreground_secondary_color_id']]['cloth'],
-];
-
-// fetch the images
-$images = [
-	'background'  => imagecreatefrompng($file_background),
-	'foreground1' => imagecreatefrompng($file_foreground1),
-	'foreground2' => imagecreatefrompng($file_foreground2),
-];
-
-// Apply transparency information for the background - PHP GD Base image issue
-imagecolortransparent($images['background'], imagecolorallocate($images['background'], 255, 255, 255));
-imagealphablending($images['background'], true);
-imagesavealpha($images['background'], true);
-
-// re-color images and apply filters like i've described over here:
-// https://forum-en.guildwars2.com/forum/community/api/API-Suggestion-Guilds/2155863
-// not yet perfect, but the results are ok..
-foreach(['background', 'foreground1', 'foreground2'] as $layer){
-	imagehue($images[$layer], $colors[$layer]);
-	imagefilter($images[$layer], IMG_FILTER_CONTRAST, $colors[$layer]['contrast']);
-	imagefilter($images[$layer], IMG_FILTER_COLORIZE, $colors[$layer]['rgb'][0], $colors[$layer]['rgb'][1], $colors[$layer]['rgb'][2]);
-}
-
-// Combine the primary and secondary emblem image
-imagecopy($images['foreground1'], $images['foreground2'], 0, 0, 0, 0, 256, 256);
-
-//apply flags
-if(in_array('FlipBackgroundHorizontal', $guild_data['emblem']['flags'])){
-	$images['background'] = image_flip($images['background']);
-}
-if(in_array('FlipBackgroundVertical', $guild_data['emblem']['flags'])){
-	$images['background'] = image_flip($images['background'], true);
-}
-if(in_array('FlipForegroundHorizontal', $guild_data['emblem']['flags'])){
-	$images['foreground1'] = image_flip($images['foreground1']);
-}
-if(in_array('FlipForegroundVertical', $guild_data['emblem']['flags'])){
-	$images['foreground1'] = image_flip($images['foreground1'], true);
-}
-
-// Combine the emblem and background
-imagecopy($images['background'], $images['foreground1'], 0, 0, 0, 0, 256, 256);
-
-// resize and save to cache
-if($size < 256){
-	$thumb = imagecreate($size, $size);
-	imagecopyresampled($thumb, $images['background'], 0, 0, 0, 0, $size, $size, 256, 256);
-#	imageantialias($thumb, true);
-	imagepng($thumb, $cachefile);
-	imagedestroy($thumb);
-}
-else{
-#	imageantialias($images['background'], true);
-	imagepng($images['background'], $cachefile);
-}
-
-// output and clean up
-header('Content-type: image/png');
-readfile($cachefile);
-imagedestroy($images['background']);
-imagedestroy($images['foreground1']);
-imagedestroy($images['foreground2']);
 [/php]
