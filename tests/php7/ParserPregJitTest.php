@@ -9,7 +9,7 @@
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\critical;
+namespace chillerlan\BBCodeTest\php7;
 
 use chillerlan\bbcode\Parser;
 
