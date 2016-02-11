@@ -15,6 +15,7 @@ use chillerlan\bbcode\Parser;
 
 class ParserPregJitTest extends \PHPUnit_Framework_TestCase{
 
+	// this test will most likely throw an error in case pcre.jit=1
 	public function testPregError(){
 		$bbcode = file_get_contents(dirname(__FILE__).'/../bbcode_samples/errors/preg_jit.txt');
 		(new Parser)->parse($bbcode);
