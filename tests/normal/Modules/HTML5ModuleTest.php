@@ -84,4 +84,21 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		$parsed = preg_replace('/\"([a-f\d]{8})\"/i', '"abcdef12"', $parsed);
 		$this->assertEquals($expected, $parsed);
 	}
+
+	public function linkDataProvider(){
+		return [
+			['[url]https://github.com/chillerlan/bbcode[/url]', '<a href="https://github.com/chillerlan/bbcode" target="_blank" class="blank">https://github.com/chillerlan/bbcode</a>'],
+			['[url=https://github.com/chillerlan/bbcode]chillerlan/bbcode[/url]', '<a href="https://github.com/chillerlan/bbcode" target="_blank" class="blank">chillerlan/bbcode</a>'],
+			['[url=https://github.com/chillerlan/bbcode title=\'some stuff\' class=some-css-class]chillerlan/bbcode[/url]', '<a href="https://github.com/chillerlan/bbcode" target="_blank" title="some stuff" class="some-css-class blank">chillerlan/bbcode</a>'],
+		];
+	}
+
+	/**
+	 * @dataProvider linkDataProvider
+	 */
+	public function testLinkModule($bbcode, $expected){
+		$parsed = $this->parser->parse($bbcode);
+		$this->assertEquals($expected, $parsed);
+	}
+
 }
