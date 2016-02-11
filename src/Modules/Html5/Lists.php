@@ -49,7 +49,7 @@ class Lists extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @var array
 	 */
-	protected $ul = ['c', 's'];
+	protected $ul = ['c', 'd', 's'];
 
 	/**
 	 * Ordered lists
@@ -74,7 +74,7 @@ class Lists extends Html5BaseModule implements ModuleInterface{
 		$start = is_numeric($start) && $this->attributeIn('type', $this->ol) ? ' start="'.ceil($start).'"' : '';
 
 		$list_tag = count($this->attributes) === 0 || $this->attributeIn('type', $this->ul) ? 'ul' : 'ol';
-		$reversed = $this->getAttribute('reverse') && $this->attributeIn('type', $this->ol) ? ' reversed="true"' : '';
+		$reversed = $this->getAttribute('reversed') && $this->attributeIn('type', $this->ol) ? ' reversed="true"' : '';
 
 		$this->_style = ['list-style-type' => $this->attributeKeyIn('type', $this->types, 'disc')];
 
