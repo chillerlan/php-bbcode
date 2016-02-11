@@ -132,4 +132,11 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 			$this->assertEquals($expected, $parsed);
 		}
 	}
+
+	public function testSimpletextModule(){
+		foreach(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'sub', 'sup', 'del', 'small'] as $tag){
+			$parsed = $this->parser->parse('['.$tag.' class=foobar]WAT[/'.$tag.']');
+			$this->assertEquals('<'.$tag.' class="foobar">WAT</'.$tag.'>', $parsed);
+		}
+	}
 }
