@@ -14,6 +14,7 @@ namespace chillerlan\BBCodeTest\critical\Modules;
 use chillerlan\bbcode\Modules\Html5\Code;
 use chillerlan\bbcode\Modules\Html5\Containers;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
+use chillerlan\bbcode\Modules\Html5\Singletags;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 
@@ -42,7 +43,6 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		return [
 			// basics
 			['', ''], // empty string test (coverage)
-			['[php][/php]', ''], // empty tag
 			['no bbcode at all', 'no bbcode at all'],
 			['[somebbcode]invalid bbcodes will be eaten :P[/somebbcode]', 'invalid bbcodes will be eaten :P'],
 			// XSS
@@ -60,6 +60,18 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		];
 	}
 
+	public function testEmptyTags(){
+		$singletags = $this->parser->getSingle();
+		$exceptions = ['td','th'];
+
+		foreach(array_keys($this->parser->getTagmap()) as $tag){
+			if(!in_array($tag, $singletags) && !in_array($tag, $exceptions)){
+				$parsed = $this->parser->parse('['.$tag.'][/'.$tag.']');
+				$this->assertEquals('', $parsed);
+			}
+		}
+	}
+	
 	/**
 	 * @dataProvider bbcodeDataProvider
 	 */
