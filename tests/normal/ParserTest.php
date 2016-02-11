@@ -53,6 +53,14 @@ class ParserTest extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals($noparse_tags, $method->invoke($this->parser));
 	}
 
+	public function testGetSingle(){
+		$singletags = ['br','clear','col','hr'];
+
+		$method = $this->reflectionClass->getMethod('getSingle');
+		$this->parser = $this->reflectionClass->newInstance();
+		$this->assertEquals($singletags, $method->invoke($this->parser));
+	}
+
 	/**
 	 * @expectedException \chillerlan\BBCode\BBCodeException
 	 * @expectedExceptionMessage stdClass does not implement chillerlan\bbcode\Modules\BaseModuleInterface
