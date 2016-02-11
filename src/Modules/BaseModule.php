@@ -271,6 +271,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @param $content string to sanitize
 	 *
 	 * @return string
+	 * @codeCoverageIgnore
 	 */
 	public function sanitize($content){
 		return 'Implement sanitize() method!';
