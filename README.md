@@ -1,5 +1,7 @@
 # chillerlan/bbcode
 
+[![Join the chat at https://gitter.im/chillerlan/bbcode](https://badges.gitter.im/chillerlan/bbcode.svg)](https://gitter.im/chillerlan/bbcode?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
 [![Travis][travis-badge]][travis]
