@@ -12,6 +12,7 @@
 
 namespace chillerlan\bbcode;
 
+use chillerlan\bbcode\Language\English;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 
 /**
@@ -20,6 +21,13 @@ use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
  * @see \chillerlan\bbcode\Parser::__construct()
  */
 class ParserOptions{
+
+	/**
+	 * The language class to use (FQN)
+	 *
+	 * @var string
+	 */
+	public $language = English::class;
 
 	/**
 	 * Input sanitizing

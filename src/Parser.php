@@ -3,7 +3,7 @@
  * Class Parser
  *
  * @version      1.1.0
- * @date         03.11.2015
+ * @date         11.02.2016
  *
  * @filesource   Parser.php
  * @created      18.09.2015
@@ -15,10 +15,10 @@
 
 namespace chillerlan\bbcode;
 
+use chillerlan\bbcode\Language\LanguageInterface;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Traits\ClassLoaderTrait;
-use ReflectionClass;
 
 /**
  * Regexp BBCode parser
@@ -128,6 +128,13 @@ class Parser{
 	protected $BBTemp;
 
 	/**
+	 * Holds the translation class for the current language
+	 *
+	 * @var \chillerlan\bbcode\Language\LanguageInterface
+	 */
+	protected $languageInterface;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param \chillerlan\bbcode\ParserOptions $options [optional]
@@ -145,8 +152,9 @@ class Parser{
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	public function setOptions(ParserOptions $options){
-		$this->parserOptions = $options;
+		$this->parserOptions       = $options;
 		$this->baseModuleInterface = $this->__loadClass($this->parserOptions->base_module, BaseModuleInterface::class);
+		$this->languageInterface   = $this->__loadClass($this->parserOptions->language, LanguageInterface::class);
 
 		if($this->parserOptions->parser_extension){
 			$this->parserExtensionInterface =
@@ -297,6 +305,7 @@ class Parser{
 			$this->BBTemp->attributes = $attributes;
 			$this->BBTemp->content    = $content;
 			$this->BBTemp->options    = $this->parserOptions;
+			$this->BBTemp->language   = $this->languageInterface;
 			$this->BBTemp->depth      = $callback_count;
 
 			$this->module = $this->modules[$this->tagmap[$tag]];

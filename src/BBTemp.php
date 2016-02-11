@@ -51,6 +51,13 @@ class BBTemp{
 	public $options;
 
 	/**
+	 * Holds the translation class for the current language
+	 *
+	 * @var \chillerlan\bbcode\Language\LanguageInterface
+	 */
+	public $language;
+
+	/**
 	 * The current callback depth
 	 *
 	 * @var int

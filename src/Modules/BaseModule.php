@@ -52,6 +52,12 @@ class BaseModule implements BaseModuleInterface{
 	 */
 	protected $options;
 
+	/**
+	 * Holds the translation class for the current language
+	 *
+	 * @var \chillerlan\bbcode\Language\LanguageInterface
+	 */
+	protected $language;
 
 	/**
 	 * The current callback depth
@@ -122,7 +128,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return $this
 	 */
 	public function setBBTemp(BBTemp $bbtemp){
-		foreach(['tag', 'attributes', 'content', 'options', 'depth'] as $var){
+		foreach(['tag', 'attributes', 'content', 'options', 'language', 'depth'] as $var){
 			$this->{$var} = $bbtemp->{$var};
 		}
 
