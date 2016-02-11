@@ -50,7 +50,6 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 
 	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
-	 * @todo translations
 	 *
 	 * @return string a transformed snippet
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
@@ -73,7 +72,6 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 * Processes [quote]
 	 */
 	private function quote(){
-		// todo: $timestamp = $this->getAttribute('timestamp');
 		$name = $this->getAttribute('name');
 		$header = $name ? ': '.$name : '';
 
@@ -107,8 +105,6 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 
 	/**
 	 * Processes [trigger]
-	 *
-	 * @todo translation
 	 */
 	private function trigger(){
 		$this->_class = 'trigger';
