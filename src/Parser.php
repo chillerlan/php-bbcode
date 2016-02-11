@@ -17,6 +17,7 @@ namespace chillerlan\bbcode;
 
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\ModuleInterface;
+use chillerlan\bbcode\Traits\ClassLoaderTrait;
 use ReflectionClass;
 
 /**
@@ -27,6 +28,7 @@ use ReflectionClass;
  * @link http://www.developers-guide.net/c/152-bbcode-parser-mit-noparse-tag-selbst-gemacht.html
  */
 class Parser{
+	use ClassLoaderTrait;
 
 	/**
 	 * Holds the preparsed BBCode
@@ -133,34 +135,6 @@ class Parser{
 	public function __construct(ParserOptions $options = null){
 		$this->setOptions(!$options ? new ParserOptions : $options);
 		$this->BBTemp = new BBTemp;
-	}
-
-
-	/**
-	 * A simple class loader
-	 *
-	 * @param string $class     FQCN
-	 * @param string $interface FQCN
-	 *
-	 * @param mixed  $params    [optional] the following arguments are optional and will be passed to the class constructor if present.
-	 *
-	 * @link https://github.com/chillerlan/framework/blob/master/src/Core/Traits/ClassLoaderTrait.php
-	 *
-	 * @return object of type $interface
-	 * @throws \chillerlan\bbcode\BBCodeException
-	 */
-	private function __loadClass($class, $interface, ...$params){ // phpDocumentor stumbles across the ... syntax
-		if(class_exists($class)){
-			$reflectionClass = new ReflectionClass($class);
-
-			if(!$reflectionClass->implementsInterface($interface)){
-				throw new BBCodeException($class.' does not implement '.$interface);
-			}
-
-			return $reflectionClass->newInstanceArgs($params);
-		}
-
-		throw new BBCodeException($class.' does not exist');
 	}
 
 	/**
