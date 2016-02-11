@@ -42,6 +42,13 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	private $_header;
 
 	/**
+	 * temp header
+	 *
+	 * @var string
+	 */
+	private $_title;
+
+	/**
 	 * temp hide
 	 *
 	 * @var string
@@ -64,7 +71,11 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 		$id = $this->random_id();
 		$this->_style = ['display' => $this->_hide];
 
-		return '<div data-id="'.$id.'"'.$this->get_title($this->_header).$this->get_css_class($this->_class.'-header expander').'>'.$this->_header.'</div>'.
+		if(!$this->_title){
+			$this->_title = $this->_header;
+		}
+
+		return '<div data-id="'.$id.'"'.$this->get_title($this->_title).$this->get_css_class($this->_class.'-header expander').'>'.$this->_header.'</div>'.
 		'<div id="'.$id.'"'.$this->get_css_class($this->_class.'-body').$this->get_style().'>'.$this->content.'</div>';
 	}
 
@@ -76,10 +87,12 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 		$header = $name ? ': '.$name : '';
 
 		$url = $this->checkUrl($this->getAttribute('url'));
-		$header .= $url ? ' <small>[<a href="'.$url.'">source</a>]<small>' : '';
+
+		$this->_title = 'Quote'.$header;
+		$this->_title .= $url ? ', source: '.$url : '';
 
 		$this->_class = 'quote';
-		$this->_header = 'Quote'.$header;
+		$this->_header = 'Quote'.$header.($url ? ' <small>[<a href="'.$url.'">source</a>]<small>' : '');
 		$this->_hide = $this->getAttribute('hide') ? 'none' : 'block';
 	}
 
