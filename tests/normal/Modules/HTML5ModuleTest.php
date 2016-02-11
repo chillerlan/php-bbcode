@@ -11,6 +11,8 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules;
 
+use chillerlan\bbcode\Modules\Html5\Simpletext;
+use chillerlan\bbcode\Modules\Html5\Singletags;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 
@@ -134,9 +136,17 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testSimpletextModule(){
-		foreach(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'sub', 'sup', 'del', 'small'] as $tag){
+		foreach(array_keys($this->parser->getTagmap(), Simpletext::class) as $tag){
 			$parsed = $this->parser->parse('['.$tag.' class=foobar]WAT[/'.$tag.']');
 			$this->assertEquals('<'.$tag.' class="foobar">WAT</'.$tag.'>', $parsed);
+		}
+	}
+
+	public function testSingletagModule(){
+		foreach(array_keys($this->parser->getTagmap(), Singletags::class) as $tag){
+			$parsed = $this->parser->parse('['.$tag.']');
+			$expected = $tag === 'clear' ? '<br style="clear:both" />' : '<'.$tag.' />';
+			$this->assertEquals($expected, $parsed);
 		}
 	}
 }
