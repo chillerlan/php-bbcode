@@ -149,4 +149,26 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 			$this->assertEquals($expected, $parsed);
 		}
 	}
+
+	public function styledTextDataProvider(){
+		return [
+			['[color=#424242]color[/color]', '<span style="color:#424242">color</span>'],
+			['[font=Helvetica]font[/font]', '<span style="font-family:Helvetica">font</span>'],
+			['[tt]typewriter[/tt]', '<span style="font-family:Courier, monospace">typewriter</span>'],
+			['[size=42px]size[/size]', '<span style="font-size:42px;line-height:1em">size</span>'],
+			['[i]italic[/i]', '<span style="font-style:italic">italic</span>'],
+			['[b]bold[/b]', '<span style="font-weight:bold">bold</span>'],
+			['[s]strikethrough[/s]', '<span style="text-decoration:line-through">strikethrough</span>'],
+			['[u]underline[/u]', '<span style="text-decoration:underline">underline</span>'],
+		];
+	}
+
+	/**
+	 * @dataProvider styledTextDataProvider
+	 */
+	public function testStyledTextModule($bbcode, $expected){
+		$parsed = $this->parser->parse($bbcode);
+		$this->assertEquals($expected, $parsed);
+	}
+
 }
