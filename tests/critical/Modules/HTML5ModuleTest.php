@@ -12,6 +12,7 @@
 namespace chillerlan\BBCodeTest\critical\Modules;
 
 use chillerlan\bbcode\Modules\Html5\Code;
+use chillerlan\bbcode\Modules\Html5\Containers;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
@@ -32,10 +33,8 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	protected $parser;
 
 	protected function setUp(){
-		$options = new ParserOptions();
-		$options->base_module = Html5BaseModule::class;
+		$options = new ParserOptions;
 		$options->allow_all = true;
-		$options->sanitize = true;
 		$this->parser = new Parser($options);
 	}
 
@@ -81,7 +80,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider nestingDataProvider
 	 */
 	public function testNesting($limit, $resultfile){
-		$options = new ParserOptions();
+		$options = new ParserOptions;
 		$options->allow_all = true;
 		$options->nesting_limit = $limit;
 		$this->parser->setOptions($options);
@@ -96,7 +95,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals($expected, $parsed);
 	}
 
-	// [php] may cause a PREG_RECURSION_LIMIT_ERROR (win7/php5616-x64)
+	// may cause a PREG_RECURSION_LIMIT_ERROR (win7/php5616-x64)
 	public function testCodeModule(){
 		foreach(array_keys($this->parser->getTagmap(), Code::class) as $lang){
 			$bbcode = file_get_contents(dirname(__FILE__).'/../../bbcode_samples/bbcode_code_'.$lang.'.txt');
@@ -106,6 +105,27 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 
 			$this->assertEquals($expected, $parsed);
 		}
+	}
+
+	public function containerDataProvider(){
+		return [
+			['[div]a div[/div]', '<div style="text-align:left">a div</div>'],
+			['[div align=right]an aligned div[/div]', '<div style="text-align:right">an aligned div</div>'],
+			['[p]a paragraph[/p]', '<p style="text-align:left">a paragraph</p>'],
+			['[p align=right]an aligned paragraph[/p]', '<p style="text-align:right">an aligned paragraph</p>'],
+			['[left]left[/left]', '<p style="text-align:left">left</p>'],
+			['[left align=right]WAT[/left]', '<p style="text-align:left">WAT</p>'],
+			['[right]right[/right]', '<p style="text-align:right">right</p>'],
+			['[center]center[/center]', '<p style="text-align:center">center</p>'],
+		];
+	}
+
+	/**
+	 * @dataProvider containerDataProvider
+	 */
+	public function testContainerModule($bbcode, $expected){
+		$parsed = $this->parser->parse($bbcode);
+		$this->assertEquals($expected, $parsed);
 	}
 
 }
