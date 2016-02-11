@@ -35,6 +35,10 @@ class Links extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+		if(empty($this->content)){
+			return '';
+		}
+
 		$url = $this->checkUrl($this->bbtag() ? : $this->content);
 
 		$host = parse_url($url, PHP_URL_HOST);

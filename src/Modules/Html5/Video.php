@@ -63,6 +63,10 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+		if(empty($this->content)){
+			return '';
+		}
+
 		$this->_flash = $this->getAttribute('flash');
 		$provider = $this->_get_provider();
 		call_user_func([$this, $provider]);

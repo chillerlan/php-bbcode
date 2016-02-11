@@ -91,6 +91,10 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @return string
 	 */
 	private function colgroup(){
+		if(empty($this->content)){
+			return '';
+		}
+
 		$span = $this->getAttribute('span');
 
 		return '<colgroup'.($span ? ' span="'.intval($span).'"' : '').$this->get_css_class().'>'.$this->eol($this->content).'</colgroup>';
@@ -102,6 +106,10 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @return string
 	 */
 	private function caption(){
+		if(empty($this->content)){
+			return '';
+		}
+
 		return '<caption>'.$this->eol($this->content, $this->eol_token).'</caption>';
 	}
 
@@ -111,6 +119,10 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @return string
 	 */
 	private function rows(){
+		if(empty($this->content)){
+			return '';
+		}
+
 		return '<'.$this->tag.'>'.$this->eol($this->content).'</'.$this->tag.'>';
 	}
 
