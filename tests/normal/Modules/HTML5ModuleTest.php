@@ -101,4 +101,35 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals($expected, $parsed);
 	}
 
+	public function testListModule(){
+		$list_inner_bbcode = '[*]blah[*]blubb[*]foo[*]bar';
+		$list_inner_html = '<li>blah</li><li>blubb</li><li>foo</li><li>bar</li>';
+
+		foreach(['0' => 'decimal-leading-zero', '1' => 'decimal', 'a' => 'lower-alpha',
+				'A' => 'upper-alpha', 'i' => 'lower-roman', 'I' => 'upper-roman'] as $type => $css){
+			// type only
+			$parsed = $this->parser->parse('[list type='.$type.']'.$list_inner_bbcode.'[/list]');
+			$this->assertEquals('<ol style="list-style-type:'.$css.'">'.$list_inner_html.'</ol>', $parsed);
+			// reversed
+			$parsed = $this->parser->parse('[list type='.$type.' reversed=1]'.$list_inner_bbcode.'[/list]');
+			$this->assertEquals('<ol reversed="true" style="list-style-type:'.$css.'">'.$list_inner_html.'</ol>', $parsed);
+			// start
+			$parsed = $this->parser->parse('[list=42 type='.$type.']'.$list_inner_bbcode.'[/list]');
+			$this->assertEquals('<ol start="42" style="list-style-type:'.$css.'">'.$list_inner_html.'</ol>', $parsed);
+			// all
+			$parsed = $this->parser->parse('[list=42 type='.$type.' reversed=1 class=foobar title=WAT]'.$list_inner_bbcode.'[/list]');
+			$this->assertEquals('<ol start="42" reversed="true" title="WAT" class="foobar" style="list-style-type:'.$css.'">'.$list_inner_html.'</ol>', $parsed);
+		}
+
+		foreach(['c' => 'circle', 'd' => 'disc', 's' => 'square'] as $type => $css){
+			$expected = '<ul style="list-style-type:'.$css.'">'.$list_inner_html.'</ul>';
+			// type only
+			$parsed = $this->parser->parse('[list type='.$type.']'.$list_inner_bbcode.'[/list]');
+			$this->assertEquals($expected, $parsed);
+
+			// should not happen...
+			$parsed = $this->parser->parse('[list=42 reversed=1 type='.$type.']'.$list_inner_bbcode.'[/list]');
+			$this->assertEquals($expected, $parsed);
+		}
+	}
 }
