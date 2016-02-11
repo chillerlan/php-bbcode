@@ -51,6 +51,14 @@ class Parser{
 	protected $noparse_tags = [];
 
 	/**
+	 * Holds an array of singletags
+	 *
+	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$singletags
+	 */
+	protected $singletags = [];
+
+	/**
 	 * Holds an array of allowed tags
 	 *
 	 * @var array
@@ -172,7 +180,6 @@ class Parser{
 		}
 
 		$module_info = $this->baseModuleInterface->getInfo();
-		$singletags = [];
 		foreach($module_info->modules as $module){
 			$this->module = $this->__loadClass($module, ModuleInterface::class);
 
@@ -183,11 +190,11 @@ class Parser{
 
 			$this->modules[$module] = $this->module;
 			$this->noparse_tags     = array_merge($this->noparse_tags, $tagmap->noparse_tags);
-			$singletags             = array_merge($singletags, $tagmap->singletags);
+			$this->singletags       = array_merge($this->singletags, $tagmap->singletags);
 		}
 
 		$this->parserOptions->eol_token  = $module_info->eol_token;
-		$this->parserOptions->singletags = implode('|', $singletags);
+		$this->parserOptions->singletags = implode('|', $this->singletags);
 
 		if(is_array($this->parserOptions->allowed_tags) && !empty($this->parserOptions->allowed_tags)){
 			foreach($this->parserOptions->allowed_tags as $tag){
@@ -231,6 +238,16 @@ class Parser{
 	public function getNoparse(){
 		sort($this->noparse_tags);
 		return $this->noparse_tags;
+	}
+
+	/**
+	 * Returns the singletags
+	 *
+	 * @return array
+	 */
+	public function getSingle(){
+		sort($this->singletags);
+		return $this->singletags;
 	}
 
 	/**
