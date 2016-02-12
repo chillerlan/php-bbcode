@@ -11,6 +11,7 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules;
 
+use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\Html5\Simpletext;
 use chillerlan\bbcode\Modules\Html5\Singletags;
 use chillerlan\bbcode\Parser;
@@ -46,14 +47,14 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 
 	public function containerDataProvider(){
 		return [
-			['[div]a div[/div]', '<div style="text-align:left">a div</div>'],
-			['[div align=right]an aligned div[/div]', '<div style="text-align:right">an aligned div</div>'],
-			['[p]a paragraph[/p]', '<p style="text-align:left">a paragraph</p>'],
-			['[p align=right]an aligned paragraph[/p]', '<p style="text-align:right">an aligned paragraph</p>'],
-			['[left]left[/left]', '<p style="text-align:left">left</p>'],
-			['[left align=right]WAT[/left]', '<p style="text-align:left">WAT</p>'],
-			['[right]right[/right]', '<p style="text-align:right">right</p>'],
-			['[center]center[/center]', '<p style="text-align:center">center</p>'],
+			['[div]a div[/div]', '<div class="bb-container left">a div</div>'],
+			['[div align=right]an aligned div[/div]', '<div class="bb-container right">an aligned div</div>'],
+			['[p]a paragraph[/p]', '<p class="bb-container left">a paragraph</p>'],
+			['[p align=right]an aligned paragraph[/p]', '<p class="bb-container right">an aligned paragraph</p>'],
+			['[left]left[/left]', '<p class="bb-container left">left</p>'],
+			['[left align=right]WAT[/left]', '<p class="bb-container left">WAT</p>'],
+			['[right]right[/right]', '<p class="bb-container right">right</p>'],
+			['[center]center[/center]', '<p class="bb-container center">center</p>'],
 		];
 	}
 
@@ -111,20 +112,20 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 				'A' => 'upper-alpha', 'i' => 'lower-roman', 'I' => 'upper-roman'] as $type => $css){
 			// type only
 			$parsed = $this->parser->parse('[list type='.$type.']'.$list_inner_bbcode.'[/list]');
-			$this->assertEquals('<ol style="list-style-type:'.$css.'">'.$list_inner_html.'</ol>', $parsed);
+			$this->assertEquals('<ol class="bb-list '.$css.'">'.$list_inner_html.'</ol>', $parsed);
 			// reversed
 			$parsed = $this->parser->parse('[list type='.$type.' reversed=1]'.$list_inner_bbcode.'[/list]');
-			$this->assertEquals('<ol reversed="true" style="list-style-type:'.$css.'">'.$list_inner_html.'</ol>', $parsed);
+			$this->assertEquals('<ol reversed="true" class="bb-list '.$css.'">'.$list_inner_html.'</ol>', $parsed);
 			// start
 			$parsed = $this->parser->parse('[list=42 type='.$type.']'.$list_inner_bbcode.'[/list]');
-			$this->assertEquals('<ol start="42" style="list-style-type:'.$css.'">'.$list_inner_html.'</ol>', $parsed);
+			$this->assertEquals('<ol start="42" class="bb-list '.$css.'">'.$list_inner_html.'</ol>', $parsed);
 			// all
 			$parsed = $this->parser->parse('[list=42 type='.$type.' reversed=1 class=foobar title=WAT]'.$list_inner_bbcode.'[/list]');
-			$this->assertEquals('<ol start="42" reversed="true" title="WAT" class="foobar" style="list-style-type:'.$css.'">'.$list_inner_html.'</ol>', $parsed);
+			$this->assertEquals('<ol start="42" reversed="true" title="WAT" class="foobar bb-list '.$css.'">'.$list_inner_html.'</ol>', $parsed);
 		}
 
 		foreach(['c' => 'circle', 'd' => 'disc', 's' => 'square'] as $type => $css){
-			$expected = '<ul style="list-style-type:'.$css.'">'.$list_inner_html.'</ul>';
+			$expected = '<ul class="bb-list '.$css.'">'.$list_inner_html.'</ul>';
 			// type only
 			$parsed = $this->parser->parse('[list type='.$type.']'.$list_inner_bbcode.'[/list]');
 			$this->assertEquals($expected, $parsed);

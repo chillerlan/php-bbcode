@@ -76,9 +76,7 @@ class Lists extends Html5BaseModule implements ModuleInterface{
 		$list_tag = count($this->attributes) === 0 || $this->attributeIn('type', $this->ul) ? 'ul' : 'ol';
 		$reversed = $this->getAttribute('reversed') && $this->attributeIn('type', $this->ol) ? ' reversed="true"' : '';
 
-		$this->_style = ['list-style-type' => $this->attributeKeyIn('type', $this->types, 'disc')];
-
-		return '<'.$list_tag.$start.$reversed.$this->get_title().$this->get_css_class().$this->get_style().'>'
+		return '<'.$list_tag.$start.$reversed.$this->get_title().$this->get_css_class('bb-list '.$this->attributeKeyIn('type', $this->types, 'disc')).'>'
 		.'<li>'.implode(array_slice(explode('[*]', $this->content), true), '</li><li>').'</li>' // nasty
 		.'</'.$list_tag.'>';
 	}

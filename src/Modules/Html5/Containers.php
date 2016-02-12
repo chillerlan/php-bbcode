@@ -47,11 +47,7 @@ class Containers extends Html5BaseModule implements ModuleInterface{
 			$align = $this->attributeIn('align', $this->_text_align, 'left');
 		}
 
-		$this->_style = [
-			'text-align' => $align,
-		];
-
-		return '<'.$tag.$this->get_title().$this->get_css_class().$this->get_style().'>'.$this->content.'</'.$tag.'>';
+		return '<'.$tag.$this->get_title().$this->get_css_class('bb-container '.$align).'>'.$this->content.'</'.$tag.'>';
 	}
 
 }
