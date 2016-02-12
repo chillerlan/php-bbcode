@@ -48,14 +48,14 @@ class BBTemp{
 	 *
 	 * @var \chillerlan\bbcode\ParserOptions
 	 */
-	public $options;
+	public $parserOptions;
 
 	/**
 	 * Holds the translation class for the current language
 	 *
 	 * @var \chillerlan\bbcode\Language\LanguageInterface
 	 */
-	public $language;
+	public $languageInterface;
 
 	/**
 	 * The current callback depth

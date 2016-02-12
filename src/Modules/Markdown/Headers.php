@@ -35,6 +35,7 @@ class Headers extends MarkdownBaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+
 		if(empty($this->content)){
 			return '';
 		}

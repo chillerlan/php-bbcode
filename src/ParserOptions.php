@@ -27,7 +27,21 @@ class ParserOptions{
 	 *
 	 * @var string
 	 */
-	public $language = English::class;
+	public $languageInterface = English::class;
+
+	/**
+	 * The base module to use (FQN)
+	 *
+	 * @var string
+	 */
+	public $baseModuleInterface = Html5BaseModule::class;
+
+	/**
+	 * The parser extension to use (FQN)
+	 *
+	 * @var string
+	 */
+	public $parserExtensionInterface = ParserExtension::class;
 
 	/**
 	 * Input sanitizing
@@ -66,20 +80,6 @@ class ParserOptions{
 	 * @var string
 	 */
 	public $bbtag_placeholder = '__BBTAG__';
-
-	/**
-	 * The base module to use (FQN)
-	 *
-	 * @var string
-	 */
-	public $base_module = Html5BaseModule::class;
-
-	/**
-	 * The parser extension to use (FQN)
-	 *
-	 * @var string
-	 */
-	public $parser_extension = ParserExtension::class;
 
 	/**
 	 * An array of allowed tagnames

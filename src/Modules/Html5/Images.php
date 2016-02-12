@@ -42,7 +42,10 @@ class Images extends Html5BaseModule implements ModuleInterface{
 
 		$alt = $this->getAttribute('alt');
 
-		return '<img src="'.$url.'" '.($alt ? 'alt="'.$alt.'"' : 'alt').$this->get_title().$this->get_css_class(['bb-image']).' />';
+		return '<img src="'.$url.'" '
+			.($alt ? 'alt="'.$alt.'"' : 'alt')
+			.$this->getTitle()
+			.$this->getCssClass(['bb-image']).' />';
 	}
 
 }

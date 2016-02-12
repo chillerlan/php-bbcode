@@ -31,6 +31,21 @@ class Parser{
 	use ClassLoaderTrait;
 
 	/**
+	 * testing...
+	 *
+	 * @link https://github.com/chillerlan/bbcode/issues/1
+	 * @var array
+	 */
+	const PREG_ERROR = [
+		PREG_INTERNAL_ERROR        => 'PREG_INTERNAL_ERROR',
+		PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
+		PREG_RECURSION_LIMIT_ERROR => 'PREG_RECURSION_LIMIT_ERROR',
+		PREG_BAD_UTF8_ERROR        => 'PREG_BAD_UTF8_ERROR',
+		PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
+		6                          => 'PREG_JIT_STACKLIMIT_ERROR', // int key to prevent a notice in php 5
+	];
+
+	/**
 	 * Holds the preparsed BBCode
 	 *
 	 * @var string
@@ -77,21 +92,6 @@ class Parser{
 	protected $modules = [];
 
 	/**
-	 * testing...
-	 *
-	 * @link https://github.com/chillerlan/bbcode/issues/1
-	 * @var array
-	 */
-	protected $preg_error = [
-		PREG_INTERNAL_ERROR        => 'PREG_INTERNAL_ERROR',
-		PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
-		PREG_RECURSION_LIMIT_ERROR => 'PREG_RECURSION_LIMIT_ERROR',
-		PREG_BAD_UTF8_ERROR        => 'PREG_BAD_UTF8_ERROR',
-		PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
-		6                          => 'PREG_JIT_STACKLIMIT_ERROR', // int key to prevent a notice in php 5
-	];
-
-	/**
 	 * Holds the parser options
 	 *
 	 * @var \chillerlan\bbcode\ParserOptions
@@ -118,7 +118,7 @@ class Parser{
 	 *
 	 * @var \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	protected $module;
+	protected $moduleInterface;
 
 	/**
 	 * Holds a BBTemp instance
@@ -153,24 +153,24 @@ class Parser{
 	 */
 	public function setOptions(ParserOptions $options){
 		$this->parserOptions       = $options;
-		$this->baseModuleInterface = $this->__loadClass($this->parserOptions->base_module, BaseModuleInterface::class);
-		$this->languageInterface   = $this->__loadClass($this->parserOptions->language, LanguageInterface::class);
+		$this->baseModuleInterface = $this->__loadClass($this->parserOptions->baseModuleInterface, BaseModuleInterface::class);
+		$this->languageInterface   = $this->__loadClass($this->parserOptions->languageInterface, LanguageInterface::class);
 
-		if($this->parserOptions->parser_extension){
+		if($this->parserOptions->parserExtensionInterface){
 			$this->parserExtensionInterface =
-				$this->__loadClass($this->parserOptions->parser_extension, ParserExtensionInterface::class, $this->parserOptions);
+				$this->__loadClass($this->parserOptions->parserExtensionInterface, ParserExtensionInterface::class, $this->parserOptions);
 		}
 
 		$module_info = $this->baseModuleInterface->getInfo();
 		foreach($module_info->modules as $module){
-			$this->module = $this->__loadClass($module, ModuleInterface::class);
+			$this->moduleInterface = $this->__loadClass($module, ModuleInterface::class);
 
-			$tagmap = $this->module->getTags();
+			$tagmap = $this->moduleInterface->getTags();
 			foreach($tagmap->tags as $tag){
 				$this->tagmap[$tag] = $module;
 			}
 
-			$this->modules[$module] = $this->module;
+			$this->modules[$module] = $this->moduleInterface;
 			$this->noparse_tags     = array_merge($this->noparse_tags, $tagmap->noparse_tags);
 			$this->singletags       = array_merge($this->singletags, $tagmap->singletags);
 		}
@@ -295,22 +295,22 @@ class Parser{
 		// still testing...
 		if($preg_error !== PREG_NO_ERROR){
 			// @codeCoverageIgnoreStart
-			$message = sprintf($this->languageInterface->parserExceptionCallback(), $tag, $this->preg_error[$preg_error], $preg_error);
+			$message = sprintf($this->languageInterface->parserExceptionCallback(), $tag, self::PREG_ERROR[$preg_error], $preg_error);
 			throw new BBCodeException($message);
 			// @codeCoverageIgnoreEnd
 		}
 
 		if($callback && isset($this->tagmap[$tag]) && in_array($tag, $this->allowed_tags)){
-			$this->BBTemp->tag        = $tag;
-			$this->BBTemp->attributes = $attributes;
-			$this->BBTemp->content    = $content;
-			$this->BBTemp->options    = $this->parserOptions;
-			$this->BBTemp->language   = $this->languageInterface;
-			$this->BBTemp->depth      = $callback_count;
+			$this->BBTemp->tag               = $tag;
+			$this->BBTemp->attributes        = $attributes;
+			$this->BBTemp->content           = $content;
+			$this->BBTemp->parserOptions     = $this->parserOptions;
+			$this->BBTemp->languageInterface = $this->languageInterface;
+			$this->BBTemp->depth             = $callback_count;
 
-			$this->module = $this->modules[$this->tagmap[$tag]];
-			$this->module->setBBTemp($this->BBTemp);
-			$content = $this->module->transform();
+			$this->moduleInterface = $this->modules[$this->tagmap[$tag]];
+			$this->moduleInterface->setBBTemp($this->BBTemp);
+			$content = $this->moduleInterface->transform();
 		}
 
 		$callback_count = 0;
@@ -345,7 +345,7 @@ class Parser{
 
 		if($preg_error !== PREG_NO_ERROR){
 			// @codeCoverageIgnoreStart
-			$message = sprintf($this->languageInterface->parserExceptionMatchall(), $this->preg_error[$preg_error], $preg_error);
+			$message = sprintf($this->languageInterface->parserExceptionMatchall(), self::PREG_ERROR[$preg_error], $preg_error);
 			throw new BBCodeException($message);
 			// @codeCoverageIgnoreEnd
 		}

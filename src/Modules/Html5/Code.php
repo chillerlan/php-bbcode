@@ -50,24 +50,27 @@ class Code extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+
 		if(empty($this->content)){
 			return '';
 		}
 
-		$this->clearPseudoClosingTags()
-		     ->clearEol(PHP_EOL);
+		$this->clearPseudoClosingTags()->clearEOL(PHP_EOL);
 
-		$id = $this->random_id();
+		$id = $this->randomID();
 		$file = $this->getAttribute('file');
 		$desc = $this->getAttribute('desc');
 
-		return '<div data-id="'.$id.'" '.$this->get_title().$this->get_css_class(['expander', 'code-header', $this->tag]).'>'
-		.$this->language->string('codeDisplay'.strtoupper($this->tag))
-		.($file ? ' - contents of file "<span>'.$file.'</span>"' : '')
-		.($desc ? ' - <span>'.$desc.'</span>' : '')
-		.'</div>'
-		.'<pre id="'.$id.'"'.$this->get_css_class(['code-body']).$this->get_style(['display' => $this->getAttribute('hide') ? 'none' : 'block']).'>'
-		.'<code'.$this->get_css_class(['language-'.$this->tag]).'>'.$this->sanitize($this->content).'</code></pre>';
+		return '<div data-id="'.$id.'" '
+			.$this->getTitle()
+			.$this->getCssClass(['expander', 'code-header', $this->tag]).'>'
+			.$this->languageInterface->string('codeDisplay'.strtoupper($this->tag))
+			.($file ? ' - contents of file "<span>'.$file.'</span>"' : '')
+			.($desc ? ' - <span>'.$desc.'</span>' : '')
+			.'</div>'
+			.'<pre id="'.$id.'"'.$this->getCssClass(['code-body'])
+			.$this->getStyle(['display' => $this->getAttribute('hide') ? 'none' : 'block']).'>'
+			.'<code'.$this->getCssClass(['language-'.$this->tag]).'>'.$this->sanitize($this->content).'</code></pre>';
 	}
 
 }

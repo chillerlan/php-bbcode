@@ -45,21 +45,6 @@ class BaseModule implements BaseModuleInterface{
 	protected $content;
 
 	/**
-	 * The parser options
-	 *
-	 * @var \chillerlan\bbcode\ParserOptions
-	 * @see \chillerlan\bbcode\BBTemp::$options
-	 */
-	protected $options;
-
-	/**
-	 * Holds the translation class for the current language
-	 *
-	 * @var \chillerlan\bbcode\Language\LanguageInterface
-	 */
-	protected $language;
-
-	/**
 	 * The current callback depth
 	 *
 	 * @var int
@@ -68,20 +53,20 @@ class BaseModule implements BaseModuleInterface{
 	protected $depth;
 
 	/**
-	 * Holds an array of FQN strings to the current base module's children
-	 *
-	 * @var array
-	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
-	 */
-	protected $modules = [];
-
-	/**
 	 * Holds the current base module's EOL token which will replace any newlines
 	 *
 	 * @var string
 	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$eol_token
 	 */
 	protected $eol_token = PHP_EOL;
+
+	/**
+	 * Holds an array of FQN strings to the current base module's children
+	 *
+	 * @var array
+	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
+	 */
+	protected $modules = [];
 
 	/**
 	 * An array of tags the module is able to process
@@ -108,6 +93,21 @@ class BaseModule implements BaseModuleInterface{
 	protected $singletags = [];
 
 	/**
+	 * The parser options
+	 *
+	 * @var \chillerlan\bbcode\ParserOptions
+	 * @see \chillerlan\bbcode\parserOptions::$options
+	 */
+	protected $parserOptions;
+
+	/**
+	 * Holds the translation class for the current language
+	 *
+	 * @var \chillerlan\bbcode\Language\LanguageInterface
+	 */
+	protected $languageInterface;
+
+	/**
 	 * Constructor
 	 *
 	 * calls self::setBBTemp() in case $bbtemp is set
@@ -128,7 +128,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return $this
 	 */
 	public function setBBTemp(BBTemp $bbtemp){
-		foreach(['tag', 'attributes', 'content', 'options', 'language', 'depth'] as $var){
+		foreach(['tag', 'attributes', 'content', 'parserOptions', 'languageInterface', 'depth'] as $var){
 			$this->{$var} = $bbtemp->{$var};
 		}
 
@@ -142,6 +142,7 @@ class BaseModule implements BaseModuleInterface{
 	 */
 	public function getInfo(){
 		$info = new BaseModuleInfo;
+
 		foreach(['modules', 'eol_token'] as $option){
 			$info->{$option} = $this->{$option};
 		}
@@ -160,6 +161,7 @@ class BaseModule implements BaseModuleInterface{
 		$tags->tags = $this->tags;
 		$tags->noparse_tags = $this->noparse_tags;
 		$tags->singletags = $this->singletags;
+
 		return $tags;
 	}
 
@@ -187,7 +189,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return string
 	 */
 	public function eol($str, $eol = '', $count = null){
-		return str_replace($this->options->eol_placeholder, $eol, $str, $count);
+		return str_replace($this->parserOptions->eol_placeholder, $eol, $str, $count);
 	}
 
 	/**
@@ -197,9 +199,9 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function clearEol($eol = null){
+	public function clearEOL($eol = null){
 		$eol = $eol ?: $this->eol_token;
-		$this->content = str_replace($this->options->eol_placeholder, $eol, $this->content);
+		$this->content = str_replace($this->parserOptions->eol_placeholder, $eol, $this->content);
 
 		return $this;
 	}
@@ -210,7 +212,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return $this
 	 */
 	public function clearPseudoClosingTags(){
-		$this->content = preg_replace('#\[/('.$this->options->singletags.')]#is', '', $this->content);
+		$this->content = preg_replace('#\[/('.$this->parserOptions->singletags.')]#is', '', $this->content);
 
 		return $this;
 	}
@@ -305,7 +307,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return mixed $this->attributes['__BBTAG__']
 	 */
 	protected function bbtag($default = false){
-		return $this->getAttribute($this->options->bbtag_placeholder, $default);
+		return $this->getAttribute($this->parserOptions->bbtag_placeholder, $default);
 	}
 
 	/**
@@ -316,8 +318,8 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return mixed
 	 */
-	protected function bbtag_in(array $array, $default = false){
-		return $this->attributeIn($this->options->bbtag_placeholder, $array, $default);
+	protected function bbtagIn(array $array, $default = false){
+		return $this->attributeIn($this->parserOptions->bbtag_placeholder, $array, $default);
 	}
 
 	/**

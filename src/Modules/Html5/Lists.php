@@ -20,19 +20,11 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 class Lists extends Html5BaseModule implements ModuleInterface{
 
 	/**
-	 * An array of tags the module is able to process
-	 *
-	 * @var array
-	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
-	 */
-	protected $tags = ['list'];
-
-	/**
 	 * Map of attribute value -> css property
 	 *
 	 * @var array
 	 */
-	protected $types = [
+	const TYPES = [
 		'0' => 'decimal-leading-zero',
 		'1' => 'decimal',
 		'a' => 'lower-alpha',
@@ -49,14 +41,22 @@ class Lists extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @var array
 	 */
-	protected $ul = ['c', 'd', 's'];
+	const UNORDERED = ['c', 'd', 's'];
 
 	/**
 	 * Ordered lists
 	 *
 	 * @var array
 	 */
-	protected $ol = ['0', '1', 'a', 'A', 'i', 'I'];
+	const ORDERED = ['0', '1', 'a', 'A', 'i', 'I'];
+
+	/**
+	 * An array of tags the module is able to process
+	 *
+	 * @var array
+	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
+	 */
+	protected $tags = ['list'];
 
 	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
@@ -66,19 +66,21 @@ class Lists extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+
 		if(empty($this->content)){
 			return '';
 		}
 
 		$start = $this->bbtag();
-		$start = is_numeric($start) && $this->attributeIn('type', $this->ol) ? ' start="'.ceil($start).'"' : '';
+		$list_tag = (count($this->attributes) === 0 || $this->attributeIn('type', self::UNORDERED) ? 'ul' : 'ol');
 
-		$list_tag = count($this->attributes) === 0 || $this->attributeIn('type', $this->ul) ? 'ul' : 'ol';
-		$reversed = $this->getAttribute('reversed') && $this->attributeIn('type', $this->ol) ? ' reversed="true"' : '';
-
-		return '<'.$list_tag.$start.$reversed.$this->get_title().$this->get_css_class(['bb-list', $this->attributeKeyIn('type', $this->types, 'disc')]).'>'
-		.'<li>'.implode(array_slice(explode('[*]', $this->content), true), '</li><li>').'</li>' // nasty
-		.'</'.$list_tag.'>';
+		return '<'.$list_tag
+			.(is_numeric($start) && $this->attributeIn('type', self::ORDERED) ? ' start="'.ceil($start).'"' : '')
+			.($this->getAttribute('reversed') && $this->attributeIn('type', self::ORDERED) ? ' reversed="true"' : '')
+			.$this->getTitle()
+			.$this->getCssClass(['bb-list', $this->attributeKeyIn('type', self::TYPES, 'disc')]).'>'
+			.'<li>'.implode(array_slice(explode('[*]', $this->content), true), '</li><li>').'</li>' // nasty
+			.'</'.$list_tag.'>';
 	}
 
 }

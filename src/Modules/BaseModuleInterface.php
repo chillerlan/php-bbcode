@@ -69,7 +69,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function clearEol($eol = '');
+	public function clearEOL($eol = '');
 
 	/**
 	 * Clears all pseudo closing single tag bbcodes like [/br]

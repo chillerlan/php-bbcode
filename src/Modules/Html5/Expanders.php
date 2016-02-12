@@ -28,32 +28,25 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	protected $tags = ['expander', 'quote', 'spoiler', 'trigger'];
 
 	/**
-	 * temp css class
+	 * temp header
 	 *
 	 * @var string
 	 */
-	private $_class;
+	protected $header;
 
 	/**
 	 * temp header
 	 *
 	 * @var string
 	 */
-	private $_header;
-
-	/**
-	 * temp header
-	 *
-	 * @var string
-	 */
-	private $_title;
+	protected $title;
 
 	/**
 	 * temp hide
 	 *
 	 * @var string
 	 */
-	private $_hide;
+	protected $display;
 
 	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
@@ -63,67 +56,64 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+
 		if(empty($this->content)){
 			return '';
 		}
 
 		call_user_func([$this, $this->tag]);
-		$id = $this->random_id();
+		$id = $this->randomID();
 
-		if(!$this->_title){
-			$this->_title = $this->_header;
+		if(!$this->title){
+			$this->title = $this->header;
 		}
 
-		return '<div data-id="'.$id.'"'.$this->get_title($this->_title).$this->get_css_class([$this->_class.'-header', 'expander']).'>'.$this->_header.'</div>'.
-		'<div id="'.$id.'"'.$this->get_css_class([$this->_class.'-body']).$this->get_style(['display' => $this->_hide]).'>'.$this->content.'</div>';
-	}
-
-	/**
-	 * Processes [quote]
-	 */
-	private function quote(){
-		$name = $this->getAttribute('name');
-		$header = $name ? ': '.$name : '';
-
-		$url = $this->checkUrl($this->getAttribute('url'));
-
-		$header = $this->language->expanderDisplayQuote().$header;
-
-		$this->_title = $header;
-		$this->_title .= $url ? ', source: '.$url : '';
-
-		$this->_class = 'quote';
-		$this->_header = $header.($url ? ' <small>[<a href="'.$url.'">source</a>]<small>' : '');
-		$this->_hide = $this->getAttribute('hide') ? 'none' : 'block';
-	}
-
-	/**
-	 * Processes [spoiler]
-	 */
-	private function spoiler(){
-		$desc = $this->getAttribute('desc');
-
-		$this->_class = 'spoiler';
-		$this->_header = $this->language->expanderDisplaySpoiler().($desc ? ': <span>'.$desc.'</span>' : '');
-		$this->_hide = 'none';
+		return '<div data-id="'.$id.'"'.
+			$this->getTitle($this->title).
+			$this->getCssClass([$this->tag.'-header', 'expander']).'>'.$this->header.'</div>'.
+			'<div id="'.$id.'"'.$this->getCssClass([$this->tag.'-body']).
+			$this->getStyle(['display' => $this->display ? 'none' : 'block']).'>'.$this->content.'</div>';
 	}
 
 	/**
 	 * Processes [expander]
 	 */
-	private function expander(){
-		$this->_class = 'expander';
-		$this->_header = $this->language->expanderDisplayExpander();
-		$this->_hide = $this->getAttribute('hide') ? 'none' : 'block';
+	protected function expander(){
+		$this->header  = $this->languageInterface->expanderDisplayExpander();
+		$this->display = $this->getAttribute('hide');
+	}
+
+	/**
+	 * Processes [quote]
+	 */
+	protected function quote(){
+		$name = $this->getAttribute('name');
+		$url = $this->checkUrl($this->getAttribute('url'));
+		$header = $this->languageInterface->expanderDisplayQuote().($name ? ': '.$name : '');
+
+		$this->title   = $header.($url ? ', source: '.$url : '');
+		$this->header  = $header.($url ? ' <small>[<a href="'.$url.'">source</a>]<small>' : '');
+		$this->display = $this->getAttribute('hide');
+	}
+
+	/**
+	 * Processes [spoiler]
+	 */
+	protected function spoiler(){
+		$desc = $this->getAttribute('desc');
+
+		$this->header  = $this->languageInterface->expanderDisplaySpoiler().($desc ? ': <span>'.$desc.'</span>' : '');
+		$this->display = true;
 	}
 
 	/**
 	 * Processes [trigger]
 	 */
-	private function trigger(){
-		$this->_class = 'trigger';
-		$this->_header = $this->language->expanderDisplayTrigger();
-		$this->_hide = 'none';
+	protected function trigger(){
+		$desc = $this->getAttribute('desc');
+
+		$this->header  = $this->languageInterface->expanderDisplayTrigger().($desc ? ': <span>'.$desc.'</span>' : '');
+		$this->display = true;
 	}
 
 }

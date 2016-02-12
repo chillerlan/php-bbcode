@@ -36,18 +36,19 @@ class Containers extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+
 		if(empty($this->content)){
 			return '';
 		}
 
 		$tag = $this->tagIn(['p', 'div'], 'p');
-
 		$align = $this->tagIn(self::TEXT_ALIGN, '');
+
 		if(!$align){
 			$align = $this->attributeIn('align', self::TEXT_ALIGN, 'left');
 		}
 
-		return '<'.$tag.$this->get_title().$this->get_css_class(['bb-container', $align]).'>'.$this->content.'</'.$tag.'>';
+		return '<'.$tag.$this->getTitle().$this->getCssClass(['bb-container', $align]).'>'.$this->content.'</'.$tag.'>';
 	}
 
 }

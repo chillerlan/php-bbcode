@@ -38,12 +38,9 @@ class Links extends MarkdownBaseModule implements ModuleInterface{
 		$url = $this->bbtag();
 
 		if(!empty($this->content)){
-			if($url && $this->checkUrl($url)){
-				return '['.$this->content.']('.$url.')';
-			}
-			else{
-				return $this->checkUrl($this->content) ? : $this->content;
-			}
+			return $url && $this->checkUrl($url)
+				? '['.$this->content.']('.$url.')'
+				: $this->checkUrl($this->content) ? : $this->content;
 		}
 
 		return $this->checkUrl($url) ? : '';

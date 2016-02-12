@@ -50,12 +50,12 @@ class Code extends MarkdownBaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+
 		if(empty($this->content)){
 			return '';
 		}
 
-		$this->clearPseudoClosingTags()
-		     ->clearEol(PHP_EOL);
+		$this->clearPseudoClosingTags()->clearEOL(PHP_EOL);
 
 		$exceptions = [
 			'js'   => 'javascript',
@@ -66,9 +66,7 @@ class Code extends MarkdownBaseModule implements ModuleInterface{
 		$content = array_key_exists($this->tag, $exceptions) ? $exceptions[$this->tag] : $this->tag;
 		$content .= $this->wrap($this->content, $this->eol_token);
 
-		$content = $this->wrap($content, '```');
-
-		return $this->wrap($content, $this->eol_token);
+		return $this->wrap($this->wrap($content, '```'), $this->eol_token);
 	}
 
 }

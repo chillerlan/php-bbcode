@@ -51,15 +51,14 @@ class Noparse extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+
 		if(empty($this->content)){
 			return '';
 		}
 
 		// easy stuff: remove the pseudo closing single tags
-		$this->clearPseudoClosingTags()
-		     ->clearEol(PHP_EOL);
+		$this->clearPseudoClosingTags()->clearEOL(PHP_EOL);
 
-		// todo: <pre>?
 		return '<pre class="bbcode noparse">'.$this->content.'</pre>';
 	}
 

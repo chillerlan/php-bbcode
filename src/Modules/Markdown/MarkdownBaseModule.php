@@ -49,7 +49,6 @@ class MarkdownBaseModule extends BaseModule implements BaseModuleInterface{
 	 * @return string
 	 */
 	public function sanitize($content){
-		// TODO: Implement sanitize() method.
 		return $content;
 	}
 

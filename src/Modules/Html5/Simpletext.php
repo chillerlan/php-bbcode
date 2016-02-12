@@ -35,11 +35,12 @@ class Simpletext extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+
 		if(empty($this->content)){
 			return '';
 		}
 
-		return '<'.$this->tag.$this->get_css_class().'>'.$this->content.'</'.$this->tag.'>';
+		return '<'.$this->tag.$this->getCssClass().'>'.$this->content.'</'.$this->tag.'>';
 	}
 
 }

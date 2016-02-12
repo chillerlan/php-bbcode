@@ -67,7 +67,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 * @var array
 	 * @todo allowed fonts -> options
 	 */
-	protected $_allowed_fonts = [
+	protected $allowed_fonts = [
 		'Arial',
 		'Chicago',
 		'Courier New',
@@ -84,15 +84,15 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	]; // ban comic sans: 'Comic Sans MS',
 
 	/**
-	 * @todo allowed colors -> options?
+	 * @todo allowed_colors -> options?
 	 *
 	protected $css_colors = 'aliceblue,antiquewhite,aqua,aquamarine,...';
 	 */
 
 	/**
-	 * @todo css class prefix -> options?
+	 * @todo css_class_prefix -> options?
 	 *
-	protected $_css_class_prefix = 'bbcode-';
+	protected $css_class_prefix = 'bbcode-';
 	 */
 
 	/**
@@ -113,7 +113,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @see https://xkcd.com/221/
 	 */
-	protected function random_id(){
+	protected function randomID(){
 		return hash('crc32b', mt_rand().microtime(true));
 	}
 
@@ -125,7 +125,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string usable as (X)HTML/XML class attribute
 	 */
-	protected function get_css_class(array $additional_classes = []){
+	protected function getCssClass(array $additional_classes = []){
 		$classes = $this->getAttribute('class', '').' '.implode(' ', $additional_classes);
 		$classes =preg_replace('/[^a-z\d\- ]/i', '', $classes);
 		$classes = trim($classes);
@@ -141,7 +141,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string usable as (X)HTML/XML title attribute
 	 */
-	protected function get_title($title = ''){
+	protected function getTitle($title = ''){
 		$title = $this->getAttribute('title', $title);
 
 		// @todo: filter
@@ -156,7 +156,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string usable as (X)HTML/XML style attribute
 	 */
-	protected function get_style(array $style = []){
+	protected function getStyle(array $style = []){
 		$out = [];
 
 		foreach($style as $property => $value){
