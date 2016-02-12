@@ -88,11 +88,13 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 
 		$url = $this->checkUrl($this->getAttribute('url'));
 
-		$this->_title = 'Quote'.$header;
+		$header = $this->language->expanderDisplayQuote().$header;
+
+		$this->_title = $header;
 		$this->_title .= $url ? ', source: '.$url : '';
 
 		$this->_class = 'quote';
-		$this->_header = 'Quote'.$header.($url ? ' <small>[<a href="'.$url.'">source</a>]<small>' : '');
+		$this->_header = $header.($url ? ' <small>[<a href="'.$url.'">source</a>]<small>' : '');
 		$this->_hide = $this->getAttribute('hide') ? 'none' : 'block';
 	}
 
@@ -103,7 +105,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 		$desc = $this->getAttribute('desc');
 
 		$this->_class = 'spoiler';
-		$this->_header = 'Spoiler'.($desc ? ': <span>'.$desc.'</span>' : '');
+		$this->_header = $this->language->expanderDisplaySpoiler().($desc ? ': <span>'.$desc.'</span>' : '');
 		$this->_hide = 'none';
 	}
 
@@ -112,7 +114,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 */
 	private function expander(){
 		$this->_class = 'expander';
-		$this->_header = 'Expander';
+		$this->_header = $this->language->expanderDisplayExpander();
 		$this->_hide = $this->getAttribute('hide') ? 'none' : 'block';
 	}
 
@@ -121,9 +123,8 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 */
 	private function trigger(){
 		$this->_class = 'trigger';
-		$this->_header = 'Trigger warning! The following content may be harmful to sensitive audience!';
+		$this->_header = $this->language->expanderDisplayTrigger();
 		$this->_hide = 'none';
 	}
-
 
 }

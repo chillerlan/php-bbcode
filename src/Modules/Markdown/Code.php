@@ -44,7 +44,6 @@ class Code extends MarkdownBaseModule implements ModuleInterface{
 
 	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
-	 * @todo translations
 	 *
 	 * @return string a transformed snippet
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()

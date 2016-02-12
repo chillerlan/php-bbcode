@@ -44,7 +44,6 @@ class Code extends Html5BaseModule implements ModuleInterface{
 
 	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
-	 * @todo translations
 	 *
 	 * @return string a transformed snippet
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
@@ -64,25 +63,8 @@ class Code extends Html5BaseModule implements ModuleInterface{
 
 		$this->_style = ['display' => $this->getAttribute('hide') ? 'none' : 'block'];
 
-		/**
-		 * Map of code tag -> display name
-		 * @todo improve, translate
-		 */
-		$code_display = [
-			'css'  => 'Stylesheet/CSS',
-			'php'  => 'PHP',
-			'sql'  => 'SQL',
-			'xml'  => 'XML',
-			'html' => 'HTML',
-			'js'   => 'JavaScript',
-			'json' => 'JSON',
-			'pre'  => 'Code',
-			'code' => 'Code',
-			'nsis' => 'NullSoft Installer Script',
-		][$this->tag];
-
 		return '<div data-id="'.$id.'" '.$this->get_title().$this->get_css_class('expander code-header '.$this->tag).'>'
-		.$code_display
+		.$this->language->string('codeDisplay'.strtoupper($this->tag))
 		.($file ? ' - contents of file "<span>'.$file.'</span>"' : '')
 		.($desc ? ' - <span>'.$desc.'</span>' : '')
 		.'</div>'
