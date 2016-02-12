@@ -37,8 +37,8 @@ class ClassLoaderTraitTest extends \PHPUnit_Framework_TestCase{
 	 * @expectedExceptionMessage stdClass does not implement chillerlan\bbcode\Modules\BaseModuleInterface
 	 */
 	public function testClassLoaderDoesNotImplementException(){
-		$options = new ParserOptions;
-		$options->base_module = stdClass::class;
+		$options                      = new ParserOptions;
+		$options->baseModuleInterface = stdClass::class;
 
 		$this->parser = $this->reflectionClass->newInstanceArgs([$options]);
 	}
@@ -48,8 +48,8 @@ class ClassLoaderTraitTest extends \PHPUnit_Framework_TestCase{
 	 * @expectedExceptionMessage foobar does not exist
 	 */
 	public function testClassLoaderDoesNotExistException(){
-		$options = new ParserOptions;
-		$options->base_module = 'foobar';
+		$options                      = new ParserOptions;
+		$options->baseModuleInterface = 'foobar';
 
 		$this->parser = $this->reflectionClass->newInstanceArgs([$options]);
 	}
