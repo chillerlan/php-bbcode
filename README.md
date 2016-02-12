@@ -6,6 +6,7 @@
 [![Coverage][coverage-badge]][coverage]
 [![Issues][issue-badge]][issues]
 [![SensioLabsInsight][sensio-badge]][sensio]
+[![GitterChat][gitter-badge]][gitter]
 
 [packagist-badge]: https://img.shields.io/packagist/v/chillerlan/bbcode.svg?style=flat-square
 [packagist]: https://packagist.org/packages/chillerlan/bbcode
@@ -19,6 +20,8 @@
 [issues]: https://github.com/chillerlan/bbcode/issues
 [sensio-badge]: https://img.shields.io/sensiolabs/i/9daeaa2a-abdc-43a6-bb8c-945e52e34751.svg?style=flat-square
 [sensio]: https://insight.sensiolabs.com/projects/9daeaa2a-abdc-43a6-bb8c-945e52e34751
+[gitter-badge]: https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square
+[gitter]: https://gitter.im/chillerlan/bbcode
 
 A recursive regexp [BBCode](http://en.wikipedia.org/wiki/BBCode) parser using [preg_replace_callback()](http://php.net/preg_replace_callback),
 based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member/69,mrniceguy) on
@@ -143,7 +146,7 @@ class MyAwesomeBaseModule extends BaseModule implements BaseModuleInterface{
 #### Encoder module
 Now that we have our base module, we're able to create the encoder module, where the actual transform happens.
 Each encoder module extends a base module depending on output type (`MyAwesomeBaseModule` here) 
-and implements `\chillerlan\bbcode\Modules\ModuleInterface`. The property `$tags` and the method `_transform()` are mandatory.
+and implements `\chillerlan\bbcode\Modules\ModuleInterface`. The property `$tags` and the method `__transform()` are mandatory.
 In case your module supports noparse or single tags, you may set the respective properties `$noparse_tags` and `$singletags`.
 ```php
 namespace Example\MyModules;
@@ -155,7 +158,7 @@ class MyAwesomeModule extends MyAwesomeBaseModule implements ModuleInterface{
 
 	protected $tags = ['mybbcode', 'somebbcode', 'whatever'];
 
-	public function _transform(){
+	public function __transform(){
 		if(empty($this->content)){
 			return '';
 		}
