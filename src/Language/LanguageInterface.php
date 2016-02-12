@@ -13,7 +13,8 @@
 namespace chillerlan\bbcode\Language;
 
 /**
- *
+ * @method string parserExceptionCallback($override_language = null)
+ * @method string parserExceptionMatchall($override_language = null)
  */
 interface LanguageInterface{
 

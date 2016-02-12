@@ -295,8 +295,8 @@ class Parser{
 		// still testing...
 		if($preg_error !== PREG_NO_ERROR){
 			// @codeCoverageIgnoreStart
-			throw new BBCodeException('preg_replace_callback() died on ['.$tag.'] due to a '.$this->preg_error[$preg_error]
-					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($bbcode, true)));
+			$message = sprintf($this->languageInterface->parserExceptionCallback(), $tag, $this->preg_error[$preg_error], $preg_error);
+			throw new BBCodeException($message);
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -345,8 +345,8 @@ class Parser{
 
 		if($preg_error !== PREG_NO_ERROR){
 			// @codeCoverageIgnoreStart
-			throw new BBCodeException('preg_match_all() died due to a '.$this->preg_error[$preg_error]
-					.' ('.$preg_error.')'.PHP_EOL.htmlspecialchars(print_r($attributes, true)));
+			$message = sprintf($this->languageInterface->parserExceptionMatchall(), $this->preg_error[$preg_error], $preg_error);
+			throw new BBCodeException($message);
 			// @codeCoverageIgnoreEnd
 		}
 

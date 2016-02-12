@@ -15,7 +15,8 @@ namespace chillerlan\bbcode\Language;
 use chillerlan\bbcode\Traits\ClassLoaderTrait;
 
 /**
- *
+ * @method string parserExceptionCallback($override_language = null)
+ * @method string parserExceptionMatchall($override_language = null)
  */
 class LanguageBase{
 	use ClassLoaderTrait;
