@@ -14,7 +14,6 @@ namespace chillerlan\BBCodeTest\normal;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 use ReflectionClass;
-use stdClass;
 
 class ParserTest extends \PHPUnit_Framework_TestCase{
 
@@ -22,6 +21,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase{
 	 * @var \chillerlan\bbcode\Parser
 	 */
 	protected $parser;
+
 	/**
 	 * @var \ReflectionClass
 	 */
@@ -59,28 +59,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase{
 		$method = $this->reflectionClass->getMethod('getSingle');
 		$this->parser = $this->reflectionClass->newInstance();
 		$this->assertEquals($singletags, $method->invoke($this->parser));
-	}
-
-	/**
-	 * @expectedException \chillerlan\BBCode\BBCodeException
-	 * @expectedExceptionMessage stdClass does not implement chillerlan\bbcode\Modules\BaseModuleInterface
-	 */
-	public function testClassLoaderDoesNotImplementException(){
-		$options = new ParserOptions;
-		$options->base_module = stdClass::class;
-
-		$this->parser = $this->reflectionClass->newInstanceArgs([$options]);
-	}
-
-	/**
-	 * @expectedException \chillerlan\BBCode\BBCodeException
-	 * @expectedExceptionMessage foobar does not exist
-	 */
-	public function testClassLoaderDoesNotExistException(){
-		$options = new ParserOptions;
-		$options->base_module = 'foobar';
-
-		$this->parser = $this->reflectionClass->newInstanceArgs([$options]);
 	}
 
 }
