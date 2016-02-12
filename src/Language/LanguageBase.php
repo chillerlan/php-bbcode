@@ -23,8 +23,8 @@ class LanguageBase{
 	/**
 	 * It's magic.
 	 *
-	 * @param $name
-	 * @param $arguments
+	 * @param string $name
+	 * @param array  $arguments
 	 *
 	 * @return mixed
 	 */
@@ -35,8 +35,8 @@ class LanguageBase{
 	/**
 	 * Returns a language string for a given key and overrides the current language if desired.
 	 *
-	 * @param      $key
-	 * @param null $override_language
+	 * @param string $key
+	 * @param string $override_language (a LanguageInterface FQCN)
 	 *
 	 * @return mixed
 	 * @throws \chillerlan\bbcode\BBCodeException
