@@ -46,8 +46,7 @@ class Singletags extends Html5BaseModule implements ModuleInterface{
 
 		switch($this->tag){
 			case 'clear':
-				$this->_style = ['clear' => $this->bbtag_in(['both', 'left', 'right'], 'both')];
-				return '<br'.$this->get_style().' />';
+				return '<br'.$this->get_css_class('bb-clear '.$this->bbtag_in(['both', 'left', 'right'], 'both')).' />';
 			default:
 				return '<'.$this->tag.$this->get_css_class().' />';
 		}

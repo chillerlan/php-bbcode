@@ -146,21 +146,21 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	public function testSingletagModule(){
 		foreach(array_keys($this->parser->getTagmap(), Singletags::class) as $tag){
 			$parsed = $this->parser->parse('['.$tag.']');
-			$expected = $tag === 'clear' ? '<br style="clear:both" />' : '<'.$tag.' />';
+			$expected = $tag === 'clear' ? '<br class="bb-clear both" />' : '<'.$tag.' />';
 			$this->assertEquals($expected, $parsed);
 		}
 	}
 
 	public function styledTextDataProvider(){
 		return [
-			['[color=#424242]color[/color]', '<span style="color:#424242">color</span>'],
-			['[font=Helvetica]font[/font]', '<span style="font-family:Helvetica">font</span>'],
-			['[tt]typewriter[/tt]', '<span style="font-family:Courier, monospace">typewriter</span>'],
-			['[size=42px]size[/size]', '<span style="font-size:42px;line-height:1em">size</span>'],
-			['[i]italic[/i]', '<span style="font-style:italic">italic</span>'],
-			['[b]bold[/b]', '<span style="font-weight:bold">bold</span>'],
-			['[s]strikethrough[/s]', '<span style="text-decoration:line-through">strikethrough</span>'],
-			['[u]underline[/u]', '<span style="text-decoration:underline">underline</span>'],
+			['[color=#424242]color[/color]', '<span class="bb-text color" style="color:#424242">color</span>'],
+			['[font=Helvetica]font[/font]', '<span class="bb-text font" style="font-family:Helvetica">font</span>'],
+			['[size=42px]size[/size]', '<span class="bb-text size" style="font-size:42px;line-height:1em">size</span>'],
+			['[tt]typewriter[/tt]', '<span class="bb-text typewriter">typewriter</span>'],
+			['[i]italic[/i]', '<span class="bb-text italic">italic</span>'],
+			['[b]bold[/b]', '<span class="bb-text bold">bold</span>'],
+			['[s]strikethrough[/s]', '<span class="bb-text linethrough">strikethrough</span>'],
+			['[u]underline[/u]', '<span class="bb-text underline">underline</span>'],
 		];
 	}
 

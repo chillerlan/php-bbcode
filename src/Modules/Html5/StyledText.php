@@ -20,6 +20,20 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 class StyledText extends Html5BaseModule implements ModuleInterface{
 
 	/**
+	 * CSS classes for each tag
+	 */
+	const CSS_CLASS = [
+		'color' => 'color',
+		'font'  => 'font',
+		'size'  => 'size',
+		'tt'    => 'typewriter',
+		'i'     => 'italic',
+		'b'     => 'bold',
+		's'     => 'linethrough',
+		'u'     => 'underline',
+	];
+
+	/**
 	 * An array of tags the module is able to process
 	 *
 	 * @var array
@@ -39,20 +53,19 @@ class StyledText extends Html5BaseModule implements ModuleInterface{
 			return '';
 		}
 
-		$bbtag = $this->bbtag();
+		if(in_array($this->tag, ['color', 'font', 'size'])){
+			$bbtag = $this->bbtag();
 
-		$this->_style = [
-			                'color' => ['color' => $bbtag],
-			                'font'  => ['font-family' => $this->bbtag_in($this->_allowed_fonts, '')],
-			                'tt'    => ['font-family' => 'Courier, monospace'],
-			                'size'  => ['font-size' => $bbtag, 'line-height' => '1em'],
-			                'i'     => ['font-style' => 'italic'],
-			                'b'     => ['font-weight' => 'bold'],
-			                's'     => ['text-decoration' => 'line-through'],
-			                'u'     => ['text-decoration' => 'underline'],
-		                ][$this->tag];
+			$this->_style = [
+				'color' => ['color' => $bbtag],
+				'font'  => ['font-family' => $this->bbtag_in($this->_allowed_fonts, '')],
+				'size'  => ['font-size' => $bbtag, 'line-height' => '1em'],
+			][$this->tag];
+		}
 
-		return '<span'.$this->get_title().$this->get_style().'>'.$this->content.'</span>';
+		return '<span'.$this->get_title()
+			.$this->get_css_class('bb-text '.self::CSS_CLASS[$this->tag])
+			.$this->get_style().'>'.$this->content.'</span>';
 	}
 
 }
