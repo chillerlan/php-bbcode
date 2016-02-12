@@ -62,13 +62,6 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	protected $modules = [];
 
 	/**
-	 * Holds the current tag's style attributes
-	 *
-	 * @var array
-	 */
-	protected $_style = [];
-
-	/**
 	 * Allowed css fonts
 	 *
 	 * @var array
@@ -151,7 +144,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	protected function get_title($title = ''){
 		$title = $this->getAttribute('title', $title);
 
-		// todo: filter
+		// @todo: filter
 
 		return !empty($title) ? ' title="'.$title.'"' : '';
 	}
@@ -159,19 +152,21 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	/**
 	 * Collects all properties of self::$_style and merges them into a css-style compatible string
 	 *
+	 * @param array $style
+	 *
 	 * @return string usable as (X)HTML/XML style attribute
 	 */
-	protected function get_style(){
-		$style = [];
+	protected function get_style(array $style = []){
+		$out = [];
 
-		foreach($this->_style as $property => $value){
-			// todo: if(in_array($property, $allowed))?
+		foreach($style as $property => $value){
+			// @todo: if(in_array($property, $allowed))?
 			// handle exclusions of common user definable properties
 			switch(true){
 				// color
 				case in_array($property, ['background-color', 'color'])
 					&& !preg_match('/^#([a-f\d]{3}){1,2}$/i', $value):
-					// sizes
+				// sizes
 				case in_array($property, ['font-size', 'line-height', 'width', 'height'])
 					&& !preg_match('/^[\d\.]+(px|pt|em|%)$/', $value):
 					// yep, it's a merciless fall-through
@@ -180,11 +175,11 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 			}
 
 			if($value){
-				$style[] = $property.':'.$value;
+				$out[] = $property.':'.$value;
 			}
 		}
 
-		return !empty($style) ? ' style="'.implode(';', $style).'"' : '';
+		return !empty($out) ? ' style="'.implode(';', $out).'"' : '';
 	}
 
 }

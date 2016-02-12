@@ -45,8 +45,6 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
-		$this->_style = [];
-
 		switch(true){
 			case $this->tagIn(['tr', 'thead', 'tbody', 'tfoot']):
 				return $this->rows();
@@ -67,11 +65,9 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 			return '';
 		}
 
-		$this->_style = [
-			'width' => $this->getAttribute('width'),
-		];
-
-		return '<table'.$this->get_css_class(['bb-table']).$this->get_style().'>'.$this->eol($this->content).'</table>';
+		return '<table'.$this->get_css_class(['bb-table'])
+			.$this->get_style(['width' => $this->getAttribute('width')])
+			.'>'.$this->eol($this->content).'</table>';
 	}
 
 	/**
@@ -132,23 +128,23 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @return string
 	 */
 	private function cells(){
-
+		$style = [];
 		$align = $this->getAttribute('align');
-		if($align && in_array($align, $this->_text_align)){
-			$this->_style['text-align'] = $align;
+		if($align && in_array($align, self::TEXT_ALIGN)){
+			$style['text-align'] = $align;
 		}
 
 		$valign = $this->getAttribute('valign');
 		if($valign && in_array($valign, ['baseline', 'bottom', 'middle', 'top'])){
-			$this->_style['vertical-align'] = $valign;
+			$style['vertical-align'] = $valign;
 		}
 
 		if($width = $this->getAttribute('width')){
-			$this->_style['width'] = $width;
+			$style['width'] = $width;
 		}
 
 		if($this->getAttribute('nowrap')){
-			$this->_style['white-space'] = 'nowrap';
+			$style['white-space'] = 'nowrap';
 		}
 
 		$span = '';
@@ -163,7 +159,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 			$abbr = $_abbr ? ' abbr="'.$_abbr.'"' : '';
 		}
 
-		return '<'.$this->tag.$span.$abbr.$this->get_style().'>'.$this->eol($this->content, $this->eol_token).'</'.$this->tag.'>';
+		return '<'.$this->tag.$span.$abbr.$this->get_style($style).'>'.$this->eol($this->content, $this->eol_token).'</'.$this->tag.'>';
 	}
 
 }

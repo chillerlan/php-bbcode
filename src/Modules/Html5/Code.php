@@ -61,14 +61,12 @@ class Code extends Html5BaseModule implements ModuleInterface{
 		$file = $this->getAttribute('file');
 		$desc = $this->getAttribute('desc');
 
-		$this->_style = ['display' => $this->getAttribute('hide') ? 'none' : 'block'];
-
 		return '<div data-id="'.$id.'" '.$this->get_title().$this->get_css_class(['expander', 'code-header', $this->tag]).'>'
 		.$this->language->string('codeDisplay'.strtoupper($this->tag))
 		.($file ? ' - contents of file "<span>'.$file.'</span>"' : '')
 		.($desc ? ' - <span>'.$desc.'</span>' : '')
 		.'</div>'
-		.'<pre id="'.$id.'"'.$this->get_css_class(['code-body']).$this->get_style().'>'
+		.'<pre id="'.$id.'"'.$this->get_css_class(['code-body']).$this->get_style(['display' => $this->getAttribute('hide') ? 'none' : 'block']).'>'
 		.'<code'.$this->get_css_class(['language-'.$this->tag]).'>'.$this->sanitize($this->content).'</code></pre>';
 	}
 

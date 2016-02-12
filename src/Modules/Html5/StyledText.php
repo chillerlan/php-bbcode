@@ -53,10 +53,12 @@ class StyledText extends Html5BaseModule implements ModuleInterface{
 			return '';
 		}
 
+		$style = [];
+
 		if(in_array($this->tag, ['color', 'font', 'size'])){
 			$bbtag = $this->bbtag();
 
-			$this->_style = [
+			$style = [
 				'color' => ['color' => $bbtag],
 				'font'  => ['font-family' => $this->bbtag_in($this->_allowed_fonts, '')],
 				'size'  => ['font-size' => $bbtag],
@@ -65,7 +67,7 @@ class StyledText extends Html5BaseModule implements ModuleInterface{
 
 		return '<span'.$this->get_title()
 			.$this->get_css_class(['bb-text', self::CSS_CLASS[$this->tag]])
-			.$this->get_style().'>'.$this->content.'</span>';
+			.$this->get_style($style).'>'.$this->content.'</span>';
 	}
 
 }
