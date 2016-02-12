@@ -155,7 +155,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		return [
 			['[color=#424242]color[/color]', '<span class="bb-text color" style="color:#424242">color</span>'],
 			['[font=Helvetica]font[/font]', '<span class="bb-text font" style="font-family:Helvetica">font</span>'],
-			['[size=42px]size[/size]', '<span class="bb-text size" style="font-size:42px;line-height:1em">size</span>'],
+			['[size=42px]size[/size]', '<span class="bb-text size" style="font-size:42px">size</span>'],
 			['[tt]typewriter[/tt]', '<span class="bb-text typewriter">typewriter</span>'],
 			['[i]italic[/i]', '<span class="bb-text italic">italic</span>'],
 			['[b]bold[/b]', '<span class="bb-text bold">bold</span>'],

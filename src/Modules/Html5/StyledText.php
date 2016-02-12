@@ -59,7 +59,7 @@ class StyledText extends Html5BaseModule implements ModuleInterface{
 			$this->_style = [
 				'color' => ['color' => $bbtag],
 				'font'  => ['font-family' => $this->bbtag_in($this->_allowed_fonts, '')],
-				'size'  => ['font-size' => $bbtag, 'line-height' => '1em'],
+				'size'  => ['font-size' => $bbtag],
 			][$this->tag];
 		}
 
