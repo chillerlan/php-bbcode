@@ -75,8 +75,8 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 			$this->_title = $this->_header;
 		}
 
-		return '<div data-id="'.$id.'"'.$this->get_title($this->_title).$this->get_css_class($this->_class.'-header expander').'>'.$this->_header.'</div>'.
-		'<div id="'.$id.'"'.$this->get_css_class($this->_class.'-body').$this->get_style().'>'.$this->content.'</div>';
+		return '<div data-id="'.$id.'"'.$this->get_title($this->_title).$this->get_css_class([$this->_class.'-header', 'expander']).'>'.$this->_header.'</div>'.
+		'<div id="'.$id.'"'.$this->get_css_class([$this->_class.'-body']).$this->get_style().'>'.$this->content.'</div>';
 	}
 
 	/**

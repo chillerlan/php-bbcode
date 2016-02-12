@@ -71,7 +71,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 			'width' => $this->getAttribute('width'),
 		];
 
-		return '<table'.$this->get_css_class('bb-table').$this->get_style().'>'.$this->eol($this->content).'</table>';
+		return '<table'.$this->get_css_class(['bb-table']).$this->get_style().'>'.$this->eol($this->content).'</table>';
 	}
 
 	/**

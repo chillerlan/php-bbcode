@@ -64,7 +64,7 @@ class StyledText extends Html5BaseModule implements ModuleInterface{
 		}
 
 		return '<span'.$this->get_title()
-			.$this->get_css_class('bb-text '.self::CSS_CLASS[$this->tag])
+			.$this->get_css_class(['bb-text', self::CSS_CLASS[$this->tag]])
 			.$this->get_style().'>'.$this->content.'</span>';
 	}
 

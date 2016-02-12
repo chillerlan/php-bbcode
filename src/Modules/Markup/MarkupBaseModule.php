@@ -21,14 +21,45 @@ use chillerlan\bbcode\Modules\BaseModuleInterface;
 class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 
 	/**
+	 * Allowed text-align modes
+	 *
+	 * @var array
+	 */
+	const TEXT_ALIGN = [
+		'left',
+		'center',
+		'right',
+		'justify',
+		'start',
+		'end',
+		'inherit',
+	];
+
+	/**
+	 * Allowed vertical-align modes
+	 *
+	 * @var array
+	 */
+	const VERTICAL_ALIGN = [
+		'baseline',
+		'sub',
+		'super',
+		'text-top',
+		'text-bottom',
+		'middle',
+		'top',
+		'bottom',
+		'inherit',
+	];
+
+
+	/**
 	 * Holds an array of FQN strings to the current base module's children
 	 *
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
-	protected $modules = [
-
-	];
+	protected $modules = [];
 
 	/**
 	 * Holds the current tag's style attributes
@@ -58,38 +89,6 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 		'Verdana',
 		'Courier, monospace',
 	]; // ban comic sans: 'Comic Sans MS',
-
-	/**
-	 * Allowed text-align modes
-	 *
-	 * @var array
-	 */
-	protected $_text_align = [
-		'left',
-		'center',
-		'right',
-		'justify',
-		'start',
-		'end',
-		'inherit',
-	];
-
-	/**
-	 * Allowed vertical-align modes
-	 *
-	 * @var array
-	 */
-	protected $_vertical_align = [
-		'baseline',
-		'sub',
-		'super',
-		'text-top',
-		'text-bottom',
-		'middle',
-		'top',
-		'bottom',
-		'inherit',
-	];
 
 	/**
 	 * @todo allowed colors -> options?
@@ -129,13 +128,14 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 * Returns a cleaned string containing all given css classnames
 	 * (class bbcode attribute *and* parameter)
 	 *
-	 * @param string $additional_classes
+	 * @param array $additional_classes
 	 *
 	 * @return string usable as (X)HTML/XML class attribute
 	 */
-	protected function get_css_class($additional_classes = ''){
-		$classes = $this->getAttribute('class', '').' '.$additional_classes;
-		$classes = trim(preg_replace('/[^a-z\d\- ]/i', '', $classes));
+	protected function get_css_class(array $additional_classes = []){
+		$classes = $this->getAttribute('class', '').' '.implode(' ', $additional_classes);
+		$classes =preg_replace('/[^a-z\d\- ]/i', '', $classes);
+		$classes = trim($classes);
 
 		return !empty($classes) ? ' class="'.$classes.'"' : '';
 	}
