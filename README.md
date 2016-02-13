@@ -1,5 +1,3 @@
-# chillerlan/bbcode
-
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
 [![Travis][travis-badge]][travis]
@@ -22,6 +20,8 @@
 [sensio]: https://insight.sensiolabs.com/projects/9daeaa2a-abdc-43a6-bb8c-945e52e34751
 [gitter-badge]: https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square
 [gitter]: https://gitter.im/chillerlan/bbcode
+
+# chillerlan/bbcode
 
 A recursive regexp [BBCode](http://en.wikipedia.org/wiki/BBCode) parser using [preg_replace_callback()](http://php.net/preg_replace_callback),
 based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member/69,mrniceguy) on
@@ -80,12 +80,13 @@ In order to create a `Parser` instance, you'll first want to create an instance 
 However, this step is optional (meta, eh?).
 ```php
 $options = new ParserOptions;
+$options->languageInterface = MyLanguage::class;
+$options->baseModuleInterface = MyAwesomeBaseModule::class;
+$options->parserExtensionInterface = MyAwesomeParserExtension::class;
 $options->sanitize = true;
 $options->nesting_limit = 10;
 $options->eol_placeholder = '__MYEOL__';
 $options->bbtag_placeholder = '__MYBBTAG__';
-$options->base_module = MyAwesomeBaseModule::class;
-$options->parser_extension = MyAwesomeParserExtension::class;
 $options->allowed_tags = ['mybbcode', 'somebbcode', 'whatever'];
 $options->allow_all = false;
 ```
@@ -98,7 +99,7 @@ $bbcode = new Parser($options);
 // or...
 
 $bbcode = new Parser;
-$bbcode->set_options($options);
+$bbcode->setOptions($options);
 ```
 
 Run the parser and output:
@@ -108,9 +109,13 @@ echo $bbcode->parse($some_string_containing_bbcode);
 
 In case you need some diagnostics, here you go:
 ```php
-$bbcode->get_tagmap(); // map of tag -> module FQCN
-$bbcode->get_allowed(); // an array of all allowed tags
-$bbcode->get_noparse(); // an array of all noparse tags
+$bbcode->getTagmap();  // map of tag -> module FQCN
+$bbcode->getAllowed(); // all allowed tags
+$bbcode->getNoparse(); // all noparse tags
+$bbcode->getSingle();  // all singletags
+
+// get all tags of a module
+$module_tags = array_keys($bbcode->getTagmap(), MyAwesomeModule::class);
 ```
 
 That's all!
@@ -226,5 +231,9 @@ class MyAwesomeParserExtension implements ParserExtensionInterface{
 The parser may cause some high CPU load, depending on the input. You should never consider to use it somewhere
 in your output subsystem - not even with strong caching. Encode on input - you'll want a preview anyway. ;)
 
+You may also run into several bugs. In fact, the BBCoder is essentially a tool to squeeze out any PCRE related bug in PHP known to man (and perhaps unknown). Have fun! ;)
+[It is highly recommended to use these php.ini settings](https://github.com/chillerlan/bbcode/blob/master/travis-php.ini), especially to disable the PCRE JIT in PHP7 which is a troublemaker.
+In case you happen to run into a PCRE related bug, i ask you to open an issue over here along with the bbcode which caused the error and further information.
+
 ### Disclaimer!
-I don't take responsibility for molten CPUs, smashed keyboards, broken screens etc.. Use at your own risk!
+I don't take responsibility for molten CPUs, smashed keyboards, broken HTML etc.. Use at your own risk!
