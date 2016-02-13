@@ -11,20 +11,31 @@
 
 namespace chillerlan\BBCodeTest\normal\Language;
 
+use chillerlan\bbcode\Language\Chinese;
 use chillerlan\bbcode\Language\English;
+use chillerlan\bbcode\Language\French;
 use chillerlan\bbcode\Language\German;
+use chillerlan\bbcode\Language\Spanish;
+use ReflectionClass;
 
 class LanguageBaseTest extends \PHPUnit_Framework_TestCase{
 
-	protected function setUp(){
-
-	}
+	const LANGUAGES = [
+		Chinese::class,
+		English::class,
+		French::class,
+	    German::class,
+	    Spanish::class,
+	];
 
 	public function testIterateLanguage(){
-		$lang = new English;
-		foreach($lang as $key => $string){
-			$this->assertEquals($lang->string($key), $lang->{$key}());
-			$this->assertEquals($lang->string($key, German::class), $lang->{$key}(German::class));
+		foreach(self::LANGUAGES as $languageInterface){
+			$reflectionClass = new ReflectionClass($languageInterface);
+			$lang = $reflectionClass->newInstance();
+
+			foreach($lang as $key => $string){
+				$this->assertEquals($lang->string($key, $languageInterface), $lang->{$key}($languageInterface));
+			}
 		}
 	}
 
