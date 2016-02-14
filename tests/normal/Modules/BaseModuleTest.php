@@ -12,7 +12,6 @@
 namespace chillerlan\BBCodeTest\normal\Modules;
 
 use chillerlan\bbcode\BBTemp;
-use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInfo;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
@@ -25,7 +24,6 @@ use ReflectionClass;
 class BaseModuleTest extends \PHPUnit_Framework_TestCase{
 
 	const BASE_MODULES = [
-		BaseModule::class,
 		Html5BaseModule::class,
 		MarkupBaseModule::class,
 		MarkdownBaseModule::class,
