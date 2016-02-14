@@ -44,6 +44,23 @@ class ParserOptions{
 	public $parserExtensionInterface = ParserExtension::class;
 
 	/**
+	 * CA Root Certificates for use with CURL/SSL
+	 *
+	 * @var string
+	 * @link http://init.haxx.se/ca/cacert.pem
+	 */
+	public $ca_info = null;
+
+	/**
+	 * Google API key. Used by the Video module to get info and thumbnails from youtube videos.
+	 *
+	 * @link https://console.developers.google.com/apis/credentials -> server key
+	 *
+	 * @var string
+	 */
+	public $google_api_key = null;
+
+	/**
 	 * Input sanitizing
 	 *
 	 * You really don't want to set it to false, do you?
