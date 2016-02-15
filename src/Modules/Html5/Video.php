@@ -164,11 +164,14 @@ class Video extends Html5BaseModule implements ModuleInterface{
 		// @todo collect & batch request
 		$response = $this->fetch('https://api.vimeo.com/videos/'.$id, ['access_token' => $this->parserOptions->vimeo_access_token])->json;
 
+		// @codeCoverageIgnoreStart
+		// access token needed - no coverage
 		if(isset($response->link)){
 			// @todo add fancyness
 			var_dump($response);
 			return $this->flash ? 'https://vimeo.com/moogaloop.swf?clip_id='.$id : 'https://player.vimeo.com/video/'.$id;
 		}
+		// @codeCoverageIgnoreEnd
 
 		return '';
 	}
@@ -200,11 +203,14 @@ class Video extends Html5BaseModule implements ModuleInterface{
 
 		$response = $this->fetch('https://www.googleapis.com/youtube/v3/videos', $params)->json;
 
+		// @codeCoverageIgnoreStart
+		// api key needed - no coverage
 		if(isset($response->items) && is_array($response->items) && $response->items[0]->id === $id){
 			// @todo support playlists
 			var_dump($response);
 			return 'https://www.youtube.com/'.($this->flash ? 'v/' : 'embed/').preg_replace('/[^a-z\d-_]/i', '', $id);
 		}
+		// @codeCoverageIgnoreEnd
 
 		return '';
 	}
