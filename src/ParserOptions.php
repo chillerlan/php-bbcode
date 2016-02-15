@@ -61,6 +61,15 @@ class ParserOptions{
 	public $google_api_key = null;
 
 	/**
+	 * Vimeo API access token.
+	 *
+	 * @link https://developer.vimeo.com/apps/[YOUR_APP_ID]#authentication
+	 *
+	 * @var string
+	 */
+	public $vimeo_access_token = null;
+
+	/**
 	 * Input sanitizing
 	 *
 	 * You really don't want to set it to false, do you?
