@@ -13,11 +13,15 @@
 namespace chillerlan\bbcode\Modules\Html5;
 
 use chillerlan\bbcode\Modules\ModuleInterface;
+use chillerlan\bbcode\Traits\RequestTrait;
 
 /**
  * Transforms several video tags into HTML5
+ *
+ * @todo
  */
 class Video extends Html5BaseModule implements ModuleInterface{
+	use RequestTrait;
 
 	/**
 	 * An array of tags the module is able to process
@@ -32,28 +36,21 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @var string
 	 */
-	private $_host;
+	protected $host;
 
 	/**
 	 * temp url
 	 *
 	 * @var array
 	 */
-	private $_url;
-
-	/**
-	 * temp video url
-	 *
-	 * @var string
-	 */
-	private $_video_url;
+	protected $url;
 
 	/**
 	 * temp flash
 	 *
 	 * @var string
 	 */
-	private $_flash;
+	protected $flash;
 
 	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
@@ -63,29 +60,34 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform(){
+		$this->setRequestCA($this->parserOptions->ca_info);
+
 		if(empty($this->content)){
 			return '';
 		}
 
-		$this->_flash = $this->getAttribute('flash');
-		$provider = $this->_get_provider();
-		call_user_func([$this, $provider]);
+		$this->url   = parse_url($this->content);
+		$this->host  = isset($this->url['host']) ? str_replace('www.', '', $this->url['host']) : false;
+		$this->flash = $this->getAttribute('flash');
+
+		$provider    = $this->getProvider();
+		$video_url   = call_user_func([$this, $provider]);
 
 		if($provider === 'video'){
-			return '<video src="'.$this->_video_url.'"'.$this->get_css_class('bb-video').' preload="auto" controls="true"></video>';
+			return '<video src="'.$video_url.'"'.$this->getCssClass('bb-video').' preload="auto" controls="true"></video>';
 		}
 		else{
-			$object = '<iframe src="'.$this->_video_url.'" allowfullscreen></iframe>';
+			$object = '<iframe src="'.$video_url.'" allowfullscreen></iframe>';
 
-			if($this->_flash){
-				$object = '<object type="application/x-shockwave-flash" data="'.$this->_video_url.'">'
+			if($this->flash){
+				$object = '<object type="application/x-shockwave-flash" data="'.$video_url.'">'
 					.'<param name="allowfullscreen" value="true">'
 					.'<param name="wmode" value="opaque" />'
-					.'<param name="movie" value="'.$this->_video_url.'" />'
+					.'<param name="movie" value="'.$video_url.'" />'
 					.'</object>';
 			}
 
-			return '<div'.$this->get_css_class('bb-video').'>'.$object.'</div>';
+			return '<div'.$this->getCssClass(['bb-video']).'>'.$object.'</div>';
 		}
 	}
 
@@ -94,19 +96,17 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string
 	 */
-	private function _get_provider(){
-		$this->_url = parse_url($this->content);
-		$this->_host = isset($this->_url['host']) ? str_replace('www.', '', $this->_url['host']) : false;
-		$_bbtag = $this->bbtag();
+	protected function getProvider(){
+		$bbtag = $this->bbtag();
 
 		switch(true){
-			case $this->tag === 'vimeo' || $_bbtag === 'vimeo' || $this->_host === 'vimeo.com':
+			case $this->tag === 'vimeo' || $bbtag === 'vimeo' || $this->host === 'vimeo.com':
 				return 'vimeo';
-			case $this->tag === 'youtube' || $_bbtag === 'youtube' || in_array($this->_host, ['youtube.com', 'youtu.be']):
+			case $this->tag === 'youtube' || $bbtag === 'youtube' || in_array($this->host, ['youtube.com', 'youtu.be']):
 				return 'youtube';
-			case $this->tag === 'moddb' || $_bbtag === 'moddb' || $this->_host === 'moddb.com':
+			case $this->tag === 'moddb' || $bbtag === 'moddb' || $this->host === 'moddb.com':
 				return 'moddb';
-			case $this->tag === 'dmotion' || $_bbtag === 'dmotion' || in_array($this->_host, ['dailymotion.com', 'dai.ly']):
+			case $this->tag === 'dmotion' || $bbtag === 'dmotion' || in_array($this->host, ['dailymotion.com', 'dai.ly']):
 				return 'dmotion';
 			default:
 				return 'video';
@@ -116,72 +116,97 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	/**
 	 * Processes Daily Motion videos
 	 */
-	private function dmotion(){
+	protected function dmotion(){
 
-		switch($this->_host){
+		switch($this->host){
 			case 'dailymotion.com':
-				$id = explode('_', str_replace('/video/', '', $this->_url['path']), 2)[0];
+				$id = explode('_', str_replace('/video/', '', $this->url['path']), 2)[0];
 				break;
 			case 'dai.ly':
-				$id = $this->_url['path'];
+				$id = $this->url['path'];
 				break;
 			default:
 				$id = $this->content;
 				break;
 		}
 
-		$this->_video_url = 'http://www.dailymotion.com/'.($this->_flash ? 'swf' : 'embed').'/video/'.preg_replace('#[^a-z\d]#i', '', $id);
+		return 'http://www.dailymotion.com/'.($this->flash ? 'swf' : 'embed').'/video/'.preg_replace('#[^a-z\d]#i', '', $id);
 	}
 
 	/**
+	 * @todo indiedb
+	 *
 	 * Processes ModDB videos
 	 */
-	private function moddb(){
-		$id = $this->_host === 'moddb.com' && strpos('http://www.moddb.com/media/', $this->content) === 0
-			? $this->_url['path']
+	protected function moddb(){
+		$id = $this->host === 'moddb.com' && strpos('http://www.moddb.com/media/', $this->content) === 0
+			? $this->url['path']
 			: $this->content;
 
-		$this->_video_url = 'http://www.moddb.com/media/'.($this->_flash ? 'embed/' : 'iframe/').preg_replace('/[^\d]/', '', $id);
+		return 'http://www.moddb.com/media/'.($this->flash ? 'embed/' : 'iframe/').preg_replace('/[^\d]/', '', $id);
 	}
 
 	/**
 	 * Processes HTML5 video
 	 */
-	private function video(){
-		// todo: check video...
-		$this->_video_url = $this->content;
+	protected function video(){
+		// @todo check video...
+		return $this->content;
 	}
 
 	/**
 	 * Processes Vimeo videos
 	 */
-	private function vimeo(){
+	protected function vimeo(){
 		// since the video id is the only numeric part in a common vimeo share url, we can safely strip anything which is not number
-		$this->_video_url = 'https://'.($this->_flash ? 'vimeo.com/moogaloop.swf?clip_id=' : 'player.vimeo.com/video/').preg_replace('/[^\d]/', '', $this->content);
+		$id = preg_replace('/[^\d]/', '', $this->content);
+
+		// @todo collect & batch request
+		$response = $this->fetch('https://api.vimeo.com/videos/'.$id, ['access_token' => $this->parserOptions->vimeo_access_token])->json;
+
+		if(isset($response->link)){
+			// @todo add fancyness
+			var_dump($response);
+			return $this->flash ? 'https://vimeo.com/moogaloop.swf?clip_id='.$id : 'https://player.vimeo.com/video/'.$id;
+		}
+
+		return '';
 	}
 
 	/**
 	 * Processes YouTube videos
 	 */
-	private function youtube(){
+	protected function youtube(){
 
-		// check the video id if needed: http://gdata.youtube.com/feeds/api/videos/[VIDEO_ID]
-		// todo: support playlists
-		switch($this->_host){
+		switch($this->host){
 			case 'youtube.com':
-				parse_str($this->_url['query'], $q);
+				parse_str($this->url['query'], $q);
 				$id = $q['v'];
 				break;
 			case 'youtu.be':
-				$id = $this->_url['path'];
+				$id = $this->url['path'];
 				break;
 			default:
 				$id = $this->content;
 				break;
 		}
 
-		// clean out any suspect characters -> #[^a-z\d-_]#i
-		$this->_video_url = 'https://www.youtube.com/'.($this->_flash ? 'v/' : 'embed/').preg_replace('/[^a-z\d-_]/i', '', $id);
+		// check video (and get data)
+		$params = [
+			'id' => $id,
+			'part' => 'snippet',
+			'key' => $this->parserOptions->google_api_key,
+		];
+
+		$response = $this->fetch('https://www.googleapis.com/youtube/v3/videos', $params)->json;
+
+		if(isset($response->items) && is_array($response->items) && $response->items[0]->id === $id){
+			// @todo support playlists
+			var_dump($response);
+			return 'https://www.youtube.com/'.($this->flash ? 'v/' : 'embed/').preg_replace('/[^a-z\d-_]/i', '', $id);
+		}
+
+		return '';
 	}
 
 }

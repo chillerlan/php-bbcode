@@ -16,6 +16,7 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 
 /**
  * Transforms table tags into HTML5, as HTML5 as possible...
+ * @todo
  *
  * @link http://www.w3.org/TR/html5/tabular-data.html
  */
@@ -65,8 +66,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 			return '';
 		}
 
-		return '<table'.$this->get_css_class(['bb-table'])
-			.$this->get_style(['width' => $this->getAttribute('width')])
+		return '<table'.$this->getCssClass(['bb-table'])
+			.$this->getStyle(['width' => $this->getAttribute('width')])
 			.'>'.$this->eol($this->content).'</table>';
 	}
 
@@ -78,7 +79,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	private function col(){
 		$span = $this->getAttribute('span');
 
-		return '<col'.($span ? ' span="'.intval($span).'"' : '').$this->get_css_class().' />';
+		return '<col'.($span ? ' span="'.intval($span).'"' : '').$this->getCssClass().' />';
 	}
 
 	/**
@@ -93,7 +94,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 
 		$span = $this->getAttribute('span');
 
-		return '<colgroup'.($span ? ' span="'.intval($span).'"' : '').$this->get_css_class().'>'.$this->eol($this->content).'</colgroup>';
+		return '<colgroup'.($span ? ' span="'.intval($span).'"' : '').$this->getCssClass().'>'.$this->eol($this->content).'</colgroup>';
 	}
 
 	/**
@@ -159,7 +160,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 			$abbr = $_abbr ? ' abbr="'.$_abbr.'"' : '';
 		}
 
-		return '<'.$this->tag.$span.$abbr.$this->get_style($style).'>'.$this->eol($this->content, $this->eol_token).'</'.$this->tag.'>';
+		return '<'.$this->tag.$span.$abbr.$this->getStyle($style).'>'.$this->eol($this->content, $this->eol_token).'</'.$this->tag.'>';
 	}
 
 }

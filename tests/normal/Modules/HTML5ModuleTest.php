@@ -16,6 +16,7 @@ use chillerlan\bbcode\Modules\Html5\Simpletext;
 use chillerlan\bbcode\Modules\Html5\Singletags;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
+use Dotenv\Dotenv;
 
 /**
  * Class HTML5ModuleTestCritical
@@ -28,7 +29,12 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	protected $parser;
 
 	protected function setUp(){
+		(new Dotenv(__DIR__.'/../../'))->load(); // nasty
+
 		$options = new ParserOptions;
+		$options->google_api_key = getenv('GOOGLE_API');
+		$options->vimeo_access_token = getenv('VIMEO_TOKEN');
+		$options->ca_info        = __DIR__.'/../../test-cacert.pem';
 		$options->allow_all = true;
 		$this->parser = new Parser($options);
 	}
@@ -171,5 +177,38 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		$parsed = $this->parser->parse($bbcode);
 		$this->assertEquals($expected, $parsed);
 	}
+
+	public function videoDataProvider(){
+		return [
+			['https://www.youtube.com/watch?v=6r1-HTiwGiY', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['https://vimeo.com/136964218', '<div class="bb-video"><iframe src="https://player.vimeo.com/video/136964218" allowfullscreen></iframe></div>'],
+		];
+	}
+
+	/**
+	 * @dataProvider videoDataProvider
+	 */
+	public function testVideoModule($url, $expected){
+		// this test will fail on travis due to missing credentials
+		// the response will be dumped to CLI in this commit for testing purposes
+		$parsed = $this->parser->parse('[video]'.$url.'[/video]');
+		$this->assertEquals($expected, $parsed);
+	}
+
+	public function tableDataProvider(){
+		return [
+			['[table width=300px class=mybbtyble][tr][td]foobar[/td][/tr][/table]', '<table class="mybbtyble bb-table" style="width:300px"><tr><td>foobar</td></tr></table>'],
+#			['[table][/table]', ''],
+		];
+	}
+
+	/**
+	 * @dataProvider tableDataProvider
+	 */
+	public function testTableModule($bbcode, $expected){
+		$parsed = $this->parser->parse($bbcode);
+		$this->assertEquals($expected, $parsed);
+	}
+
 
 }
