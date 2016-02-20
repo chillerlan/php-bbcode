@@ -112,35 +112,37 @@ class Video extends Html5BaseModule implements ModuleInterface{
 		// Process YouTube videos
 		else if($this->tag === 'youtube' || $bbtag === 'youtube' || in_array($host, ['youtube.com', 'youtu.be'])){
 
-			switch($host){
-				case 'youtube.com':
-					parse_str($url['query'], $q);
-					$id = $q['v'];
-					break;
-				case 'youtu.be':
-					$id = $url['path'];
-					break;
-				default:
-					$id = $this->content;
-					break;
+			if($host === 'youtube.com'){
+				parse_str($url['query'], $q);
+				$id = $q['v'];
+			}
+			else if($host === 'youtu.be'){
+				$e = explode('/', $url['path'], 2);
+				$id = isset($e[1]) ? $e[1] : false;
+			}
+			else{
+				$id = $this->content;
 			}
 
-			// check video (and get data)
-			$params = [
-				'id' => $id,
-				'part' => 'snippet',
-				'key' => $this->parserOptions->google_api_key,
-			];
+			if($id){
 
-			$response = $this->fetch('https://www.googleapis.com/youtube/v3/videos', $params)->json;
+				// check video (and get data)
+				$params = [
+					'id' => $id,
+					'part' => 'snippet',
+					'key' => $this->parserOptions->google_api_key,
+				];
 
-			// api key needed - no coverage
-			// @codeCoverageIgnoreStart
-			if(isset($response->items) && is_array($response->items) && $response->items[0]->id === $id){
-				// @todo support playlists
-				return 'https://www.youtube.com/'.($this->flash ? 'v/' : 'embed/').preg_replace('/[^a-z\d-_]/i', '', $id);
+				$response = $this->fetch('https://www.googleapis.com/youtube/v3/videos', $params)->json;
+
+				// api key needed - no coverage
+				// @codeCoverageIgnoreStart
+				if(isset($response->items, $response->items[0]) && $response->items[0]->id === $id){
+					// @todo support playlists
+					return 'https://www.youtube.com/'.($this->flash ? 'v/' : 'embed/').preg_replace('/[^a-z\d-_]/i', '', $id);
+				}
+				// @codeCoverageIgnoreEnd
 			}
-			// @codeCoverageIgnoreEnd
 
 			return '';
 		}
@@ -158,16 +160,14 @@ class Video extends Html5BaseModule implements ModuleInterface{
 		// Process Daily Motion videos
 		else if($this->tag === 'dmotion' || $bbtag === 'dmotion' || in_array($host, ['dailymotion.com', 'dai.ly'])){
 
-			switch($host){
-				case 'dailymotion.com':
-					$id = explode('_', str_replace('/video/', '', $url['path']), 2)[0];
-					break;
-				case 'dai.ly':
-					$id = $url['path'];
-					break;
-				default:
-					$id = $this->content;
-					break;
+			if($host === 'dailymotion.com'){
+				$id = explode('_', str_replace('/video/', '', $url['path']), 2)[0];
+			}
+			else if($host === 'dai.ly'){
+				$id = $url['path'];
+			}
+			else{
+				$id = $this->content;
 			}
 
 			return 'http://www.dailymotion.com/'.($this->flash ? 'swf' : 'embed').'/video/'.preg_replace('#[^a-z\d]#i', '', $id);
