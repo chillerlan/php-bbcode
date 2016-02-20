@@ -12,6 +12,8 @@
 namespace chillerlan\bbcode\Traits;
 
 use chillerlan\TinyCurl\Request;
+use chillerlan\TinyCurl\RequestOptions;
+use chillerlan\TinyCurl\URL;
 
 /**
  * Trait RequestTrait
@@ -33,16 +35,20 @@ trait RequestTrait{
 	 * @param array  $params
 	 * @param array  $curl_options
 	 *
-	 * @return \chillerlan\TinyCurl\Response
+	 * @return \chillerlan\TinyCurl\Response\ResponseInterface
 	 * @throws \chillerlan\TinyCurl\RequestException
 	 */
 	protected function fetch($url, array $params = [], array $curl_options = []){
-		return (new Request($this->ca_info))->fetch($url, $params, $curl_options);
+		$requestOptions               = new RequestOptions;
+		$requestOptions->curl_options = $curl_options;
+		$requestOptions->ca_info      = $this->ca_info;
+
+		return (new Request($requestOptions))->fetch(new URL($url, $params));
 	}
 
 	/**
 	 * Sets the path to the CA cert file
-
+	 *
 	 * @param $ca_info
 	 *
 	 * @return $this
