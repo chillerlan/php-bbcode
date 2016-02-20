@@ -53,22 +53,29 @@ class Video extends Html5BaseModule implements ModuleInterface{
 		}
 
 		$this->flash = $this->getAttribute('flash');
+		$video_url   = $this->getVideoURL();
 
-		if(!$video_url = $this->getVideoURL()){
+		if($video_url === false){
 			return '<video src="'.$this->content.'"'.$this->getCssClass(['bb-video']).' preload="auto" controls="true"></video>';
 		}
 		else{
-			$player = '<iframe src="'.$video_url.'" allowfullscreen></iframe>';
 
-			if($this->flash){
-				$player = '<object type="application/x-shockwave-flash" data="'.$video_url.'">'
-					.'<param name="allowfullscreen" value="true">'
-					.'<param name="wmode" value="opaque" />'
-					.'<param name="movie" value="'.$video_url.'" />'
-					.'</object>';
+			if(!empty($video_url)){
+				$player = '<iframe src="'.$video_url.'" allowfullscreen></iframe>';
+
+				if($this->flash){
+					$player = '<object type="application/x-shockwave-flash" data="'.$video_url.'">'
+					          .'<param name="allowfullscreen" value="true">'
+					          .'<param name="wmode" value="opaque" />'
+					          .'<param name="movie" value="'.$video_url.'" />'
+					          .'</object>';
+				}
+
+				return '<div'.$this->getCssClass(['bb-video']).'>'.$player.'</div>';
+
 			}
 
-			return '<div'.$this->getCssClass(['bb-video']).'>'.$player.'</div>';
+			return '';
 		}
 	}
 
@@ -95,7 +102,6 @@ class Video extends Html5BaseModule implements ModuleInterface{
 			// @codeCoverageIgnoreStart
 			if(isset($response->link)){
 				// @todo add fancyness
-				var_dump($response);
 				return $this->flash ? 'https://vimeo.com/moogaloop.swf?clip_id='.$id : 'https://player.vimeo.com/video/'.$id;
 			}
 			// @codeCoverageIgnoreEnd
@@ -132,7 +138,6 @@ class Video extends Html5BaseModule implements ModuleInterface{
 			// @codeCoverageIgnoreStart
 			if(isset($response->items) && is_array($response->items) && $response->items[0]->id === $id){
 				// @todo support playlists
-				var_dump($response);
 				return 'https://www.youtube.com/'.($this->flash ? 'v/' : 'embed/').preg_replace('/[^a-z\d-_]/i', '', $id);
 			}
 			// @codeCoverageIgnoreEnd
