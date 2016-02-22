@@ -24,12 +24,17 @@ use Dotenv\Dotenv;
 class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 
 	/**
+	 * @todo TRAVIS REMINDER!
+	 */
+	const DOTENV = '.env_example';
+
+	/**
 	 * @var \chillerlan\bbcode\Parser
 	 */
 	protected $parser;
 
 	protected function setUp(){
-		(new Dotenv(__DIR__.'/../../', '.env_example'))->load(); // nasty
+		(new Dotenv(__DIR__.'/../../', self::DOTENV))->load(); // nasty
 
 		$options = new ParserOptions;
 		$options->google_api_key = getenv('GOOGLE_API');
