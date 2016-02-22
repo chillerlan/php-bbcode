@@ -13,7 +13,7 @@
 namespace chillerlan\bbcode\Modules\Html5;
 
 use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\bbcode\Traits\RequestTrait;
+use chillerlan\TinyCurl\Traits\RequestTrait;
 
 /**
  * Transforms several video tags into HTML5
@@ -52,11 +52,18 @@ class Video extends Html5BaseModule implements ModuleInterface{
 			return '';
 		}
 
-		$this->flash = $this->getAttribute('flash');
 		$video_url   = $this->getVideoURL();
+		$this->flash = $this->getAttribute('flash');
+		$cssclass    = ['bb-video'];
+
+		if($this->getAttribute('wide')){
+			$cssclass[] = 'wide';
+		}
+
+		$cssclass = $this->getCssClass($cssclass);
 
 		if($video_url === false){
-			return '<video src="'.$this->content.'"'.$this->getCssClass(['bb-video']).' preload="auto" controls="true"></video>';
+			return '<video src="'.$this->content.'"'.$cssclass.' preload="auto" controls="true"></video>';
 		}
 		else{
 
@@ -71,7 +78,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 					          .'</object>';
 				}
 
-				return '<div'.$this->getCssClass(['bb-video']).'>'.$player.'</div>';
+				return '<div'.$cssclass.'>'.$player.'</div>';
 
 			}
 

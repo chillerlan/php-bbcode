@@ -29,7 +29,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	protected $parser;
 
 	protected function setUp(){
-		(new Dotenv(__DIR__.'/../../', '.env_example'))->load(); // nasty
+		(new Dotenv(__DIR__.'/../../'))->load(); // nasty
 
 		$options = new ParserOptions;
 		$options->google_api_key = getenv('GOOGLE_API');
@@ -178,22 +178,47 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals($expected, $parsed);
 	}
 
-	public function videoDataProvider(){
+	public function videoURLDataProvider(){
 		return [
-			['https://www.youtube.com/watch?v=6r1-HTiwGiY', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
-			['https://vimeo.com/136964218', '<div class="bb-video"><iframe src="https://player.vimeo.com/video/136964218" allowfullscreen></iframe></div>'],
+			['https://vimeo.com/136964218', '<iframe src="https://player.vimeo.com/video/136964218" allowfullscreen></iframe>'],
+			['https://www.youtube.com/watch?v=6r1-HTiwGiY', '<iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe>'],
+			['http://youtu.be/6r1-HTiwGiY', '<iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe>'],
+			['http://www.moddb.com/media/embed/72159', '<iframe src="http://www.moddb.com/media/iframe/72159" allowfullscreen></iframe>'],
+			['http://dai.ly/x3sjscz', '<iframe src="http://www.dailymotion.com/embed/video/x3sjscz" allowfullscreen></iframe>'],
+			['http://www.dailymotion.com/video/x3sjscz_the-bmw-m2-is-here-but-does-it-live-up-to-its-legendary-badge-let-s-try-it-out_tech', '<iframe src="http://www.dailymotion.com/embed/video/x3sjscz" allowfullscreen></iframe>'],
 		];
 	}
 
 	/**
-	 * @dataProvider videoDataProvider
+	 * @dataProvider videoURLDataProvider
 	 */
-	public function testVideoModule($url, $expected){
+/*	public function testVideoModuleURLMatch($url, $expected){
 		// this test will fail on travis due to missing credentials
-		// the response will be dumped to CLI in this commit for testing purposes
 		$parsed = $this->parser->parse('[video]'.$url.'[/video]');
-#		$this->assertEquals($expected, $parsed);
+		$this->assertEquals('<div class="bb-video">'.$expected.'</div>', $parsed);
+	}*/
+
+	public function videoBBCodeDataProvider(){
+		return [
+			['[video]http://youtu.be/6r1-HTiwGiY[/video]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['[youtube]http://youtu.be/6r1-HTiwGiY[/youtube]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['[youtube]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['[youtube flash=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><object type="application/x-shockwave-flash" data="https://www.youtube.com/v/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/v/6r1-HTiwGiY" /></object></div>'],
+			['[youtube wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['[youtube flash=1 wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><object type="application/x-shockwave-flash" data="https://www.youtube.com/embed/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/embed/6r1-HTiwGiY" /></object></div>'],
+			['[video]http://some.video.url/whatever[/video]', '<video src="http://some.video.url/whatever" class="bb-video" preload="auto" controls="true"></video>'],
+		];
 	}
+
+	/**
+	 * @dataProvider videoBBCodeDataProvider
+	 */
+/*	public function testVideoModuleBBCode($bbcode, $expected){
+		// this test will fail on travis due to missing credentials
+		$parsed = $this->parser->parse($bbcode);
+		$this->assertEquals($expected, $parsed);
+
+	}*/
 
 	public function tableDataProvider(){
 		return [
