@@ -29,7 +29,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	protected $parser;
 
 	protected function setUp(){
-		(new Dotenv(__DIR__.'/../../'))->load(); // nasty
+		(new Dotenv(__DIR__.'/../../', '.env_example'))->load(); // nasty
 
 		$options = new ParserOptions;
 		$options->google_api_key = getenv('GOOGLE_API');
