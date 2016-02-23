@@ -4,6 +4,7 @@
 [![Coverage][coverage-badge]][coverage]
 [![Issues][issue-badge]][issues]
 [![SensioLabsInsight][sensio-badge]][sensio]
+[![Scrunitizer][scrutinizer-badge]][scrutinizer]
 [![GitterChat][gitter-badge]][gitter]
 
 [packagist-badge]: https://img.shields.io/packagist/v/chillerlan/bbcode.svg?style=flat-square
@@ -18,6 +19,8 @@
 [issues]: https://github.com/chillerlan/bbcode/issues
 [sensio-badge]: https://img.shields.io/sensiolabs/i/9daeaa2a-abdc-43a6-bb8c-945e52e34751.svg?style=flat-square
 [sensio]: https://insight.sensiolabs.com/projects/9daeaa2a-abdc-43a6-bb8c-945e52e34751
+[scrutinizer-badge]: https://scrutinizer-ci.com/g/chillerlan/bbcode/badges/quality-score.png?b=master
+[scrutinizer]: https://scrutinizer-ci.com/g/chillerlan/bbcode
 [gitter-badge]: https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square
 [gitter]: https://gitter.im/chillerlan/bbcode
 
@@ -29,7 +32,8 @@ based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member
 Handles nested tags aswell as matching brackets and doesn't stumble across invalid tags.
 
 ## Requirements
-- PHP 5.6+, PHP 7
+- PHP 5.6+
+- PHP 7
 
 ----
 
@@ -132,11 +136,12 @@ namespace Example\MyModules;
 
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
+use Example\MyModules\MyAwesomeModule;
 
 class MyAwesomeBaseModule extends BaseModule implements BaseModuleInterface{
 
 	protected $modules = [
-		'\\Example\\MyModules\\MyAwesomeModule',
+		MyAwesomeModule::class,
 	];
 
 	protected $eol_token = '<br />';
@@ -226,6 +231,7 @@ class MyAwesomeParserExtension implements ParserExtensionInterface{
 
 }
 ```
+#### Language
 
 ### Notes
 The parser may cause some high CPU load, depending on the input. You should never consider to use it somewhere
