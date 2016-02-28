@@ -3,7 +3,7 @@
  * Class Parser
  *
  * @version      1.1.0
- * @date         11.02.2016
+ * @date         29.02.2016
  *
  * @filesource   Parser.php
  * @created      18.09.2015
