@@ -27,7 +27,7 @@ class ParserExtension implements ParserExtensionInterface{
 	 *
 	 * @param \chillerlan\bbcode\ParserOptions $options
 	 */
-	public function __construct(ParserOptions $options){
+	public function __construct(ParserOptions $options = null){
 		$this->options = $options;
 	}
 
