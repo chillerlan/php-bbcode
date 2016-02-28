@@ -32,7 +32,7 @@ based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member
 Handles nested tags aswell as matching brackets and doesn't stumble across invalid tags.
 
 ## Requirements
-- PHP 7
+- PHP 7 ([PHP 5.6+ compatible branch](https://github.com/chillerlan/bbcode/tree/php5))
 
 ----
 
