@@ -145,4 +145,14 @@ class ParserOptions{
 	 */
 	public $eol_token;
 
+	/**
+	 * @var string fqcn -> \chillerlan\Database\Drivers\DBDriverInterface
+	 */
+	public $DBDriver = null;
+
+	/**
+	 * @var \chillerlan\Database\DBOptions
+	 */
+	public $DBOptions = null;
+
 }
