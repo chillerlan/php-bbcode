@@ -4,16 +4,16 @@
  *
  * @filesource   MyAwesomeModule.php
  * @created      02.11.2015
- * @package      Example\MyModules
+ * @package      chillerlan\bbcodeExamples\MyModules
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace Example\MyModules;
+namespace chillerlan\bbcodeExamples\MyModules;
 
 use chillerlan\bbcode\Modules\ModuleInterface;
-use Example\MyModules\MyAwesomeBaseModule;
+use chillerlan\bbcodeExamples\MyModules\MyAwesomeBaseModule;
 
 /**
  * Transforms several simple text tags into HTML5 (custom)
@@ -35,7 +35,7 @@ class MyAwesomeModule extends MyAwesomeBaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function _transform(){
+	public function __transform(){
 		if(empty($this->content)){
 			return '';
 		}

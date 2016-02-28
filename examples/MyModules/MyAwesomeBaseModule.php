@@ -4,13 +4,13 @@
  *
  * @filesource   MyAwesomeBaseModule.php
  * @created      02.11.2015
- * @package      Example\MyModules
+ * @package      chillerlan\bbcodeExamples\MyModules
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace Example\MyModules;
+namespace chillerlan\bbcodeExamples\MyModules;
 
 use chillerlan\bbcode\Modules\BaseModule;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
@@ -27,7 +27,7 @@ class MyAwesomeBaseModule extends BaseModule implements BaseModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\ModuleInfo::$modules
 	 */
 	protected $modules = [
-		'\\Example\\MyModules\\MyAwesomeModule',
+		MyAwesomeModule::class,
 	];
 
 	/**

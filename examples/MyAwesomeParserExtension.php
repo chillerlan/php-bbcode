@@ -10,14 +10,29 @@
  * @license      MIT
  */
 
-namespace Example;
+namespace chillerlan\bbcodeExamples;
 
 use chillerlan\bbcode\ParserExtensionInterface;
+use chillerlan\bbcode\ParserOptions;
 
 /**
  * A tiny custom preparser as ground to start from
  */
 class MyAwesomeParserExtension implements ParserExtensionInterface{
+
+	/**
+	 * @var \chillerlan\bbcode\ParserOptions
+	 */
+	protected $options;
+
+	/**
+	 * MyAwesomeParserExtension constructor.
+	 *
+	 * @param \chillerlan\bbcode\ParserOptions|null $options
+	 */
+	public function __construct(ParserOptions $options = null){
+		$this->options = $options;
+	}
 
 	/**
 	 * Pre-parser

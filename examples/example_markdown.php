@@ -7,14 +7,13 @@
  * @license      MIT
  */
 
-namespace Example;
+namespace chillerlan\bbcodeExamples;
 
 require_once '../vendor/autoload.php';
 
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 use chillerlan\bbcode\Modules\Markdown\MarkdownBaseModule;
-use Example\MyAwesomeParserExtension;
 
 
 header('Content-type: text/plain;charset=utf-8;');
@@ -27,18 +26,19 @@ $timer = microtime(true);
 
 // create a new Parser instance
 
-$options = new ParserOptions;
-$options->sanitize = false;
-$options->nesting_limit = 10;
-$options->base_module = MarkdownBaseModule::class;
-$options->parser_extension = MyAwesomeParserExtension::class;
-$options->allow_all = true;
+$options                           = new ParserOptions;
+$options->sanitize                 = false;
+$options->nesting_limit            = 10;
+$options->baseModuleInterface      = MarkdownBaseModule::class;
+$options->parserExtensionInterface = MyAwesomeParserExtension::class;
+$options->allow_all                = true;
 
 $bbcode = new Parser($options);
 
-var_dump($bbcode->get_tagmap());
-#var_dump($bbcode->get_allowed());
-#var_dump($bbcode->get_noparse());
+var_dump($bbcode->getTagmap());
+#var_dump($bbcode->getAllowed());
+#var_dump($bbcode->getNoparse());
+#var_dump($bbcode->getSingle());
 
 $content = $bbcode->parse(file_get_contents('bbcode.txt'));
 
