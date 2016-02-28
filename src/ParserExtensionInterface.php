@@ -14,8 +14,17 @@ namespace chillerlan\bbcode;
 
 /**
  * Implements pre-/post-parser methods, for example: parsing Smileys
+ *
+ * (some people would call this thing "middleware"... *shudders*)
  */
 interface ParserExtensionInterface{
+
+	/**
+	 * ParserExtensionInterface constructor.
+	 *
+	 * @param \chillerlan\bbcode\ParserOptions|null $options
+	 */
+	public function __construct(ParserOptions $options = null);
 
 	/**
 	 * Pre-parser
