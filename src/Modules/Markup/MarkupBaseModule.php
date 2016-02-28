@@ -12,8 +12,7 @@
 
 namespace chillerlan\bbcode\Modules\Markup;
 
-use chillerlan\bbcode\Modules\BaseModule;
-use chillerlan\bbcode\Modules\BaseModuleInterface;
+use chillerlan\bbcode\Modules\{BaseModule, BaseModuleInterface};
 
 /**
  * The base module implements the basic functionality for each module (Markup: (X)HTML, XML, etc.)
@@ -51,7 +50,6 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 		'bottom',
 		'inherit',
 	];
-
 
 	/**
 	 * Holds an array of FQN strings to the current base module's children
@@ -102,7 +100,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function sanitize($content){
+	public function sanitize(string $content):string{
 		return htmlspecialchars($content, ENT_NOQUOTES, 'UTF-8', false);
 	}
 
@@ -113,7 +111,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @see https://xkcd.com/221/
 	 */
-	protected function randomID(){
+	protected function randomID():string{
 		return hash('crc32b', mt_rand().microtime(true));
 	}
 
@@ -125,7 +123,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string usable as (X)HTML/XML class attribute
 	 */
-	protected function getCssClass(array $additional_classes = []){
+	protected function getCssClass(array $additional_classes = []):string{
 		$classes = $this->getAttribute('class', '').' '.implode(' ', $additional_classes);
 		$classes =preg_replace('/[^a-z\d\- ]/i', '', $classes);
 		$classes = trim($classes);
@@ -141,7 +139,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string usable as (X)HTML/XML title attribute
 	 */
-	protected function getTitle($title = ''){
+	protected function getTitle(string $title = ''):string{
 		$title = $this->getAttribute('title', $title);
 
 		// @todo: filter
@@ -156,7 +154,7 @@ class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string usable as (X)HTML/XML style attribute
 	 */
-	protected function getStyle(array $style = []){
+	protected function getStyle(array $style = []):string{
 		$out = [];
 
 		foreach($style as $property => $value){

@@ -36,7 +36,7 @@ interface ParserExtensionInterface{
 	 *
 	 * @return string preparsed bbcode
 	 */
-	public function pre($bbcode);
+	public function pre(string $bbcode):string;
 
 	/**
 	 * Post-parser
@@ -55,6 +55,6 @@ interface ParserExtensionInterface{
 	 *
 	 * @return string postparsed bbcode
 	 */
-	public function post($bbcode);
+	public function post(string $bbcode):string;
 
 }

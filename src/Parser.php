@@ -16,8 +16,7 @@
 namespace chillerlan\bbcode;
 
 use chillerlan\bbcode\Language\LanguageInterface;
-use chillerlan\bbcode\Modules\BaseModuleInterface;
-use chillerlan\bbcode\Modules\ModuleInterface;
+use chillerlan\bbcode\Modules\{BaseModuleInterface, ModuleInterface};
 use chillerlan\bbcode\Traits\ClassLoaderTrait;
 
 /**
@@ -194,40 +193,32 @@ class Parser{
 
 	/**
 	 * Returns the current tagmap
-	 *
-	 * @return array
 	 */
-	public function getTagmap(){
+	public function getTagmap():array{
 		ksort($this->tagmap);
 		return $this->tagmap;
 	}
 
 	/**
 	 * Returns the currently allowed tags
-	 *
-	 * @return array
 	 */
-	public function getAllowed(){
+	public function getAllowed():array{
 		sort($this->allowed_tags);
 		return $this->allowed_tags;
 	}
 
 	/**
 	 * Returns the noparse tags
-	 *
-	 * @return array
 	 */
-	public function getNoparse(){
+	public function getNoparse():array{
 		sort($this->noparse_tags);
 		return $this->noparse_tags;
 	}
 
 	/**
 	 * Returns the singletags
-	 *
-	 * @return array
 	 */
-	public function getSingle(){
+	public function getSingle():array{
 		sort($this->singletags);
 		return $this->singletags;
 	}
@@ -239,7 +230,7 @@ class Parser{
 	 *
 	 * @return string
 	 */
-	public function parse($bbcode){
+	public function parse(string $bbcode):string{
 		if($this->parserOptions->sanitize){
 			$bbcode = $this->baseModuleInterface->sanitize($bbcode);
 		}
@@ -264,7 +255,7 @@ class Parser{
 	 * @return string
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	protected function __parse($bbcode){
+	protected function __parse($bbcode):string{
 		static $callback_count = 0;
 		$callback = false;
 		$preg_error = PREG_NO_ERROR;
@@ -326,8 +317,8 @@ class Parser{
 	 * @return array
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	protected function getAttributes($attributes){
-		$attr = [];
+	protected function getAttributes(string $attributes):array{
+		$attr    = [];
 		$pattern = '#(?<name>^|\w+)\=(\'?)(?<value>[^\']*?)\2(?: |$)#';
 
 		if(preg_match_all($pattern, $attributes, $matches, PREG_SET_ORDER) > 0){

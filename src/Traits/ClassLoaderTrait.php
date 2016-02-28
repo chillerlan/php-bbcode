@@ -32,7 +32,7 @@ trait ClassLoaderTrait{
 	 * @return object of type $interface
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	protected function __loadClass($class, $interface, ...$params){ // phpDocumentor stumbles across the ... syntax
+	protected function __loadClass(string $class, string $interface, ...$params){ // phpDocumentor stumbles across the ... syntax
 		if(class_exists($class)){
 			$reflectionClass = new ReflectionClass($class);
 

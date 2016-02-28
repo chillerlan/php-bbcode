@@ -34,7 +34,7 @@ class Links extends MarkdownBaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function __transform(){
+	public function __transform():string{
 		$url = $this->bbtag();
 
 		if(!empty($this->content)){

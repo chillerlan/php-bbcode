@@ -45,7 +45,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function __transform(){
+	public function __transform():string{
 		$this->setRequestCA($this->parserOptions->ca_info);
 
 		if(empty($this->content)){

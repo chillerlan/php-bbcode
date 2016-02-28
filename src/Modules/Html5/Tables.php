@@ -45,7 +45,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function __transform(){
+	public function __transform():string{
 		switch(true){
 			case $this->tagIn(['tr', 'thead', 'tbody', 'tfoot']):
 				return $this->rows();

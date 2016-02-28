@@ -42,7 +42,7 @@ class Singletags extends MarkdownBaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function __transform(){
+	public function __transform():string{
 
 		switch($this->tag){
 			case 'br':

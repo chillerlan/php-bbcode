@@ -37,7 +37,7 @@ class MediawikiBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function sanitize($content){
+	public function sanitize(string $content):string{
 		// TODO: Implement sanitize() method.
 		return $content;
 	}

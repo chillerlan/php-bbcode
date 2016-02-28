@@ -33,7 +33,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return \chillerlan\bbcode\Modules\BaseModuleInfo
 	 */
-	public function getInfo();
+	public function getInfo():BaseModuleInfo;
 
 	/**
 	 * Returns an array of tags which the module is able to process
@@ -41,7 +41,7 @@ interface BaseModuleInterface{
 	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	public function getTags();
+	public function getTags():Tagmap;
 
 	/**
 	 * Checks if the module supports the current tag
@@ -60,7 +60,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function eol($str, $eol = '', $count = null);
+	public function eol(string $str, string $eol = '', int $count = null):string;
 
 	/**
 	 * Clears all EOL placeholders from self::$content with the base modules EOL token
@@ -69,7 +69,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function clearEOL($eol = '');
+	public function clearEOL(string $eol = '');
 
 	/**
 	 * Clears all pseudo closing single tag bbcodes like [/br]
@@ -86,7 +86,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return mixed the attribute's value in case it exists, otherwise $default
 	 */
-	public function getAttribute($name, $default = false);
+	public function getAttribute(string $name, $default = false);
 
 	/**
 	 * Retrieves an attribute's value by it's name and checks if it's whitelisted
@@ -97,7 +97,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the attribute's value in case it exists or $default
 	 */
-	public function attributeIn($name, array $whitelist, $default = false);
+	public function attributeIn(string $name, array $whitelist, $default = false);
 
 	/**
 	 * Checks if an attribute exists and if it exists as key in a whitelist
@@ -108,7 +108,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the whitelist value to the given key in case it exists or $default
 	 */
-	public function attributeKeyIn($name, array $whitelist, $default = false);
+	public function attributeKeyIn(string $name, array $whitelist, $default = false);
 
 	/**
 	 * Checks if the current tag is whitelisted
@@ -127,7 +127,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function sanitize($content);
+	public function sanitize(string $content):string;
 
 	/**
 	 * Checks the tag and returns the processed bbcode, called from the parser within a module
@@ -136,7 +136,7 @@ interface BaseModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface::transform()
 	 * @internal
 	 */
-	public function transform();
+	public function transform():string;
 
 	/**
 	 * Checks if an URL is valid using filter_var()
@@ -145,7 +145,7 @@ interface BaseModuleInterface{
 	 *
 	 * @return bool|string the url if valid, otherwise false
 	 */
-	public function checkUrl($url);
+	public function checkUrl(string $url);
 
 	/**
 	 * Wraps the given content between the wrapper. Obvious, eh?
@@ -155,5 +155,5 @@ interface BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function wrap($content, $wrapper);
+	public function wrap(string $content, string $wrapper):string;
 }

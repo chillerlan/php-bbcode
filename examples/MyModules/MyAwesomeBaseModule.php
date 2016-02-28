@@ -45,7 +45,7 @@ class MyAwesomeBaseModule extends BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function sanitize($content){
+	public function sanitize(string $content):string{
 		return htmlspecialchars($content, ENT_NOQUOTES|ENT_HTML5, 'UTF-8', false);
 	}
 

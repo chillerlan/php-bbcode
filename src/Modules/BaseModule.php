@@ -12,8 +12,7 @@
 
 namespace chillerlan\bbcode\Modules;
 
-use chillerlan\bbcode\BBCodeException;
-use chillerlan\bbcode\BBTemp;
+use chillerlan\bbcode\{BBCodeException, BBTemp};
 
 /**
  * The base module implements the basic functionality for each module
@@ -140,7 +139,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return \chillerlan\bbcode\Modules\BaseModuleInfo
 	 */
-	public function getInfo(){
+	public function getInfo():BaseModuleInfo{
 		$info = new BaseModuleInfo;
 
 		foreach(['modules', 'eol_token'] as $option){
@@ -156,7 +155,7 @@ class BaseModule implements BaseModuleInterface{
 	 * @return \chillerlan\bbcode\Modules\Tagmap
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface
 	 */
-	public function getTags(){
+	public function getTags():Tagmap{
 		$tags = new Tagmap;
 		$tags->tags = $this->tags;
 		$tags->noparse_tags = $this->noparse_tags;
@@ -188,7 +187,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function eol($str, $eol = '', $count = null){
+	public function eol(string $str, string $eol = '', int $count = null):string{
 		return str_replace($this->parserOptions->eol_placeholder, $eol, $str, $count);
 	}
 
@@ -199,7 +198,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return $this
 	 */
-	public function clearEOL($eol = null){
+	public function clearEOL(string $eol = null){
 		$eol = $eol ?: $this->eol_token;
 		$this->content = str_replace($this->parserOptions->eol_placeholder, $eol, $this->content);
 
@@ -225,7 +224,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return mixed the attribute's value in case it exists, otherwise $default
 	 */
-	public function getAttribute($name, $default = false){
+	public function getAttribute(string $name, $default = false){
 		return isset($this->attributes[$name]) && !empty($this->attributes[$name]) ? $this->attributes[$name] : $default;
 	}
 
@@ -238,7 +237,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the attribute's value in case it exists and is whitelisted or $default
 	 */
-	public function attributeIn($name, array $whitelist, $default = false){
+	public function attributeIn(string $name, array $whitelist, $default = false){
 		return isset($this->attributes[$name]) && in_array($this->attributes[$name], $whitelist)
 			? $default !== false ? $this->attributes[$name] : true
 			: $default;
@@ -253,7 +252,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return mixed boolean if no $default is set, otherwise the whitelist value to the given key in case it exists or $default
 	 */
-	public function attributeKeyIn($name, array $whitelist, $default = false){
+	public function attributeKeyIn(string $name, array $whitelist, $default = false){
 		return isset($this->attributes[$name]) && array_key_exists($this->attributes[$name], $whitelist)
 				? $default !== false ? $whitelist[$this->attributes[$name]] : true
 				: $default;
@@ -281,18 +280,16 @@ class BaseModule implements BaseModuleInterface{
 	 * @return string
 	 * @codeCoverageIgnore
 	 */
-	public function sanitize($content){
+	public function sanitize(string $content):string{
 		return 'Implement sanitize() method!';
 	}
 
 	/**
 	 * Checks the tag and returns the processed bbcode, called from the parser within a module
 	 *
-	 * @return string
-	 *
 	 * @see \chillerlan\bbcode\Modules\ModuleInterface::transform()
 	 */
-	public function transform(){
+	public function transform():string{
 		$this->checkTag();
 
 		/** @var $this \chillerlan\bbcode\Modules\ModuleInterface */
@@ -329,7 +326,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return bool|string the url if valid, otherwise false
 	 */
-	public function checkUrl($url){
+	public function checkUrl(string $url){
 		if(filter_var($url, FILTER_VALIDATE_URL) === false){
 			return false;
 		}
@@ -346,7 +343,7 @@ class BaseModule implements BaseModuleInterface{
 	 *
 	 * @return string
 	 */
-	public function wrap($content, $wrapper){
+	public function wrap(string $content, string $wrapper):string{
 		return $wrapper.$content.$wrapper;
 	}
 

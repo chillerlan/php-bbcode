@@ -55,7 +55,7 @@ class Expanders extends Html5BaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function __transform(){
+	public function __transform():string{
 
 		if(empty($this->content)){
 			return '';

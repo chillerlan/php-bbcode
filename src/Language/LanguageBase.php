@@ -45,7 +45,7 @@ class LanguageBase{
 	 *
 	 * @return mixed
 	 */
-	public function __call($name, $arguments){
+	public function __call(string $name, array $arguments){
 		return $this->string($name, ...$arguments);
 	}
 
@@ -58,7 +58,7 @@ class LanguageBase{
 	 * @return mixed
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function string($key, $override_language = null){
+	public function string(string $key, string $override_language = null){
 
 		if($override_language){
 			return $this->__loadClass($override_language, LanguageInterface::class)->{$key}();

@@ -34,7 +34,7 @@ class Images extends MarkdownBaseModule implements ModuleInterface{
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
 	 * @internal
 	 */
-	public function __transform(){
+	public function __transform():string{
 
 		if(empty($this->content) || !$this->checkUrl($this->content)){
 			return '';

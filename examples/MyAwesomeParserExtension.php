@@ -44,7 +44,7 @@ class MyAwesomeParserExtension implements ParserExtensionInterface{
 	 *
 	 * @return string preparsed bbcode
 	 */
-	public function pre($bbcode){
+	public function pre(string $bbcode):string{
 
 		$search = [
 			"\t", // lets convert all tabs into 4 spaces
@@ -76,7 +76,7 @@ class MyAwesomeParserExtension implements ParserExtensionInterface{
 	 *
 	 * @return string postparsed bbcode
 	 */
-	public function post($bbcode){
+	public function post(string $bbcode):string{
 		return $bbcode;
 	}
 

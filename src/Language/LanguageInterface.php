@@ -44,7 +44,7 @@ interface LanguageInterface{
 	 *
 	 * @return mixed
 	 */
-	public function __call($name, $arguments);
+	public function __call(string $name, array $arguments);
 
 	/**
 	 * Returns a language string for a given key and overrides the current language if desired.
@@ -55,6 +55,6 @@ interface LanguageInterface{
 	 * @return mixed
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function string($key, $override_language = null);
+	public function string(string $key, string $override_language = null);
 
 }
