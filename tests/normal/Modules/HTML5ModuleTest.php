@@ -11,7 +11,6 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\Html5\Simpletext;
 use chillerlan\bbcode\Modules\Html5\Singletags;
 use chillerlan\bbcode\Parser;
@@ -39,7 +38,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		$options = new ParserOptions;
 		$options->google_api_key = getenv('GOOGLE_API');
 		$options->vimeo_access_token = getenv('VIMEO_TOKEN');
-		$options->ca_info        = __DIR__.'/../../test-cacert.pem';
+		$options->ca_info = __DIR__.'/../../test-cacert.pem';
 		$options->allow_all = true;
 		$this->parser = new Parser($options);
 	}
@@ -197,18 +196,20 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider videoURLDataProvider
 	 */
-/*	public function testVideoModuleURLMatch($url, $expected){
+	public function testVideoModuleURLMatch($url, $expected){
 		// this test will fail on travis due to missing credentials
-		$parsed = $this->parser->parse('[video]'.$url.'[/video]');
-		$this->assertEquals('<div class="bb-video">'.$expected.'</div>', $parsed);
-	}*/
+		if(self::DOTENV === '.env'){
+			$parsed = $this->parser->parse('[video]'.$url.'[/video]');
+			$this->assertEquals('<div class="bb-video">'.$expected.'</div>', $parsed);
+		}
+	}
 
 	public function videoBBCodeDataProvider(){
 		return [
 			['[video]http://youtu.be/6r1-HTiwGiY[/video]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
 			['[youtube]http://youtu.be/6r1-HTiwGiY[/youtube]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
 			['[youtube]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
-			['[youtube flash=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><object type="application/x-shockwave-flash" data="https://www.youtube.com/v/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/v/6r1-HTiwGiY" /></object></div>'],
+#			['[youtube flash=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><object type="application/x-shockwave-flash" data="https://www.youtube.com/v/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/v/6r1-HTiwGiY" /></object></div>'],
 			['[youtube wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
 			['[youtube flash=1 wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><object type="application/x-shockwave-flash" data="https://www.youtube.com/embed/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/embed/6r1-HTiwGiY" /></object></div>'],
 			['[video]http://some.video.url/whatever[/video]', '<video src="http://some.video.url/whatever" class="bb-video" preload="auto" controls="true"></video>'],
@@ -218,12 +219,13 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider videoBBCodeDataProvider
 	 */
-/*	public function testVideoModuleBBCode($bbcode, $expected){
+	public function testVideoModuleBBCode($bbcode, $expected){
 		// this test will fail on travis due to missing credentials
-		$parsed = $this->parser->parse($bbcode);
-		$this->assertEquals($expected, $parsed);
-
-	}*/
+		if(self::DOTENV === '.env'){
+			$parsed = $this->parser->parse($bbcode);
+			$this->assertEquals($expected, $parsed);
+		}
+	}
 
 	public function tableDataProvider(){
 		return [
