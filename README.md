@@ -32,7 +32,6 @@ based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member
 Handles nested tags aswell as matching brackets and doesn't stumble across invalid tags.
 
 ## Requirements
-- PHP 5.6+
 - PHP 7
 
 ----
@@ -57,7 +56,7 @@ composer require chillerlan/bbcode:dev-master
 ```json
 {
 	"require": {
-		"php": ">=5.6.0",
+		"php": ">=7.0.0",
 		"chillerlan/bbcode": "dev-master"
 	}
 }
