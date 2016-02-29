@@ -7,21 +7,21 @@
 [![Scrunitizer][scrutinizer-badge]][scrutinizer]
 [![GitterChat][gitter-badge]][gitter]
 
-[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/bbcode.svg?style=flat-square
+[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/bbcode.svg
 [packagist]: https://packagist.org/packages/chillerlan/bbcode
-[license-badge]: https://img.shields.io/packagist/l/chillerlan/bbcode.svg?style=flat-square
+[license-badge]: https://img.shields.io/packagist/l/chillerlan/bbcode.svg
 [license]: https://github.com/chillerlan/bbcode/blob/master/LICENSE
-[travis-badge]: https://img.shields.io/travis/chillerlan/bbcode.svg?style=flat-square
+[travis-badge]: https://travis-ci.org/chillerlan/bbcode.svg?branch=master
 [travis]: https://travis-ci.org/chillerlan/bbcode
-[coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/bbcode.svg?style=flat-square
+[coverage-badge]: https://codecov.io/github/chillerlan/bbcode/coverage.svg?branch=master
 [coverage]: https://codecov.io/github/chillerlan/bbcode
 [issue-badge]: https://img.shields.io/github/issues/chillerlan/bbcode.svg?style=flat-square
 [issues]: https://github.com/chillerlan/bbcode/issues
-[sensio-badge]: https://img.shields.io/sensiolabs/i/9daeaa2a-abdc-43a6-bb8c-945e52e34751.svg?style=flat-square
+[sensio-badge]: https://img.shields.io/sensiolabs/i/9daeaa2a-abdc-43a6-bb8c-945e52e34751.svg
 [sensio]: https://insight.sensiolabs.com/projects/9daeaa2a-abdc-43a6-bb8c-945e52e34751
 [scrutinizer-badge]: https://scrutinizer-ci.com/g/chillerlan/bbcode/badges/quality-score.png?b=master
 [scrutinizer]: https://scrutinizer-ci.com/g/chillerlan/bbcode
-[gitter-badge]: https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square
+[gitter-badge]: https://img.shields.io/gitter/room/nwjs/nw.js.svg
 [gitter]: https://gitter.im/chillerlan/bbcode
 
 # chillerlan/bbcode
