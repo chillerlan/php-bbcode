@@ -16,7 +16,6 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 
 /**
  * Transforms table tags into HTML5, as HTML5 as possible...
- * @todo
  *
  * @link http://www.w3.org/TR/html5/tabular-data.html
  */
@@ -54,7 +53,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 				return $this->col();
 			case $this->tag === 'colgroup' && !empty($this->content):
 				return $this->colgroup();
-			case $this->tag === 'table' && !empty($this->content):
+			case $this->tag === 'table' && (!empty($this->content) || $this->tag === 'caption'):
 				return $this->table();
 			case ($this->tagIn(['thead', 'tbody', 'tfoot']) && !empty($this->content)) || $this->tag === 'tr':
 				return $this->rows();
@@ -74,8 +73,8 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	protected function table():string{
 
 		return '<table'.$this->getCssClass(['bb-table'])
-			.$this->getStyle(['width' => $this->getAttribute('width')])
-			.'>'.$this->eol($this->content).'</table>';
+		       .$this->getStyle(['width' => $this->getAttribute('width')])
+		       .'>'.$this->eol($this->content).'</table>';
 	}
 
 	/**
@@ -124,14 +123,15 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @return string
 	 */
 	protected function cells():string{
-		$style = [];
-		$align = $this->getAttribute('align');
+		$align  = $this->getAttribute('align');
+		$valign = $this->getAttribute('valign');
+		$style  = [];
+		$abbr   = '';
 
 		if($align && in_array($align, self::TEXT_ALIGN)){
 			$style['text-align'] = $align;
 		}
 
-		$valign = $this->getAttribute('valign');
 		if($valign && in_array($valign, ['baseline', 'bottom', 'middle', 'top'])){
 			$style['vertical-align'] = $valign;
 		}
@@ -144,19 +144,19 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 			$style['white-space'] = 'nowrap';
 		}
 
-		$span = '';
-		foreach(['colspan', 'rowspan'] as $s){
-			$_span = $this->getAttribute($s);
-			$span .=  $_span ? ' '.$s.'="'.intval($_span).'"' : '';
+		if($colspan = $this->getAttribute('colspan')){
+			$colspan = ' colspan="'.intval($colspan).'"';
 		}
 
-		$abbr  = '';
-		if($this->tag === 'th'){
-			$_abbr = $this->getAttribute('abbr');
-			$abbr = $_abbr ? ' abbr="'.$_abbr.'"' : '';
+		if($rowspan = $this->getAttribute('rowspan')){
+			$rowspan = ' rowspan="'.intval($rowspan).'"';
 		}
 
-		return '<'.$this->tag.$span.$abbr.$this->getStyle($style).'>'.$this->eol($this->content, $this->eol_token).'</'.$this->tag.'>';
+		if($this->tag === 'th' && $abbr = $this->getAttribute('abbr')){
+			$abbr = ' abbr="'.$abbr.'"';
+		}
+
+		return '<'.$this->tag.$colspan.$rowspan.$abbr.$this->getStyle($style).'>'.$this->eol($this->content, $this->eol_token).'</'.$this->tag.'>';
 	}
 
 }
