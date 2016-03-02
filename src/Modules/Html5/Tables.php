@@ -123,40 +123,52 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @return string
 	 */
 	protected function cells():string{
-		$align  = $this->getAttribute('align');
-		$valign = $this->getAttribute('valign');
-		$style  = [];
-		$abbr   = '';
+		$abbr    = $this->getAttribute('abbr');
+		$colspan = $this->getAttribute('colspan');
+		$rowspan = $this->getAttribute('rowspan');
 
-		if($align && in_array($align, self::TEXT_ALIGN)){
-			$style['text-align'] = $align;
-		}
-
-		if($valign && in_array($valign, ['baseline', 'bottom', 'middle', 'top'])){
-			$style['vertical-align'] = $valign;
-		}
-
-		if($width = $this->getAttribute('width')){
-			$style['width'] = $width;
-		}
-
-		if($this->getAttribute('nowrap')){
-			$style['white-space'] = 'nowrap';
-		}
-
-		if($colspan = $this->getAttribute('colspan')){
+		if($colspan){
 			$colspan = ' colspan="'.intval($colspan).'"';
 		}
 
-		if($rowspan = $this->getAttribute('rowspan')){
+		if($rowspan){
 			$rowspan = ' rowspan="'.intval($rowspan).'"';
 		}
 
-		if($this->tag === 'th' && $abbr = $this->getAttribute('abbr')){
+		if($this->tag === 'th' && $abbr){
 			$abbr = ' abbr="'.$abbr.'"';
 		}
 
-		return '<'.$this->tag.$colspan.$rowspan.$abbr.$this->getStyle($style).'>'.$this->eol($this->content, $this->eol_token).'</'.$this->tag.'>';
+		return '<'.$this->tag.$colspan.$rowspan.$abbr.$this->getCellStyle().'>'
+		       .$this->eol($this->content, $this->eol_token)
+		       .'</'.$this->tag.'>';
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getCellStyle():string{
+		$align  = $this->getAttribute('align');
+		$valign = $this->getAttribute('valign');
+		$width  = $this->getAttribute('width');
+		$style  = [];
+
+		switch(true){
+			case $align && in_array($align, self::TEXT_ALIGN):
+				$style['text-align'] = $align;
+				break;
+			case $valign && in_array($valign, ['baseline', 'bottom', 'middle', 'top']):
+				$style['vertical-align'] = $valign;
+				break;
+			case $width:
+				$style['width'] = $width;
+				break;
+			case $this->getAttribute('nowrap'):
+				$style['white-space'] = 'nowrap';
+				break;
+		}
+
+		return $this->getStyle($style);
 	}
 
 }
