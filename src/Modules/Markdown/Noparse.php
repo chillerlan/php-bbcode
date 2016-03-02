@@ -55,11 +55,8 @@ class Noparse extends MarkdownBaseModule implements ModuleInterface{
 			return '';
 		}
 
+		// display as code?
 		$this->clearPseudoClosingTags()->clearEOL(PHP_EOL);
-
-		// todo: display as code?
-#		$this->content = $this->wrap($this->content, $this->eol_token);
-#		$this->content = $this->wrap($this->content, '```');
 
 		return $this->content;
 	}
