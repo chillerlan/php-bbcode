@@ -50,7 +50,7 @@ class Links extends MarkdownBaseModule implements ModuleInterface{
 			return  '['.$this->content.']('.$url.')';
 		}
 
-		return $this->checkUrl($url) ? : '';
+		return $url;
 	}
 
 }
