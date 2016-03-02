@@ -88,8 +88,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider containerDataProvider
 	 */
 	public function testContainerModule($bbcode, $expected){
-		$parsed = $this->parser->parse($bbcode);
-		$this->assertEquals($expected, $parsed);
+		$this->assertEquals($expected, $this->parser->parse($bbcode));
 	}
 
 	public function expanderDataProvider(){
@@ -109,8 +108,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider expanderDataProvider
 	 */
 	public function testExpanderModule($bbcode, $expected){
-		$parsed = $this->parser->parse($bbcode);
-		$parsed = preg_replace('/\"([a-f\d]{8})\"/i', '"abcdef12"', $parsed);
+		$parsed = preg_replace('/\"([a-f\d]{8})\"/i', '"abcdef12"', $this->parser->parse($bbcode));
 		$this->assertEquals($expected, $parsed);
 	}
 
@@ -126,8 +124,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider linkDataProvider
 	 */
 	public function testLinkModule($bbcode, $expected){
-		$parsed = $this->parser->parse($bbcode);
-		$this->assertEquals($expected, $parsed);
+		$this->assertEquals($expected, $this->parser->parse($bbcode));
 	}
 
 	public function testListModule(){
@@ -194,8 +191,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider styledTextDataProvider
 	 */
 	public function testStyledTextModule($bbcode, $expected){
-		$parsed = $this->parser->parse($bbcode);
-		$this->assertEquals($expected, $parsed);
+		$this->assertEquals($expected, $this->parser->parse($bbcode));
 	}
 
 	public function videoURLDataProvider(){
@@ -220,8 +216,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider videoURLDataProvider
 	 */
 	public function testVideoModuleURLMatch($url, $expected){
-		$parsed = $this->parser->parse('[video]'.$url.'[/video]');
-		$this->assertEquals($expected, $parsed);
+		$this->assertEquals($expected, $this->parser->parse('[video]'.$url.'[/video]'));
 	}
 
 	public function videoBBCodeDataProvider(){
@@ -254,8 +249,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider videoBBCodeDataProvider
 	 */
 	public function testVideoModuleBBCode($bbcode, $expected){
-		$parsed = $this->parser->parse($bbcode);
-		$this->assertEquals($expected, $parsed);
+		$this->assertEquals($expected, $this->parser->parse($bbcode));
 	}
 
 	public function tableDataProvider(){
@@ -271,8 +265,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider tableDataProvider
 	 */
 	public function testTableModule($bbcode, $expected){
-		$parsed = $this->parser->parse($bbcode);
-		$this->assertEquals($expected, $parsed);
+		$this->assertEquals($expected, $this->parser->parse($bbcode));
 	}
 
 }
