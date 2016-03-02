@@ -34,6 +34,10 @@ class MarkdownModuleTest extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals('**&**', $this->parser->parse('[b]&[/b]'));
 	}
 
+	public function testNoparseCoverage(){
+		$this->assertEquals('[b]&[/b]', $this->parser->parse('[noparse][b]&[/b][/noparse]'));
+	}
+
 	public function testEmptyTags(){
 		$singletags  = $this->parser->getSingle();
 		$_singletags = [
@@ -80,6 +84,7 @@ class MarkdownModuleTest extends \PHPUnit_Framework_TestCase{
 			['', '[url=javascript:alert(\'XSS\');]test[/url]'],
 			['', '[url=javascript:alert(\'XSS\');]javascript:alert(\'XSS\');[/url]'],
 			['https://travis-ci.org/chillerlan/bbcode', '[url]https://travis-ci.org/chillerlan/bbcode[/url]'],
+			['https://travis-ci.org/chillerlan/bbcode', '[url=https://travis-ci.org/chillerlan/bbcode][/url]'],
 			['[Travis CI: chillerlan/bbcode](https://travis-ci.org/chillerlan/bbcode)', '[url=https://travis-ci.org/chillerlan/bbcode]Travis CI: chillerlan/bbcode[/url]'],
 			['http://youtu.be/6r1-HTiwGiY', '[video]http://youtu.be/6r1-HTiwGiY[/video]'],
 		];
