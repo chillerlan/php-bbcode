@@ -1,0 +1,4 @@
+
+```
+some preformatted code (equal to [code])
+```
