@@ -160,8 +160,7 @@ class Video extends Html5BaseModule implements ModuleInterface{
 	protected function moddb(string $host, array $url):string{
 		$id = $this->content;
 
-		// ???
-		if($host === 'moddb.com' && strpos('http://www.moddb.com/media/', $this->content) === 0){
+		if($host === 'moddb.com' && strpos($this->content, 'http://www.moddb.com/media/') === 0){
 			$id = $url['path'];
 		}
 
