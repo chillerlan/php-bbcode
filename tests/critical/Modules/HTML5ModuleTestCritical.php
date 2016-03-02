@@ -97,15 +97,23 @@ class HTML5ModuleTestCritical extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals($expected, $parsed);
 	}
 
-	public function testCodeModule(){
-		foreach(array_keys($this->parser->getTagmap(), Code::class) as $lang){
-			$bbcode = file_get_contents(dirname(__FILE__).'/../../bbcode_samples/bbcode_code_'.$lang.'.txt');
-			$expected = file_get_contents(dirname(__FILE__).'/../../bbcode_samples/results/html5_code_'.$lang.'.txt');
-			$parsed = $this->parser->parse($bbcode);
-			$parsed = preg_replace('/\"([a-f\d]{8})\"/i', '"abcdef12"', $parsed);
+	public function codeSampleDataProvider(){
+		$this->setUp();
 
-			$this->assertEquals($expected, $parsed);
-		}
+		return array_map(function($v){
+			return [$v];
+		}, array_keys($this->parser->getTagmap(), Code::class));
+	}
+
+	/**
+	 * @dataProvider codeSampleDataProvider
+	 */
+	public function testCodeModule($lang){
+		$bbcode = file_get_contents(dirname(__FILE__).'/../../bbcode_samples/bbcode_code_'.$lang.'.txt');
+		$expected = file_get_contents(dirname(__FILE__).'/../../bbcode_samples/results/html5_code_'.$lang.'.txt');
+		$parsed = preg_replace('/\"([a-f\d]{8})\"/i', '"abcdef12"', $this->parser->parse($bbcode));
+
+		$this->assertEquals($expected, $parsed);
 	}
 
 }
