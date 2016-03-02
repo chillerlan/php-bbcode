@@ -44,14 +44,10 @@ class Singletags extends MarkdownBaseModule implements ModuleInterface{
 	 */
 	public function __transform():string{
 
-		switch($this->tag){
-			case 'br':
-				return $this->eol_token;
-			case 'hr':
-				return $this->wrap('----', $this->eol_token);
-			default:
-				return '';
-		}
+		return [
+			'br' => $this->eol_token,
+			'hr' => $this->wrap('----', $this->eol_token),
+		][$this->tag];
 	}
 
 }
