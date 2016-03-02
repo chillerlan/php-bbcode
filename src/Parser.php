@@ -30,21 +30,6 @@ class Parser{
 	use ClassLoaderTrait;
 
 	/**
-	 * testing...
-	 *
-	 * @link https://github.com/chillerlan/bbcode/issues/1
-	 * @var array
-	 */
-	const PREG_ERROR = [
-		PREG_INTERNAL_ERROR        => 'PREG_INTERNAL_ERROR',
-		PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
-		PREG_RECURSION_LIMIT_ERROR => 'PREG_RECURSION_LIMIT_ERROR',
-		PREG_BAD_UTF8_ERROR        => 'PREG_BAD_UTF8_ERROR',
-		PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
-		6                          => 'PREG_JIT_STACKLIMIT_ERROR', // int key to prevent a notice in php 5
-	];
-
-	/**
 	 * Holds the preparsed BBCode
 	 *
 	 * @var string
@@ -136,7 +121,7 @@ class Parser{
 	/**
 	 * Constructor.
 	 *
-	 * @param \chillerlan\bbcode\ParserOptions $options [optional]
+	 * @param \chillerlan\bbcode\ParserOptions|null $options [optional]
 	 */
 	public function __construct(ParserOptions $options = null){
 		$this->setOptions(!$options ? new ParserOptions : $options);
@@ -152,43 +137,10 @@ class Parser{
 	 */
 	public function setOptions(ParserOptions $options){
 		$this->parserOptions       = $options;
-		$this->baseModuleInterface = $this->__loadClass($this->parserOptions->baseModuleInterface, BaseModuleInterface::class);
-		$this->languageInterface   = $this->__loadClass($this->parserOptions->languageInterface, LanguageInterface::class);
 
-		if($this->parserOptions->parserExtensionInterface){
-			$this->parserExtensionInterface =
-				$this->__loadClass($this->parserOptions->parserExtensionInterface, ParserExtensionInterface::class, $this->parserOptions);
-		}
-
-		$module_info = $this->baseModuleInterface->getInfo();
-		foreach($module_info->modules as $module){
-			$this->moduleInterface = $this->__loadClass($module, ModuleInterface::class);
-
-			$tagmap = $this->moduleInterface->getTags();
-			foreach($tagmap->tags as $tag){
-				$this->tagmap[$tag] = $module;
-			}
-
-			$this->modules[$module] = $this->moduleInterface;
-			$this->noparse_tags     = array_merge($this->noparse_tags, $tagmap->noparse_tags);
-			$this->singletags       = array_merge($this->singletags, $tagmap->singletags);
-		}
-
-		$this->parserOptions->eol_token  = $module_info->eol_token;
-		$this->parserOptions->singletags = implode('|', $this->singletags);
-
-		if(is_array($this->parserOptions->allowed_tags) && !empty($this->parserOptions->allowed_tags)){
-			foreach($this->parserOptions->allowed_tags as $tag){
-				if(array_key_exists($tag, $this->tagmap)){
-					$this->allowed_tags[] = $tag;
-				}
-			}
-		}
-		else{
-			if($this->parserOptions->allow_all){
-				$this->allowed_tags = array_keys($this->tagmap);
-			}
-		}
+		$this->loadInterfaces();
+		$this->loadModules();
+		$this->loadTags();
 	}
 
 	/**
@@ -231,6 +183,7 @@ class Parser{
 	 * @return string
 	 */
 	public function parse(string $bbcode):string{
+
 		if($this->parserOptions->sanitize){
 			$bbcode = $this->baseModuleInterface->sanitize($bbcode);
 		}
@@ -283,13 +236,7 @@ class Parser{
 			$preg_error = preg_last_error();
 		}
 
-		// still testing...
-		if($preg_error !== PREG_NO_ERROR){
-			// @codeCoverageIgnoreStart
-			$message = sprintf($this->languageInterface->parserExceptionCallback(), $tag, self::PREG_ERROR[$preg_error], $preg_error);
-			throw new BBCodeException($message);
-			// @codeCoverageIgnoreEnd
-		}
+		$this->throwPregError($preg_error, $tag);
 
 		if($callback && isset($this->tagmap[$tag]) && in_array($tag, $this->allowed_tags)){
 			$this->BBTemp->tag               = $tag;
@@ -322,6 +269,7 @@ class Parser{
 		$pattern = '#(?<name>^|\w+)\=(\'?)(?<value>[^\']*?)\2(?: |$)#';
 
 		if(preg_match_all($pattern, $attributes, $matches, PREG_SET_ORDER) > 0){
+
 			foreach($matches as $attribute){
 				$name = empty($attribute['name']) ? $this->parserOptions->bbtag_placeholder : strtolower(trim($attribute['name']));
 
@@ -332,16 +280,109 @@ class Parser{
 			}
 		}
 
-		$preg_error = preg_last_error();
-
-		if($preg_error !== PREG_NO_ERROR){
-			// @codeCoverageIgnoreStart
-			$message = sprintf($this->languageInterface->parserExceptionMatchall(), self::PREG_ERROR[$preg_error], $preg_error);
-			throw new BBCodeException($message);
-			// @codeCoverageIgnoreEnd
-		}
+		$this->throwPregError(preg_last_error());
 
 		return $attr;
+	}
+
+	/**
+	 * Loads the base Interfaces (BaseModule, Language, ParserExtension)
+	 *
+	 * @throws \chillerlan\bbcode\BBCodeException
+	 */
+	protected function loadInterfaces(){
+		$this->baseModuleInterface = $this->__loadClass($this->parserOptions->baseModuleInterface, BaseModuleInterface::class);
+		$this->languageInterface   = $this->__loadClass($this->parserOptions->languageInterface, LanguageInterface::class);
+
+		if($this->parserOptions->parserExtensionInterface){
+			$this->parserExtensionInterface =
+				$this->__loadClass($this->parserOptions->parserExtensionInterface, ParserExtensionInterface::class, $this->parserOptions);
+		}
+
+	}
+
+	/**
+	 * Loads allowed/all tags
+	 */
+	protected function loadTags(){
+
+		if(is_array($this->parserOptions->allowed_tags) && !empty($this->parserOptions->allowed_tags)){
+
+			foreach($this->parserOptions->allowed_tags as $tag){
+
+				if(array_key_exists($tag, $this->tagmap)){
+					$this->allowed_tags[] = $tag;
+				}
+
+			}
+
+		}
+		else{
+
+			if($this->parserOptions->allow_all){
+				$this->allowed_tags = array_keys($this->tagmap);
+			}
+
+		}
+
+	}
+
+	/**
+	 * Loads the parser modules
+	 *
+	 * @throws \chillerlan\bbcode\BBCodeException
+	 */
+	protected function loadModules(){
+		$module_info = $this->baseModuleInterface->getInfo();
+
+		foreach($module_info->modules as $module){
+			$this->moduleInterface = $this->__loadClass($module, ModuleInterface::class);
+			$tagmap = $this->moduleInterface->getTags();
+
+			foreach($tagmap->tags as $tag){
+				$this->tagmap[$tag] = $module;
+			}
+
+			$this->modules[$module] = $this->moduleInterface;
+			$this->noparse_tags     = array_merge($this->noparse_tags, $tagmap->noparse_tags);
+			$this->singletags       = array_merge($this->singletags, $tagmap->singletags);
+		}
+
+		$this->parserOptions->eol_token  = $module_info->eol_token;
+		$this->parserOptions->singletags = implode('|', $this->singletags);
+	}
+
+	/**
+	 * testing...
+	 *
+	 * @param      $preg_error
+	 *
+	 * @param null $tag
+	 *
+	 * @throws \chillerlan\bbcode\BBCodeException
+	 * @link https://github.com/chillerlan/bbcode/issues/1
+	 * @codeCoverageIgnore
+	 */
+	protected function throwPregError($preg_error, $tag = null){
+
+		if($preg_error !== PREG_NO_ERROR){
+
+			$error = [
+				PREG_INTERNAL_ERROR        => 'PREG_INTERNAL_ERROR',
+				PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
+				PREG_RECURSION_LIMIT_ERROR => 'PREG_RECURSION_LIMIT_ERROR',
+				PREG_BAD_UTF8_ERROR        => 'PREG_BAD_UTF8_ERROR',
+				PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
+				PREG_JIT_STACKLIMIT_ERROR  => 'PREG_JIT_STACKLIMIT_ERROR',
+			][$preg_error];
+
+			$str = $tag
+				? $this->languageInterface->parserExceptionCallback()
+				: $this->languageInterface->parserExceptionMatchall();
+
+			throw new BBCodeException(sprintf($str, $error, $preg_error));
+		}
+
 	}
 
 }
