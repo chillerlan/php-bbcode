@@ -39,7 +39,7 @@ class TextBaseModule extends BaseModule implements BaseModuleInterface{
 	 */
 	public function sanitize(string $content):string{
 		// TODO: Implement sanitize() method.
-		return 'Implement sanitize() method!';
+		return $content;
 	}
 
 }
