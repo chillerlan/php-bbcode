@@ -46,14 +46,24 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 * @internal
 	 */
 	public function __transform():string{
+
 		switch(true){
-			case $this->tagIn(['tr', 'thead', 'tbody', 'tfoot']):
+			case $this->tag === 'caption' && !empty($this->content):
+				return $this->caption();
+			case $this->tag === 'col':
+				return $this->col();
+			case $this->tag === 'colgroup' && !empty($this->content):
+				return $this->colgroup();
+			case $this->tag === 'table' && !empty($this->content):
+				return $this->table();
+			case ($this->tagIn(['thead', 'tbody', 'tfoot']) && !empty($this->content)) || $this->tag === 'tr':
 				return $this->rows();
 			case $this->tagIn(['td', 'th']):
 				return $this->cells();
 			default:
-				return call_user_func([$this, $this->tag]);
+				return '';
 		}
+
 	}
 
 	/**
@@ -61,10 +71,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string
 	 */
-	private function table(){
-		if(empty($this->content)){
-			return '';
-		}
+	protected function table():string{
 
 		return '<table'.$this->getCssClass(['bb-table'])
 			.$this->getStyle(['width' => $this->getAttribute('width')])
@@ -76,7 +83,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string
 	 */
-	private function col(){
+	protected function col():string{
 		$span = $this->getAttribute('span');
 
 		return '<col'.($span ? ' span="'.intval($span).'"' : '').$this->getCssClass().' />';
@@ -87,11 +94,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string
 	 */
-	private function colgroup(){
-		if(empty($this->content)){
-			return '';
-		}
-
+	protected function colgroup():string{
 		$span = $this->getAttribute('span');
 
 		return '<colgroup'.($span ? ' span="'.intval($span).'"' : '').$this->getCssClass().'>'.$this->eol($this->content).'</colgroup>';
@@ -102,11 +105,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string
 	 */
-	private function caption(){
-		if(empty($this->content)){
-			return '';
-		}
-
+	protected function caption():string{
 		return '<caption>'.$this->eol($this->content, $this->eol_token).'</caption>';
 	}
 
@@ -115,11 +114,7 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string
 	 */
-	private function rows(){
-		if(empty($this->content)){
-			return '';
-		}
-
+	protected function rows():string{
 		return '<'.$this->tag.'>'.$this->eol($this->content).'</'.$this->tag.'>';
 	}
 
@@ -128,9 +123,10 @@ class Tables extends Html5BaseModule implements ModuleInterface{
 	 *
 	 * @return string
 	 */
-	private function cells(){
+	protected function cells():string{
 		$style = [];
 		$align = $this->getAttribute('align');
+
 		if($align && in_array($align, self::TEXT_ALIGN)){
 			$style['text-align'] = $align;
 		}
