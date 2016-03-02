@@ -231,6 +231,8 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 			['[youtube wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
 			['[youtube flash=1 wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><object type="application/x-shockwave-flash" data="https://www.youtube.com/v/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/v/6r1-HTiwGiY" /></object></div>'],
 */
+			// coverage
+			['[youtube]6r1-HTiwGiY[/youtube]', ''],
 
 			['[video]http://www.moddb.com/media/embed/72159[/video]', '<div class="bb-video"><iframe src="http://www.moddb.com/media/iframe/72159" allowfullscreen></iframe></div>'],
 			['[moddb]http://www.moddb.com/media/embed/72159[/moddb]', '<div class="bb-video"><iframe src="http://www.moddb.com/media/iframe/72159" allowfullscreen></iframe></div>'],
@@ -239,6 +241,8 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 			['[moddb wide=1]72159[/moddb]', '<div class="bb-video wide"><iframe src="http://www.moddb.com/media/iframe/72159" allowfullscreen></iframe></div>'],
 			['[moddb flash=1 wide=1]72159[/moddb]', '<div class="bb-video wide"><object type="application/x-shockwave-flash" data="http://www.moddb.com/media/embed/72159"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="http://www.moddb.com/media/embed/72159" /></object></div>'],
 			['[video]http://some.video.url/whatever[/video]', '<video src="http://some.video.url/whatever" class="bb-video" preload="auto" controls="true"></video>'],
+			['[dmotion]x3sjscz[/dmotion]', '<div class="bb-video"><iframe src="http://www.dailymotion.com/embed/video/x3sjscz" allowfullscreen></iframe></div>'],
+			['[dmotion flash=1]x3sjscz[/dmotion]', '<div class="bb-video"><object type="application/x-shockwave-flash" data="http://www.dailymotion.com/swf/video/x3sjscz"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="http://www.dailymotion.com/swf/video/x3sjscz" /></object></div>'],
 		];
 	}
 
