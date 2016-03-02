@@ -44,6 +44,10 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		$this->parser = new Parser($options);
 	}
 
+	public function testSanitizeCoverage(){
+		$this->assertEquals('<span class="bb-text bold">&amp;</span>', $this->parser->parse('[b]&[/b]'));
+	}
+
 	public function testEmptyTags(){
 		$exceptions  = ['tr','td','th'];
 		$singletags  = $this->parser->getSingle();
