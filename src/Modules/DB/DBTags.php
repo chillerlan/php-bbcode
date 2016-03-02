@@ -48,8 +48,8 @@ class DBTags extends DBBaseModule implements ModuleInterface{
 	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
-	public function __construct(BBTemp $bbtemp){
-		parent::__construct($bbtemp); 
+	public function __construct(BBTemp $bbtemp = null){
+		parent::__construct($bbtemp);
 
 		$this->tags         = [];
 		$this->noparse_tags = [];
