@@ -20,43 +20,6 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 class DBTags extends DBBaseModule implements ModuleInterface{
 
 	/**
-	 * An array of tags the module is able to process
-	 *
-	 * @var array
-	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
-	 */
-	protected $tags = [];
-
-	/**
-	 * An optional array of tags contained in self::$tags which are marked as "noparse"
-	 *
-	 * @var array
-	 * @see \chillerlan\bbcode\Modules\Tagmap::$noparse_tags
-	 */
-	protected $noparse_tags = [];
-
-	/**
-	 * An optional array of tags contained in self::$tags which are marked as "single tag"
-	 *
-	 * @var array
-	 * @see \chillerlan\bbcode\Modules\Tagmap::$singletags
-	 */
-	protected $singletags = [];
-
-	/**
-	 * DBTags constructor.
-	 *
-	 * @param \chillerlan\bbcode\BBTemp $bbtemp
-	 */
-	public function __construct(BBTemp $bbtemp = null){
-		parent::__construct($bbtemp);
-
-		$this->tags         = [];
-		$this->noparse_tags = [];
-		$this->singletags   = [];
-	}
-
-	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
 	 *
 	 * @see \chillerlan\bbcode\Modules\BaseModuleInterface::transform()
@@ -65,4 +28,5 @@ class DBTags extends DBBaseModule implements ModuleInterface{
 	public function __transform():string{
 		// TODO: Implement __transform() method.
 	}
+
 }
