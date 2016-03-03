@@ -25,7 +25,7 @@ class Singletags extends MarkdownBaseModule implements ModuleInterface{
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
-	protected $tags = ['br', 'hr'];
+	protected $tags = ['br', 'hr', 'xkcd'];
 
 	/**
 	 * An optional array of tags contained in self::$tags which are marked as "single tag"
@@ -33,7 +33,7 @@ class Singletags extends MarkdownBaseModule implements ModuleInterface{
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$singletags
 	 */
-	protected $singletags = ['br', 'hr'];
+	protected $singletags = ['br', 'hr', 'xkcd'];
 
 	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
@@ -47,6 +47,7 @@ class Singletags extends MarkdownBaseModule implements ModuleInterface{
 		return [
 			'br' => $this->eol_token,
 			'hr' => $this->wrap('----', $this->eol_token),
+			'xkcd' => 'https://xkcd.com/'.intval($this->bbtag()).'/',
 		][$this->tag];
 	}
 

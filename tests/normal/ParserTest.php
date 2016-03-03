@@ -54,7 +54,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testGetSingle(){
-		$singletags = ['br','clear','col','hr'];
+		$singletags = ['br','clear','col','hr','xkcd'];
 
 		$method = $this->reflectionClass->getMethod('getSingle');
 		$this->parser = $this->reflectionClass->newInstance();

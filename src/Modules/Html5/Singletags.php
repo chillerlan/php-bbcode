@@ -25,7 +25,7 @@ class Singletags extends Html5BaseModule implements ModuleInterface{
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$tags
 	 */
-	protected $tags = ['br', 'clear', 'hr'];
+	protected $tags = ['br', 'clear', 'hr', 'xkcd'];
 
 	/**
 	 * An optional array of tags contained in self::$tags which are marked as "single tag"
@@ -33,7 +33,7 @@ class Singletags extends Html5BaseModule implements ModuleInterface{
 	 * @var array
 	 * @see \chillerlan\bbcode\Modules\Tagmap::$singletags
 	 */
-	protected $singletags = ['br', 'clear', 'hr'];
+	protected $singletags = ['br', 'clear', 'hr', 'xkcd'];
 
 	/**
 	 * Transforms the bbcode, called from BaseModuleInterface
@@ -44,12 +44,21 @@ class Singletags extends Html5BaseModule implements ModuleInterface{
 	 */
 	public function __transform():string{
 
-		switch($this->tag){
-			case 'clear':
-				return '<br'.$this->getCssClass(['bb-clear', $this->bbtagIn(['both', 'left', 'right'], 'both')]).' />';
-			default:
-				return '<'.$this->tag.$this->getCssClass().' />';
+		if($this->tag === 'clear'){
+			return '<br'.$this->getCssClass(['bb-clear', $this->bbtagIn(['both', 'left', 'right'], 'both')]).' />';
 		}
+		else if($this->tag === 'xkcd'){
+			$num = intval($this->bbtag());
+			if(!empty($num)){
+				return '<a href="https://xkcd.com/'.$num.'/"'.$this->getCssClass(['bb-xkcd']).'>[xkcd '.$num.']</a>';
+			}
+		}
+		else{
+			return '<'.$this->tag.$this->getCssClass().' />';
+		}
+
+		return '';
+
 	}
 
 }

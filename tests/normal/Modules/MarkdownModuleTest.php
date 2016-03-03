@@ -49,6 +49,9 @@ class MarkdownModuleTest extends \PHPUnit_Framework_TestCase{
 			if(!in_array($tag, $singletags)){
 				$this->assertEquals('', $this->parser->parse('['.$tag.'][/'.$tag.']'));
 			}
+			else if($tag === 'xkcd'){
+				$this->assertEquals('https://xkcd.com/221/', $this->parser->parse('[xkcd=221]'));
+			}
 			else{
 				$this->assertEquals($_singletags[$tag], $this->parser->parse('['.$tag.']'));
 			}

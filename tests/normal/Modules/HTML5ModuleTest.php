@@ -55,6 +55,7 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 			'br'    => '<br />',
 			'col'   => '<col />',
 			'hr'    => '<hr />',
+			'xkcd'  => '',
 			'clear' => '<br class="bb-clear both" />',
 		];
 
@@ -166,12 +167,22 @@ class HTML5ModuleTest extends \PHPUnit_Framework_TestCase{
 		}
 	}
 
-	public function testSingletagModule(){
-		foreach(array_keys($this->parser->getTagmap(), Singletags::class) as $tag){
-			$parsed = $this->parser->parse('['.$tag.']');
-			$expected = $tag === 'clear' ? '<br class="bb-clear both" />' : '<'.$tag.' />';
-			$this->assertEquals($expected, $parsed);
-		}
+	public function singletagDataProvider(){
+		return [
+			['[br]', '<br />'],
+			['[hr]', '<hr />'],
+			['[clear]', '<br class="bb-clear both" />'],
+			['[col]', '<col />'],
+			['[xkcd]', ''],
+			['[xkcd=1530]', '<a href="https://xkcd.com/1530/" class="bb-xkcd">[xkcd 1530]</a>'],
+		];
+	}
+
+	/**
+	 * @dataProvider singletagDataProvider
+	 */
+	public function testSingletagModule($tag, $expected){
+		$this->assertEquals($expected, $this->parser->parse($tag));
 	}
 
 	public function styledTextDataProvider(){
