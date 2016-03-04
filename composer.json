@@ -32,5 +32,10 @@
 			"chillerlan\\bbcode\\": "src/",
 			"chillerlan\\bbcodeExamples\\": "examples/"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"chillerlan\\BBCodeTest\\": "tests/"
+		}
 	}
 }
