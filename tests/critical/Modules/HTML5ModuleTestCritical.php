@@ -12,11 +12,8 @@
 namespace chillerlan\BBCodeTest\critical\Modules;
 
 use chillerlan\bbcode\Modules\Html5\Code;
-use chillerlan\bbcode\Modules\Html5\Containers;
-use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
-use chillerlan\bbcode\Modules\Html5\Singletags;
-use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
+use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
 
 /**
  * Class HTML5ModuleTestCritical
@@ -28,18 +25,7 @@ use chillerlan\bbcode\ParserOptions;
  * @link https://github.com/travis-ci/travis-ci/issues/5323
  * @link https://github.com/travis-ci/travis-ci/issues/5332
  */
-class HTML5ModuleTestCritical extends \PHPUnit_Framework_TestCase{
-
-	/**
-	 * @var \chillerlan\bbcode\Parser
-	 */
-	protected $parser;
-
-	protected function setUp(){
-		$options = new ParserOptions;
-		$options->allow_all = true;
-		$this->parser = new Parser($options);
-	}
+class HTML5ModuleTestCritical extends HTML5TestBase{
 
 	public function bbcodeDataProvider(){
 		return [
@@ -99,7 +85,7 @@ class HTML5ModuleTestCritical extends \PHPUnit_Framework_TestCase{
 
 	public function codeSampleDataProvider(){
 		$this->setUp();
-
+		
 		return array_map(function($v){
 			return [$v];
 		}, array_keys($this->parser->getTagmap(), Code::class));

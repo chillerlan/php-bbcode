@@ -11,11 +11,13 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules\Markdown;
 
+use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
+
 /**
  * Class StyledTextTest
  */
 class StyledTextTest extends MarkdownTestBase{
-	
+
 	public function styledTextDataProvider(){
 		return [
 			['[b]bold[/b]', '**bold**'],

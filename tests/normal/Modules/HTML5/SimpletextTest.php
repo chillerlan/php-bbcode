@@ -10,18 +10,23 @@
  */
 
 namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
+
+use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
 use chillerlan\bbcode\Modules\Html5\Simpletext;
 
 /**
  * Class SimpletextTest
  */
 class SimpletextTest extends HTML5TestBase{
-	
+
 	public function simpletextDataProvider($tag){
 		$this->setUp();
-		return [array_keys($this->parser->getTagmap(), Simpletext::class)];
+
+		return array_map(function($v){
+			return [$v];
+		}, array_keys($this->parser->getTagmap(), Simpletext::class));
 	}
-	
+
 	/**
 	 * @dataProvider simpletextDataProvider
 	 */
@@ -30,5 +35,5 @@ class SimpletextTest extends HTML5TestBase{
 
 		$this->assertEquals($expected, $this->parser->parse('['.$tag.' class=foobar]WAT[/'.$tag.']'));
 	}
-	
+
 }

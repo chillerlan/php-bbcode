@@ -11,7 +11,6 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\BaseModuleInfo;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\DB\DBBaseModule;
@@ -21,24 +20,15 @@ use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
 use chillerlan\bbcode\Modules\Mediawiki\MediawikiBaseModule;
 use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Text\TextBaseModule;
-use ReflectionClass;
+use chillerlan\bbcode\Parser;
+use chillerlan\bbcode\ParserOptions;
 
 class BaseModuleTest extends \PHPUnit_Framework_TestCase{
-
-	/**
-	 * @var \chillerlan\bbcode\BBTemp
-	 */
-	protected $BBTemp;
 
 	/**
 	 * @var \chillerlan\bbcode\Modules\BaseModuleInterface
 	 */
 	protected $baseModule;
-
-	/**
-	 * @var \chillerlan\bbcode\Modules\BaseModuleInfo
-	 */
-	protected $moduleInfo;
 
 	/**
 	 * Holds the current encoder module
@@ -47,19 +37,15 @@ class BaseModuleTest extends \PHPUnit_Framework_TestCase{
 	 */
 	protected $module;
 
-	protected function setUp(){
-		$this->BBTemp = new BBTemp;
-	}
-
 	public function baseModuleDataProvider(){
 		// @todo
 		return [
-			[DBBaseModule::class,        ['',       'test']],
-			[Html5BaseModule::class,     ['__', '__test__']],
-			[MarkupBaseModule::class,    ['',       'test']],
-			[MarkdownBaseModule::class,  ['',       'test']],
-			[MediawikiBaseModule::class, ['',       'test']],
-			[TextBaseModule::class,      ['',       'test']],
+			[DBBaseModule::class,        ],
+			[Html5BaseModule::class,     ],
+			[MarkupBaseModule::class,    ],
+			[MarkdownBaseModule::class,  ],
+			[MediawikiBaseModule::class, ],
+			[TextBaseModule::class,      ],
 		];
 
 	}
@@ -68,36 +54,11 @@ class BaseModuleTest extends \PHPUnit_Framework_TestCase{
 	 * @dataProvider baseModuleDataProvider
 	 */
 	public function testBaseModules($base_module){
-		$baseModuleReflection = new ReflectionClass($base_module);
-		$this->assertEquals(BaseModuleInterface::class, $baseModuleReflection->getInterfaceNames()[0]);
-
-		$this->baseModule = $baseModuleReflection->newInstance();
-		$this->moduleInfo = $baseModuleReflection->getMethod('getInfo')->invoke($this->baseModule);
-		$this->assertInstanceOf(BaseModuleInfo::class, $this->moduleInfo);
-		$moduleInfoReflection = new ReflectionClass($this->moduleInfo);
-
-		// mimicking Parser::setOptions() here
-		$tagmap = [];
-		foreach($moduleInfoReflection->getProperty('modules')->getValue($this->moduleInfo) as $module){
-			$moduleReflection = new ReflectionClass($module);
-			$this->assertEquals(ModuleInterface::class, $moduleReflection->getInterfaceNames()[1]);
-
-			$this->module = $moduleReflection->newInstanceArgs([$this->BBTemp]);
-			$tagmapArray = $moduleReflection->getMethod('getTags')->invoke($this->module);
-
-			foreach($tagmapArray->tags as $tag){
-				$tagmap[$tag] = $module;
-			}
-		}
-#		var_dump($tagmap);
-	}
-
-	/**
-	 * @dataProvider baseModuleDataProvider
-	 */
-	public function testWrapCoverage($base_module, $data){
-			$this->baseModule = new $base_module;
-			$this->assertEquals($data[1], $this->baseModule->wrap('test', $data[0]));
+		$this->baseModule = new $base_module;
+		$this->assertInstanceOf(BaseModuleInterface::class, $this->baseModule);
+		$this->assertInstanceOf(BaseModuleInfo::class, $this->baseModule->getInfo());
+		// wrap coverage
+		$this->assertEquals('__test__', $this->baseModule->wrap('test', '__'));
 	}
 
 	/**
@@ -108,6 +69,32 @@ class BaseModuleTest extends \PHPUnit_Framework_TestCase{
 	public function testCheckTagException($base_module){
 		$this->baseModule = new $base_module;
 		$this->baseModule->checkTag();
+	}
+
+	/**
+	 * @dataProvider baseModuleDataProvider
+	 */
+	public function testMimickParserSetoptions($base_module){
+
+		$options = new ParserOptions;
+		$options->ca_info             = __DIR__.'/../../test-cacert.pem';
+		$options->baseModuleInterface = $base_module;
+		$options->allow_all           = true;
+
+		$tags = (new Parser($options))->getAllowed();
+
+		// mimicking Parser::setOptions() here
+		$this->baseModule = new $base_module;
+
+		foreach($this->baseModule->getInfo()->modules as $module){
+			$this->module = new $module;
+			$this->assertInstanceOf(ModuleInterface::class, $this->module);
+
+			foreach($this->module->getTags()->tags as $tag){
+				$this->assertContains($tag, $tags);
+			}
+		}
+
 	}
 
 }

@@ -12,30 +12,16 @@
 namespace chillerlan\BBCodeTest\critical\Modules;
 
 use chillerlan\bbcode\Modules\Markdown\Code;
-use chillerlan\bbcode\Modules\Markdown\MarkdownBaseModule;
-use chillerlan\bbcode\Parser;
-use chillerlan\bbcode\ParserOptions;
+use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
 
-class MarkdownModuleTestCritical extends \PHPUnit_Framework_TestCase{
+class MarkdownModuleTestCritical extends MarkdownTestBase{
 
-	/**
-	 * @var \chillerlan\bbcode\Parser
-	 */
-	protected $parser;
-
-	protected function setUp(){
-		$options = new ParserOptions;
-		$options->baseModuleInterface = MarkdownBaseModule::class ;
-		$options->allow_all = true;
-		$this->parser = new Parser($options);
-	}
-	
 	public function codeSampleDataProvider(){
 		$this->setUp();
-
 		return array_map(function($v){
 			return [$v];
 		}, array_keys($this->parser->getTagmap(), Code::class));
+
 	}
 
 	/**

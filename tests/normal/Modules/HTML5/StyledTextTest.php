@@ -9,9 +9,9 @@
  * @license      MIT
  */
 
-namespace normal\Modules\HTML5;
+namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
 
-use chillerlan\BBCodeTest\normal\Modules\HTML5\HTML5TestBase;
+use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
 
 /**
  * Class StyledTextTest

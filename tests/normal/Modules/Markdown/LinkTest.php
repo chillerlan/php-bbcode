@@ -11,6 +11,8 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules\Markdown;
 
+use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
+
 /**
  * Class LinkTest
  */

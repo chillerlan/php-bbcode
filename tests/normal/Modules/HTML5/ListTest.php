@@ -11,6 +11,8 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
 
+use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
+
 /**
  * Class ListTest
  */

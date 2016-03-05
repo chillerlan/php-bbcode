@@ -11,12 +11,13 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules\Markdown;
 
+use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
+
 /**
  * Class ImageTest
  */
 class ImageTest extends MarkdownTestBase{
-	
-	
+
 	public function imageDataProvider(){
 		return [
 			['', '[img]javascript:alert(\'XSS\');[/img]'],
@@ -24,7 +25,6 @@ class ImageTest extends MarkdownTestBase{
 			['![foobar](https://travis-ci.org/chillerlan/bbcode.svg)', '[img alt=foobar]https://travis-ci.org/chillerlan/bbcode.svg[/img]'],
 		];
 	}
-
 
 	/**
 	 * @dataProvider imageDataProvider

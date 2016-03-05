@@ -11,7 +11,7 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules\Markdown;
 
-use chillerlan\bbcode\Modules\Markdown\Headers;
+use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
 
 class MarkdownModuleTest extends MarkdownTestBase{
 
@@ -23,24 +23,26 @@ class MarkdownModuleTest extends MarkdownTestBase{
 		$this->assertEquals('[b]&[/b]', $this->parser->parse('[noparse][b]&[/b][/noparse]'));
 	}
 
-	public function testEmptyTags(){
-		$singletags  = $this->parser->getSingle();
-		$_singletags = [
-			'br'    => PHP_EOL,
-			'hr'    => PHP_EOL.'----'.PHP_EOL,
-		];
+	/**
+	 * @dataProvider emptyTagDataProvider
+	 */
+	public function testEmptyTags($tag){
 
-		foreach(array_keys($this->parser->getTagmap()) as $tag){
-			if(!in_array($tag, $singletags)){
-				$this->assertEquals('', $this->parser->parse('['.$tag.'][/'.$tag.']'));
-			}
-			else if($tag === 'xkcd'){
-				$this->assertEquals('https://xkcd.com/221/', $this->parser->parse('[xkcd=221]'));
-			}
-			else{
-				$this->assertEquals($_singletags[$tag], $this->parser->parse('['.$tag.']'));
-			}
+		if(!in_array($tag, $this->parser->getSingle())){
+			$this->assertEquals('', $this->parser->parse('['.$tag.'][/'.$tag.']'));
 		}
+		else if($tag === 'xkcd'){
+			$this->assertEquals('https://xkcd.com/221/', $this->parser->parse('[xkcd=221]'));
+		}
+		else{
+			$expected = [
+				'br' => PHP_EOL,
+				'hr' => PHP_EOL.'----'.PHP_EOL,
+			][$tag];
+
+			$this->assertEquals($expected, $this->parser->parse('['.$tag.']'));
+		}
+
 	}
 
 }

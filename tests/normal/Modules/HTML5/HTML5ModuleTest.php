@@ -11,10 +11,10 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
 
-use chillerlan\bbcode\Modules\Html5\Simpletext;
+use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
 
 /**
- * Class HTML5ModuleTestCritical
+ * Class HTML5ModuleTest
  */
 class HTML5ModuleTest extends HTML5TestBase{
 
@@ -22,9 +22,8 @@ class HTML5ModuleTest extends HTML5TestBase{
 		$this->assertEquals('<span class="bb-text bold">&amp;</span>', $this->parser->parse('[b]&[/b]'));
 	}
 
-	public function emptyTagDataProvider($tag){
-		$this->setUp();
-		return [array_keys($this->parser->getTagmap())];
+	public function testNoparseCoverage(){
+		$this->assertEquals('<pre class="bbcode noparse">[b]&amp;[/b]</pre>', $this->parser->parse('[noparse][b]&[/b][/noparse]'));
 	}
 
 	/**

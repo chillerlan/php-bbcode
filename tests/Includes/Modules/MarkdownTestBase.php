@@ -9,23 +9,15 @@
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules\Markdown;
+namespace chillerlan\BBCodeTest\Includes\Modules;
 
 use chillerlan\bbcode\Modules\Markdown\MarkdownBaseModule;
-use chillerlan\bbcode\Parser;
-use chillerlan\bbcode\ParserOptions;
-use chillerlan\BBCodeTest\normal\Modules\ModuleTestBase;
 
 /**
  * Class MarkdownTestBase
  */
 class MarkdownTestBase extends ModuleTestBase{
 
-	protected function setUp(){
-		$options = new ParserOptions;
-		$options->baseModuleInterface = MarkdownBaseModule::class ;
-		$options->allow_all = true;
-		$this->parser = new Parser($options);
-	}
+	protected $baseModule = MarkdownBaseModule::class;
 
 }

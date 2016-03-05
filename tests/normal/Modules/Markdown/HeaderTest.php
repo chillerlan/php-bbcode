@@ -10,7 +10,9 @@
  */
 
 namespace chillerlan\BBCodeTest\normal\Modules\Markdown;
+
 use chillerlan\bbcode\Modules\Markdown\Headers;
+use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
 
 /**
  * Class HeaderTest
@@ -20,7 +22,9 @@ class HeaderTest extends MarkdownTestBase{
 	public function headerDataProvider(){
 		$this->setUp();
 
-		return [array_keys($this->parser->getTagmap(), Headers::class)];
+		return array_map(function($v){
+			return [$v];
+		}, array_keys($this->parser->getTagmap(), Headers::class));
 	}
 
 	/**

@@ -11,11 +11,13 @@
 
 namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
 
+use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
+
 /**
  * Class TableTest
  */
 class TableTest extends HTML5TestBase{
-	
+
 	public function tableDataProvider(){
 		return [
 			['[table width=300px class=mybbtyble][tr][td]foobar[/td][/tr][/table]', '<table class="mybbtyble bb-table" style="width:300px"><tr><td>foobar</td></tr></table>'],

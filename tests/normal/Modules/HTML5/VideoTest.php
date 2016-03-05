@@ -9,12 +9,12 @@
  * @license      MIT
  */
 
-namespace normal\Modules\HTML5;
+namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
 
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
-use chillerlan\BBCodeTest\normal\Modules\HTML5\HTML5TestBase;
+use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
 use Dotenv\Dotenv;
 
 /**
@@ -37,11 +37,11 @@ class VideoTest extends HTML5TestBase{
 
 	public function videoURLDataProvider(){
 		return [
-			/*
-						['https://vimeo.com/136964218', '<iframe src="https://player.vimeo.com/video/136964218" allowfullscreen></iframe>'],
-						['https://www.youtube.com/watch?v=6r1-HTiwGiY', '<iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe>'],
-						['http://youtu.be/6r1-HTiwGiY', '<iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe>'],
-			#*/
+/*
+			['https://vimeo.com/136964218', '<iframe src="https://player.vimeo.com/video/136964218" allowfullscreen></iframe>'],
+			['https://www.youtube.com/watch?v=6r1-HTiwGiY', '<iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe>'],
+			['http://youtu.be/6r1-HTiwGiY', '<iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe>'],
+#*/
 			// this test will fail on travis due to missing credentials (coverage)
 			['https://vimeo.com/136964218', ''],
 			['https://www.youtube.com/watch?v=6r1-HTiwGiY', ''],
@@ -62,15 +62,15 @@ class VideoTest extends HTML5TestBase{
 
 	public function videoBBCodeDataProvider(){
 		return [
-			/*
-						// this test will fail on travis due to missing credentials
-						['[video]http://youtu.be/6r1-HTiwGiY[/video]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
-						['[youtube]http://youtu.be/6r1-HTiwGiY[/youtube]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
-						['[youtube]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
-						['[youtube flash=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><object type="application/x-shockwave-flash" data="https://www.youtube.com/v/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/v/6r1-HTiwGiY" /></object></div>'],
-						['[youtube wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
-						['[youtube flash=1 wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><object type="application/x-shockwave-flash" data="https://www.youtube.com/v/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/v/6r1-HTiwGiY" /></object></div>'],
-			*/
+/*
+			// this test will fail on travis due to missing credentials
+			['[video]http://youtu.be/6r1-HTiwGiY[/video]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['[youtube]http://youtu.be/6r1-HTiwGiY[/youtube]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['[youtube]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['[youtube flash=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video"><object type="application/x-shockwave-flash" data="https://www.youtube.com/v/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/v/6r1-HTiwGiY" /></object></div>'],
+			['[youtube wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><iframe src="https://www.youtube.com/embed/6r1-HTiwGiY" allowfullscreen></iframe></div>'],
+			['[youtube flash=1 wide=1]6r1-HTiwGiY[/youtube]', '<div class="bb-video wide"><object type="application/x-shockwave-flash" data="https://www.youtube.com/v/6r1-HTiwGiY"><param name="allowfullscreen" value="true"><param name="wmode" value="opaque" /><param name="movie" value="https://www.youtube.com/v/6r1-HTiwGiY" /></object></div>'],
+*/
 			// coverage
 			['[youtube]6r1-HTiwGiY[/youtube]', ''],
 

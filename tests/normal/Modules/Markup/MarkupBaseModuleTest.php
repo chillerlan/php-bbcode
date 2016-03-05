@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @filesource   TextModuleTest.php
+ * @filesource   MarkupBaseModuleTest.php
  * @created      02.03.2016
  * @package      chillerlan\BBCodeTest\normal\Modules
  * @author       Smiley <smiley@chillerlan.net>
@@ -9,13 +9,13 @@
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules;
+namespace chillerlan\BBCodeTest\normal\Modules\Markup;
 
-use chillerlan\bbcode\Modules\Text\TextBaseModule;
+use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 
-class TextModuleTest extends \PHPUnit_Framework_TestCase{
+class MarkupBaseModuleTest extends \PHPUnit_Framework_TestCase{
 
 	/**
 	 * @var \chillerlan\bbcode\Parser
@@ -24,13 +24,13 @@ class TextModuleTest extends \PHPUnit_Framework_TestCase{
 
 	protected function setUp(){
 		$options = new ParserOptions;
-		$options->baseModuleInterface = TextBaseModule::class ;
+		$options->baseModuleInterface = MarkupBaseModule::class ;
 		$options->allow_all = true;
 		$this->parser = new Parser($options);
 	}
 
 	public function testSanitizeCoverage(){
-		$this->assertEquals('&', $this->parser->parse('[b]&[/b]'));
+		$this->assertEquals('&amp;', $this->parser->parse('[b]&[/b]'));
 	}
-	
+
 }
