@@ -21,6 +21,7 @@
 			<directory suffix=".php">./tests/normal</directory>
 			<directory suffix=".php" phpVersion="5.6.0" phpVersionOperator=">=">./tests/php5</directory>
 			<directory suffix=".php" phpVersion="7.0.0" phpVersionOperator=">=">./tests/php7</directory>
+			<exclude>./tests/Includes</exclude>
 		</testsuite>
     </testsuites>
 </phpunit>
