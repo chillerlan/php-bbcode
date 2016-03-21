@@ -34,7 +34,7 @@ class Parser{
 	 *
 	 * @var string
 	 */
-	public $bbcode_pre;
+	public static $bbcode_pre;
 
 	/**
 	 * Map of Tag -> Module
@@ -190,7 +190,7 @@ class Parser{
 
 		$bbcode = $this->parserExtensionInterface->pre($bbcode);
 		// change/move potentially closed singletags before -> base module
-		$this->bbcode_pre = $bbcode;
+		self::$bbcode_pre = $bbcode;
 		$bbcode = preg_replace('#\[('.$this->parserOptions->singletags.')((?:\s|=)[^]]*)?]#is', '[$1$2][/$1]', $bbcode);
 		$bbcode = str_replace(["\r", "\n"], ['', $this->parserOptions->eol_placeholder], $bbcode);
 		$bbcode = $this->__parse($bbcode);
@@ -286,7 +286,7 @@ class Parser{
 	}
 
 	/**
-	 * Loads the base Interfaces (BaseModule, Language, ParserExtension)
+	 * Loads the base Interfaces (BaseModuleAbstract, Language, ParserExtension)
 	 *
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */

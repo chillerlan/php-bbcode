@@ -12,13 +12,12 @@
 
 namespace chillerlan\bbcode\Modules\Html5;
 
-use chillerlan\bbcode\Modules\BaseModuleInterface;
 use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
 
 /**
  * The base module implements the basic functionality for each module (HTML5)
  */
-class Html5BaseModule extends MarkupBaseModule implements BaseModuleInterface{
+class Html5BaseModule extends MarkupBaseModule{
 
 	/**
 	 * Holds an array of FQN strings to the current base module's children

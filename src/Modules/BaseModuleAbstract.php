@@ -1,8 +1,8 @@
 <?php
 /**
- * Class BaseModule
+ * Class BaseModuleAbstract
  *
- * @filesource   BaseModule.php
+ * @filesource   BaseModuleAbstract.php
  * @created      12.10.2015
  * @package      chillerlan\bbcode\Modules
  * @author       Smiley <smiley@chillerlan.net>
@@ -17,7 +17,7 @@ use chillerlan\bbcode\{BBCodeException, BBTemp};
 /**
  * The base module implements the basic functionality for each module
  */
-class BaseModule implements BaseModuleInterface{
+abstract class BaseModuleAbstract implements BaseModuleInterface{
 
 	/**
 	 * The current bbcode tag
@@ -135,7 +135,7 @@ class BaseModule implements BaseModuleInterface{
 	}
 
 	/**
-	 * Returns a list of the BaseModule's modules
+	 * Returns a list of the BaseModuleAbstract's modules
 	 *
 	 * @return \chillerlan\bbcode\Modules\BaseModuleInfo
 	 */

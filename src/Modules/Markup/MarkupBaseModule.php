@@ -12,12 +12,12 @@
 
 namespace chillerlan\bbcode\Modules\Markup;
 
-use chillerlan\bbcode\Modules\{BaseModule, BaseModuleInterface};
+use chillerlan\bbcode\Modules\BaseModuleAbstract;
 
 /**
  * The base module implements the basic functionality for each module (Markup: (X)HTML, XML, etc.)
  */
-class MarkupBaseModule extends BaseModule implements BaseModuleInterface{
+class MarkupBaseModule extends BaseModuleAbstract{
 
 	/**
 	 * Allowed text-align modes

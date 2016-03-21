@@ -126,18 +126,17 @@ That's all!
 ### Extend the parser
 #### Base module
 In order to create your own modules, you'll first need an empty base module which contains 
-all basic settings and methods for each module. To do so, you'll need to extend `BaseModule` and 
-implement `BaseModuleInterface` (both in `\chillerlan\bbcode\Modules`). There's really not much to do,
-the only and most important thing is to tell the parser which modules to use. Further, you need to specify
+all basic settings and methods for each module. To do so, you'll need to extend 
+`\chillerlan\bbcode\Modules\BaseModuleAbstract` . There's really not much to do, the only and most 
+important thing is to tell the parser which modules to use. Further, you need to specify
 a `sanitize()` method and maybe an EOL token - the rest is up to you and may vary between output types.
 ```php
 namespace Example\MyModules;
 
-use chillerlan\bbcode\Modules\BaseModule;
-use chillerlan\bbcode\Modules\BaseModuleInterface;
+use chillerlan\bbcode\Modules\BaseModuleAbstract;
 use Example\MyModules\MyAwesomeModule;
 
-class MyAwesomeBaseModule extends BaseModule implements BaseModuleInterface{
+class MyAwesomeBaseModule extends BaseModuleAbstract{
 
 	protected $modules = [
 		MyAwesomeModule::class,

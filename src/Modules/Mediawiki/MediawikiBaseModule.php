@@ -12,13 +12,12 @@
 
 namespace chillerlan\bbcode\Modules\Mediawiki;
 
-use chillerlan\bbcode\Modules\BaseModule;
-use chillerlan\bbcode\Modules\BaseModuleInterface;
+use chillerlan\bbcode\Modules\BaseModuleAbstract;
 
 /**
  * The base module implements the basic functionality for each module (Mediawiki)
  */
-class MediawikiBaseModule extends BaseModule implements BaseModuleInterface{
+class MediawikiBaseModule extends BaseModuleAbstract{
 
 	/**
 	 * Holds an array of FQN strings to the current base module's children

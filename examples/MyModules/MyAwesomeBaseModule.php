@@ -12,13 +12,12 @@
 
 namespace chillerlan\bbcodeExamples\MyModules;
 
-use chillerlan\bbcode\Modules\BaseModule;
-use chillerlan\bbcode\Modules\BaseModuleInterface;
+use chillerlan\bbcode\Modules\BaseModuleAbstract;
 
 /**
  * The base module implements the basic functionality for each module (custom HTML5)
  */
-class MyAwesomeBaseModule extends BaseModule implements BaseModuleInterface{
+class MyAwesomeBaseModule extends BaseModuleAbstract{
 
 	/**
 	 * Holds an array of FQN strings to the current base module's children

@@ -13,7 +13,6 @@
 namespace chillerlan\bbcodeExamples\MyModules;
 
 use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\bbcodeExamples\MyModules\MyAwesomeBaseModule;
 
 /**
  * Transforms several simple text tags into HTML5 (custom)
