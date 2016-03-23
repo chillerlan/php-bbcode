@@ -13,13 +13,11 @@
 namespace chillerlan\bbcode\Modules\DB;
 
 use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
-use chillerlan\Database\Traits\DatabaseTrait;
 
 /**
  *
  */
 class DBBaseModule extends MarkupBaseModule{
-	use DatabaseTrait;
 
 	/**
 	 * Holds an array of FQN strings to the current base module's children
@@ -69,7 +67,7 @@ class DBBaseModule extends MarkupBaseModule{
 		$this->singletags   = [];
 
 		if($this->parserOptions && $this->parserOptions->DBDriver){
-			$this->DBDriverInterface = $this->dbconnect($this->parserOptions->DBDriver, $this->parserOptions->DBOptions);
+			$this->DBDriverInterface = new $this->parserOptions->DBDriver($this->parserOptions->DBOptions);
 		}
 
 	}
