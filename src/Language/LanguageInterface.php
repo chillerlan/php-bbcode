@@ -13,25 +13,24 @@
 namespace chillerlan\bbcode\Language;
 
 /**
- * @method string parserExceptionCallback($override_language = null)
- * @method string parserExceptionMatchall($override_language = null)
+ * @method string parserExceptionCallback(string $LanguageInterface = null)
+ * @method string parserExceptionMatchall(string $LanguageInterface = null)
  *
- * @method string codeDisplayCSS($override_language = null)
- * @method string codeDisplayPHP($override_language = null)
- * @method string codeDisplaySQL($override_language = null)
- * @method string codeDisplayXML($override_language = null)
- * @method string codeDisplayHTML($override_language = null)
- * @method string codeDisplayJS($override_language = null)
- * @method string codeDisplayJSON($override_language = null)
- * @method string codeDisplayPRE($override_language = null)
- * @method string codeDisplayCODE($override_language = null)
- * @method string codeDisplayNSIS($override_language = null)
+ * @method string codeDisplayCSS(string $LanguageInterface = null)
+ * @method string codeDisplayPHP(string $LanguageInterface = null)
+ * @method string codeDisplaySQL(string $LanguageInterface = null)
+ * @method string codeDisplayXML(string $LanguageInterface = null)
+ * @method string codeDisplayHTML(string $LanguageInterface = null)
+ * @method string codeDisplayJS(string $LanguageInterface = null)
+ * @method string codeDisplayJSON(string $LanguageInterface = null)
+ * @method string codeDisplayPRE(string $LanguageInterface = null)
+ * @method string codeDisplayCODE(string $LanguageInterface = null)
+ * @method string codeDisplayNSIS(string $LanguageInterface = null)
  *
- * @method string expanderDisplayExpander($override_language = null)
- * @method string expanderDisplayQuote($override_language = null)
- * @method string expanderDisplaySpoiler($override_language = null)
- * @method string expanderDisplayTrigger($override_language = null)
- *
+ * @method string expanderDisplayExpander(string $LanguageInterface = null)
+ * @method string expanderDisplayQuote(string $LanguageInterface = null)
+ * @method string expanderDisplaySpoiler(string $LanguageInterface = null)
+ * @method string expanderDisplayTrigger(string $LanguageInterface = null)
  */
 interface LanguageInterface{
 
@@ -49,11 +48,11 @@ interface LanguageInterface{
 	 * Returns a language string for a given key and overrides the current language if desired.
 	 *
 	 * @param string $key
-	 * @param string $override_language (a LanguageInterface FQCN)
+	 * @param string $LanguageInterface (a LanguageInterface FQCN)
 	 *
 	 * @return mixed
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
-	public function string(string $key, string $override_language = null);
+	public function string(string $key, string $LanguageInterface = null);
 
 }

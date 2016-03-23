@@ -15,10 +15,6 @@
 
 namespace chillerlan\bbcode;
 
-use chillerlan\bbcode\Language\LanguageInterface;
-use chillerlan\bbcode\Modules\{BaseModuleInterface, ModuleInterface};
-use chillerlan\bbcode\Traits\ClassLoaderTrait;
-
 /**
  * Regexp BBCode parser
  *
@@ -27,7 +23,6 @@ use chillerlan\bbcode\Traits\ClassLoaderTrait;
  * @link http://www.developers-guide.net/c/152-bbcode-parser-mit-noparse-tag-selbst-gemacht.html
  */
 class Parser{
-	use ClassLoaderTrait;
 
 	/**
 	 * Holds the preparsed BBCode
@@ -136,7 +131,7 @@ class Parser{
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	public function setOptions(ParserOptions $options){
-		$this->parserOptions       = $options;
+		$this->parserOptions = $options;
 
 		$this->loadInterfaces();
 		$this->loadModules();
@@ -291,18 +286,20 @@ class Parser{
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	protected function loadInterfaces(){
-		$this->baseModuleInterface = $this->__loadClass($this->parserOptions->baseModuleInterface, BaseModuleInterface::class);
-		$this->languageInterface   = $this->__loadClass($this->parserOptions->languageInterface, LanguageInterface::class);
+		$this->baseModuleInterface = new $this->parserOptions->baseModuleInterface;
+		$this->languageInterface   = new $this->parserOptions->languageInterface;
 
 		if($this->parserOptions->parserExtensionInterface){
 			$this->parserExtensionInterface =
-				$this->__loadClass($this->parserOptions->parserExtensionInterface, ParserExtensionInterface::class, $this->parserOptions);
+				new $this->parserOptions->parserExtensionInterface($this->parserOptions);
 		}
 
 	}
 
 	/**
 	 * Loads allowed/all tags
+	 *
+	 * @return void
 	 */
 	protected function loadTags(){
 
@@ -330,13 +327,14 @@ class Parser{
 	/**
 	 * Loads the parser modules
 	 *
+	 * @return void
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 */
 	protected function loadModules(){
 		$module_info = $this->baseModuleInterface->getInfo();
 
 		foreach($module_info->modules as $module){
-			$this->moduleInterface = $this->__loadClass($module, ModuleInterface::class);
+			$this->moduleInterface = new $module;
 			$tagmap = $this->moduleInterface->getTags();
 
 			foreach($tagmap->tags as $tag){
@@ -359,6 +357,7 @@ class Parser{
 	 *
 	 * @param null $tag
 	 *
+	 * @return void
 	 * @throws \chillerlan\bbcode\BBCodeException
 	 * @link https://github.com/chillerlan/bbcode/issues/1
 	 * @codeCoverageIgnore

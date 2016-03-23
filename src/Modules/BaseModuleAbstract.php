@@ -107,19 +107,6 @@ abstract class BaseModuleAbstract implements BaseModuleInterface{
 	protected $languageInterface;
 
 	/**
-	 * Constructor
-	 *
-	 * calls self::setBBTemp() in case $bbtemp is set
-	 *
-	 * @param \chillerlan\bbcode\BBTemp $bbtemp
-	 */
-	public function __construct(BBTemp $bbtemp = null){
-		if($bbtemp instanceof BBTemp){
-			$this->setBBTemp($bbtemp);
-		}
-	}
-
-	/**
 	 * Sets self::$tag, self::$attributes, self::$content and self::$options
 	 *
 	 * @param \chillerlan\bbcode\BBTemp $bbtemp
@@ -268,8 +255,8 @@ abstract class BaseModuleAbstract implements BaseModuleInterface{
 	 */
 	public function tagIn(array $whitelist, $default = false){
 		return in_array($this->tag, $whitelist)
-				? $default !== false ? $this->tag : true
-				: $default;
+			? $default !== false ? $this->tag : true
+			: $default;
 	}
 
 	/**
@@ -280,9 +267,6 @@ abstract class BaseModuleAbstract implements BaseModuleInterface{
 	 * @return string
 	 * @codeCoverageIgnore
 	 */
-	public function sanitize(string $content):string{
-		return 'Implement sanitize() method!';
-	}
 
 	/**
 	 * Checks the tag and returns the processed bbcode, called from the parser within a module
@@ -322,6 +306,8 @@ abstract class BaseModuleAbstract implements BaseModuleInterface{
 	/**
 	 * Checks if an URL is valid using filter_var()
 	 *
+	 * @todo check against whitelist?
+	 *
 	 * @param string $url the URL to check
 	 *
 	 * @return bool|string the url if valid, otherwise false
@@ -330,7 +316,6 @@ abstract class BaseModuleAbstract implements BaseModuleInterface{
 		if(filter_var($url, FILTER_VALIDATE_URL) === false){
 			return false;
 		}
-		// todo: check against whitelist?
 
 		return $url;
 	}

@@ -11,7 +11,6 @@
 
 namespace chillerlan\bbcode\Modules\DB;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\ModuleInterface;
 
 /**

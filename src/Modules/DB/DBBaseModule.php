@@ -12,7 +12,6 @@
 
 namespace chillerlan\bbcode\Modules\DB;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\Markup\MarkupBaseModule;
 use chillerlan\Database\Traits\DatabaseTrait;
 
@@ -63,12 +62,8 @@ class DBBaseModule extends MarkupBaseModule{
 
 	/**
 	 * DBBaseModule constructor.
-	 *
-	 * @param \chillerlan\bbcode\BBTemp|null $bbtemp
 	 */
-	public function __construct(BBTemp $bbtemp = null){
-		parent::__construct($bbtemp);
-
+	public function __construct(){
 		$this->tags         = [];
 		$this->noparse_tags = [];
 		$this->singletags   = [];

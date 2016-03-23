@@ -12,7 +12,6 @@
 
 namespace chillerlan\bbcode\Modules\Html5;
 
-use chillerlan\bbcode\BBTemp;
 use chillerlan\bbcode\Modules\ModuleInterface;
 
 /**
@@ -30,14 +29,8 @@ class Code extends Html5BaseModule implements ModuleInterface{
 
 	/**
 	 * Constructor
-	 *
-	 * calls self::setBBTemp() in case $bbtemp is set
-	 *
-	 * @param \chillerlan\bbcode\BBTemp $bbtemp
 	 */
-	public function __construct(BBTemp $bbtemp = null){
-		parent::__construct($bbtemp);
-
+	public function __construct(){
 		// set self::$noparse_tags to self::$tags because none of these should be parsed
 		$this->noparse_tags = $this->tags;
 	}
