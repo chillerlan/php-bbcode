@@ -2,9 +2,8 @@
 [![license][license-badge]][license]
 [![Travis][travis-badge]][travis]
 [![Coverage][coverage-badge]][coverage]
-[![Issues][issue-badge]][issues]
-[![SensioLabsInsight][sensio-badge]][sensio]
 [![Scrunitizer][scrutinizer-badge]][scrutinizer]
+[![CodeClimate][codeclimate-badge]][codeclimate]
 [![GitterChat][gitter-badge]][gitter]
 
 [packagist-badge]: https://img.shields.io/packagist/v/chillerlan/bbcode.svg
@@ -15,12 +14,10 @@
 [travis]: https://travis-ci.org/chillerlan/bbcode
 [coverage-badge]: https://codecov.io/github/chillerlan/bbcode/coverage.svg?branch=master
 [coverage]: https://codecov.io/github/chillerlan/bbcode
-[issue-badge]: https://img.shields.io/github/issues/chillerlan/bbcode.svg
-[issues]: https://github.com/chillerlan/bbcode/issues
-[sensio-badge]: https://img.shields.io/sensiolabs/i/9daeaa2a-abdc-43a6-bb8c-945e52e34751.svg
-[sensio]: https://insight.sensiolabs.com/projects/9daeaa2a-abdc-43a6-bb8c-945e52e34751
 [scrutinizer-badge]: https://scrutinizer-ci.com/g/chillerlan/bbcode/badges/quality-score.png?b=master
 [scrutinizer]: https://scrutinizer-ci.com/g/chillerlan/bbcode
+[codeclimate-badge]: https://codeclimate.com/github/chillerlan/bbcode/badges/gpa.svg
+[codeclimate]: https://codeclimate.com/github/chillerlan/bbcode
 [gitter-badge]: https://img.shields.io/gitter/room/nwjs/nw.js.svg
 [gitter]: https://gitter.im/chillerlan/bbcode
 
