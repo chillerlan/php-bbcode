@@ -1,7 +1,7 @@
 {
 	"name": "chillerlan/bbcode",
-	"description": "A powerful, extensive recursive regexp BBCode parser. PHP 5.6+, PHP 7",
-	"homepage": "https://github.com/chillerlan/bbcode",
+	"description": "A powerful, extensive recursive regexp BBCode parser. PHP 7+",
+	"homepage": "https://github.com/codemasher/php-bbcode",
 	"license": "MIT",
 	"type": "library",
 	"keywords": [
@@ -20,22 +20,18 @@
 		"chillerlan/php-curl": "dev-master"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "5.2.*",
-		"vlucas/phpdotenv": "2.2.*"
-	},
-	"suggest": {
-		"chillerlan/framework": "A simple framework featuring a PDO/MySQLi SQL wrapper and other cool stuff. PHP 5.6+, PHP 7",
-		"chillerlan/gw1-database": "A Guild Wars (not 2!) database including everything to parse GWBBcode, calculate skills, import/export templates, create maps etc.. PHP 5.6+, PHP 7"
+		"phpunit/phpunit": "6.0.*",
+		"vlucas/phpdotenv": "2.*"
 	},
 	"autoload": {
 		"psr-4": {
-			"chillerlan\\bbcode\\": "src/",
-			"chillerlan\\bbcodeExamples\\": "examples/"
+			"chillerlan\\bbcode\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"chillerlan\\BBCodeTest\\": "tests/"
+			"chillerlan\\bbcodeTest\\": "tests/",
+			"chillerlan\\bbcodeExamples\\": "examples/"
 		}
 	}
 }
