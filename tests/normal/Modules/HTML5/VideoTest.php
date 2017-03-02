@@ -9,12 +9,12 @@
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
+namespace chillerlan\bbcodeTest\normal\Modules\HTML5;
 
 use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
-use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
+use chillerlan\bbcodeTest\Includes\Modules\HTML5TestBase;
 use Dotenv\Dotenv;
 
 /**

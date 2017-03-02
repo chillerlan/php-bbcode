@@ -3,15 +3,15 @@
  *
  * @filesource   HTML5ModuleTestCritical.php
  * @created      11.02.2016
- * @package      chillerlan\BBCodeTest\normal\HTML5
+ * @package      chillerlan\bbcodeTest\normal\HTML5
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
+namespace chillerlan\bbcodeTest\normal\Modules\HTML5;
 
-use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
+use chillerlan\bbcodeTest\Includes\Modules\HTML5TestBase;
 
 /**
  * Class HTML5ModuleTest

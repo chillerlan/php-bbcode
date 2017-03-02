@@ -3,19 +3,20 @@
  *
  * @filesource   ParserTest.php
  * @created      09.02.2016
- * @package      chillerlan\BBCodeTest
+ * @package      chillerlan\bbcodeTest
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal;
+namespace chillerlan\bbcodeTest\normal;
 
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 use ReflectionClass;
+use PHPUnit\Framework\TestCase;
 
-class ParserTest extends \PHPUnit_Framework_TestCase{
+class ParserTest extends TestCase{
 
 	/**
 	 * @var \chillerlan\bbcode\Parser

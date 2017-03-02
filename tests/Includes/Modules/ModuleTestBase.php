@@ -3,18 +3,19 @@
  *
  * @filesource   ModuleTestBase.php
  * @created      04.03.2016
- * @package      chillerlan\BBCodeTest\normal\Modules
+ * @package      chillerlan\bbcodeTest\normal\Modules
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\Includes\Modules;
+namespace chillerlan\bbcodeTest\Includes\Modules;
 
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
+use PHPUnit\Framework\TestCase;
 
-class ModuleTestBase extends \PHPUnit_Framework_TestCase{
+class ModuleTestBase extends TestCase{
 
 	/**
 	 * @todo TRAVIS REMINDER!
@@ -41,7 +42,7 @@ class ModuleTestBase extends \PHPUnit_Framework_TestCase{
 
 	public function emptyTagDataProvider($tag){
 		$this->setUp();
-		
+
 		return array_map(function($v){
 			return [$v];
 		}, array_keys($this->parser->getTagmap()));

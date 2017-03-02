@@ -3,17 +3,17 @@
  *
  * @filesource   HTML5ModuleTestCritical.php
  * @created      10.02.2016
- * @package      chillerlan\BBCodeTest
+ * @package      chillerlan\bbcodeTest
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\critical\Modules;
+namespace chillerlan\bbcodeTest\critical\Modules;
 
 use chillerlan\bbcode\Modules\Html5\Code;
 use chillerlan\bbcode\ParserOptions;
-use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
+use chillerlan\bbcodeTest\Includes\Modules\HTML5TestBase;
 
 /**
  * Class HTML5ModuleTestCritical
@@ -85,7 +85,7 @@ class HTML5ModuleTestCritical extends HTML5TestBase{
 
 	public function codeSampleDataProvider(){
 		$this->setUp();
-		
+
 		return array_map(function($v){
 			return [$v];
 		}, array_keys($this->parser->getTagmap(), Code::class));

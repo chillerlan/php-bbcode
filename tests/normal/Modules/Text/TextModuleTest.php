@@ -3,19 +3,20 @@
  *
  * @filesource   TextModuleTest.php
  * @created      02.03.2016
- * @package      chillerlan\BBCodeTest\normal\Modules
+ * @package      chillerlan\bbcodeTest\normal\Modules
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules\Text;
+namespace chillerlan\bbcodeTest\normal\Modules\Text;
 
 use chillerlan\bbcode\Modules\Text\TextBaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
+use PHPUnit\Framework\TestCase;
 
-class TextModuleTest extends \PHPUnit_Framework_TestCase{
+class TextModuleTest extends TestCase{
 
 	/**
 	 * @var \chillerlan\bbcode\Parser
@@ -32,5 +33,5 @@ class TextModuleTest extends \PHPUnit_Framework_TestCase{
 	public function testSanitizeCoverage(){
 		$this->assertEquals('&', $this->parser->parse('[b]&[/b]'));
 	}
-	
+
 }

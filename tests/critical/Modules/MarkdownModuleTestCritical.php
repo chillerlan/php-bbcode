@@ -3,16 +3,16 @@
  *
  * @filesource   MarkdownModuleTestCritical.php
  * @created      02.03.2016
- * @package      chillerlan\BBCodeTest\critical\Modules
+ * @package      chillerlan\bbcodeTest\critical\Modules
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\critical\Modules;
+namespace chillerlan\bbcodeTest\critical\Modules;
 
 use chillerlan\bbcode\Modules\Markdown\Code;
-use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
+use chillerlan\bbcodeTest\Includes\Modules\MarkdownTestBase;
 
 class MarkdownModuleTestCritical extends MarkdownTestBase{
 

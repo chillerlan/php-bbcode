@@ -3,15 +3,15 @@
  *
  * @filesource   StyledTextTest.php
  * @created      04.03.2016
- * @package      chillerlan\BBCodeTest\normal\Modules\Markdown
+ * @package      chillerlan\bbcodeTest\normal\Modules\Markdown
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules\Markdown;
+namespace chillerlan\bbcodeTest\normal\Modules\Markdown;
 
-use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
+use chillerlan\bbcodeTest\Includes\Modules\MarkdownTestBase;
 
 /**
  * Class StyledTextTest

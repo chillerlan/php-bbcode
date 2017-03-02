@@ -3,15 +3,15 @@
  *
  * @filesource   ExpanderTest.php
  * @created      04.03.2016
- * @package      chillerlan\BBCodeTest\normal\Modules\HTML5
+ * @package      chillerlan\bbcodeTest\normal\Modules\HTML5
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules\HTML5;
+namespace chillerlan\bbcodeTest\normal\Modules\HTML5;
 
-use chillerlan\BBCodeTest\Includes\Modules\HTML5TestBase;
+use chillerlan\bbcodeTest\Includes\Modules\HTML5TestBase;
 
 /**
  * Class ExpanderTest

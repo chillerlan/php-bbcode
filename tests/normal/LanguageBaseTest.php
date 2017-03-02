@@ -3,13 +3,13 @@
  *
  * @filesource   LanguageBaseTest.php
  * @created      12.02.2016
- * @package      chillerlan\BBCodeTest\normal\Language
+ * @package      chillerlan\bbcodeTest\normal\Language
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Language;
+namespace chillerlan\bbcodeTest\normal\Language;
 
 use chillerlan\bbcode\Language\Chinese;
 use chillerlan\bbcode\Language\English;
@@ -17,8 +17,9 @@ use chillerlan\bbcode\Language\French;
 use chillerlan\bbcode\Language\German;
 use chillerlan\bbcode\Language\Spanish;
 use ReflectionClass;
+use PHPUnit\Framework\TestCase;
 
-class LanguageBaseTest extends \PHPUnit_Framework_TestCase{
+class LanguageBaseTest extends TestCase{
 
 	const LANGUAGES = [
 		Chinese::class,

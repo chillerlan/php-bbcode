@@ -3,21 +3,22 @@
  *
  * @filesource   DBModuleTest.php
  * @created      02.03.2016
- * @package      chillerlan\BBCodeTest\normal\Modules
+ * @package      chillerlan\bbcodeTest\normal\Modules
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules\DB;
+namespace chillerlan\bbcodeTest\normal\Modules\DB;
 
 use chillerlan\bbcode\Modules\DB\DBBaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 use chillerlan\Database\DBOptions;
 use chillerlan\Database\Drivers\MySQLi\MySQLiDriver;
+use PHPUnit\Framework\TestCase;
 
-class DBModuleTest extends \PHPUnit_Framework_TestCase{
+class DBModuleTest extends TestCase{
 
 	/**
 	 * @var \chillerlan\bbcode\Parser

@@ -3,21 +3,21 @@
  *
  * @filesource   LinkTest.php
  * @created      04.03.2016
- * @package      chillerlan\BBCodeTest\normal\Modules\Markdown
+ * @package      chillerlan\bbcodeTest\normal\Modules\Markdown
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2015 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules\Markdown;
+namespace chillerlan\bbcodeTest\normal\Modules\Markdown;
 
-use chillerlan\BBCodeTest\Includes\Modules\MarkdownTestBase;
+use chillerlan\bbcodeTest\Includes\Modules\MarkdownTestBase;
 
 /**
  * Class LinkTest
  */
 class LinkTest extends MarkdownTestBase{
-	
+
 	public function linkDataProvider(){
 		return [
 			['', '[url]javascript:alert(\'XSS\');[/url]'],
@@ -36,5 +36,5 @@ class LinkTest extends MarkdownTestBase{
 	public function testLinkModule($expected, $bbcode){
 		$this->assertEquals($expected, $this->parser->parse($bbcode));
 	}
-	
+
 }

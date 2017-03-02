@@ -9,7 +9,7 @@
  * @license      MIT
  */
 
-namespace chillerlan\BBCodeTest\normal\Modules;
+namespace chillerlan\bbcodeTest\normal\Modules;
 
 use chillerlan\bbcode\Modules\BaseModuleInfo;
 use chillerlan\bbcode\Modules\BaseModuleInterface;
@@ -22,8 +22,9 @@ use chillerlan\bbcode\Modules\ModuleInterface;
 use chillerlan\bbcode\Modules\Text\TextBaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
+use PHPUnit\Framework\TestCase;
 
-class BaseModuleTest extends \PHPUnit_Framework_TestCase{
+class BaseModuleTest extends TestCase{
 
 	/**
 	 * @var \chillerlan\bbcode\Modules\BaseModuleInterface
@@ -86,13 +87,25 @@ class BaseModuleTest extends \PHPUnit_Framework_TestCase{
 		// mimicking Parser::setOptions() here
 		$this->baseModule = new $base_module;
 
-		foreach($this->baseModule->getInfo()->modules as $module){
-			$this->module = new $module;
-			$this->assertInstanceOf(ModuleInterface::class, $this->module);
+		$modules = $this->baseModule->getInfo()->modules;
+		if(!empty($modules)){
+			foreach($modules as $module){
+				$this->module = new $module;
+				$this->assertInstanceOf(ModuleInterface::class, $this->module);
 
-			foreach($this->module->getTags()->tags as $tag){
-				$this->assertContains($tag, $tags);
+				$module_tags = $this->module->getTags()->tags;
+				if(!empty($module_tags)){
+					foreach($module_tags as $tag){
+						$this->assertContains($tag, $tags);
+					}
+				}
+				else{
+					$this->markTestSkipped('no tags in module '.get_class($this->module));
+				}
 			}
+		}
+		else{
+			$this->markTestSkipped('nada '.get_class($this->baseModule));
 		}
 
 	}
