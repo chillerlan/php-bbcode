@@ -13,7 +13,7 @@
 namespace chillerlan\bbcode\Modules\Html5;
 
 use chillerlan\bbcode\Modules\ModuleInterface;
-use chillerlan\TinyCurl\Traits\RequestTrait;
+use chillerlan\TinyCurl\RequestTrait;
 
 /**
  * Transforms several video tags into HTML5
