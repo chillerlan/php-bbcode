@@ -9,15 +9,15 @@
 [packagist-badge]: https://img.shields.io/packagist/v/chillerlan/bbcode.svg
 [packagist]: https://packagist.org/packages/chillerlan/bbcode
 [license-badge]: https://img.shields.io/packagist/l/chillerlan/bbcode.svg
-[license]: https://github.com/chillerlan/bbcode/blob/master/LICENSE
-[travis-badge]: https://travis-ci.org/chillerlan/bbcode.svg?branch=master
-[travis]: https://travis-ci.org/chillerlan/bbcode
-[coverage-badge]: https://codecov.io/github/chillerlan/bbcode/coverage.svg?branch=master
-[coverage]: https://codecov.io/github/chillerlan/bbcode
-[scrutinizer-badge]: https://scrutinizer-ci.com/g/chillerlan/bbcode/badges/quality-score.png?b=master
-[scrutinizer]: https://scrutinizer-ci.com/g/chillerlan/bbcode
-[codeclimate-badge]: https://codeclimate.com/github/chillerlan/bbcode/badges/gpa.svg
-[codeclimate]: https://codeclimate.com/github/chillerlan/bbcode
+[license]: https://github.com/codemasher/php-bbcode/blob/master/LICENSE
+[travis-badge]: https://img.shields.io/travis/codemasher/php-bbcode.svg
+[travis]: https://travis-ci.org/codemasher/php-bbcode
+[coverage-badge]: https://img.shields.io/codecov/c/github/codemasher/php-bbcode.svg
+[coverage]: https://codecov.io/github/codemasher/php-bbcode
+[scrutinizer-badge]: https://img.shields.io/scrutinizer/g/codemasher/php-bbcode.svg
+[scrutinizer]: https://scrutinizer-ci.com/g/codemasher/php-bbcode
+[codeclimate-badge]: https://img.shields.io/codeclimate/github/codemasher/php-bbcode.svg
+[codeclimate]: https://codeclimate.com/github/codemasher/php-bbcode
 [gitter-badge]: https://img.shields.io/gitter/room/nwjs/nw.js.svg
 [gitter]: https://gitter.im/chillerlan/bbcode
 
@@ -29,7 +29,7 @@ based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member
 Handles nested tags aswell as matching brackets and doesn't stumble across invalid tags.
 
 ## Requirements
-- PHP 7 ([PHP 5.6+ compatible branch](https://github.com/chillerlan/bbcode/tree/php5))
+- PHP 7 ([PHP 5.6+ compatible branch](https://github.com/codemasher/php-bbcode/tree/php5))
 
 ----
 
@@ -39,7 +39,7 @@ The API docs can be found [over here on github.io](http://codemasher.github.io/d
 source, using [phpDocumentor](http://www.phpdoc.org/)).
 
 ### BBCode docs
-A documentation of the included BBCodes is planned and will be available on [the wiki](https://github.com/chillerlan/bbcode/wiki).
+A documentation of the included BBCodes is planned and will be available on [the wiki](https://github.com/codemasher/php-bbcode/wiki).
 
 ### Installation
 #### Using [composer](https://getcomposer.org)
@@ -53,15 +53,15 @@ composer require chillerlan/bbcode:dev-master
 ```json
 {
 	"require": {
-		"php": ">=7.0.0",
+		"php": ">=7.0.3",
 		"chillerlan/bbcode": "dev-master"
 	}
 }
 ```
 
 #### Manual installation
-Download the desired version of the package from [master](https://github.com/chillerlan/bbcode/archive/master.zip) or 
-[release](https://github.com/chillerlan/bbcode/releases) and extract the contents to your project folder. 
+Download the desired version of the package from [master](https://github.com/codemasher/php-bbcode/archive/master.zip) or 
+[release](https://github.com/codemasher/php-bbcode/releases) and extract the contents to your project folder. 
 Point the namespace `chillerlan/bbcode` to the folder `src` of the package.
 
 Profit!
@@ -233,7 +233,7 @@ The parser may cause some high CPU load, depending on the input. You should neve
 in your output subsystem - not even with strong caching. Encode on input - you'll want a preview anyway. ;)
 
 You may also run into several bugs. In fact, the BBCoder is essentially a tool to squeeze out any PCRE related bug in PHP known to man (and perhaps unknown). Have fun! ;)
-[It is highly recommended to use these php.ini settings](https://github.com/chillerlan/bbcode/blob/master/travis-php.ini), especially to disable the PCRE JIT in PHP7 which is a troublemaker.
+[It is highly recommended to use these php.ini settings](https://github.com/codemasher/php-bbcode/blob/master/travis-php.ini), especially to disable the PCRE JIT in PHP7 which is a troublemaker.
 In case you happen to run into a PCRE related bug, i ask you to open an issue over here along with the bbcode which caused the error and further information.
 
 ### Disclaimer!
