@@ -1,4 +1,4 @@
 composer.lock
-docs
 vendor
 tests/.env
+.idea
