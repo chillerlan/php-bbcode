@@ -1,72 +1,63 @@
+# chillerlan/php-bbcode
+
+A recursive regexp [BBCode](http://en.wikipedia.org/wiki/BBCode) parser for PHP 7+ using [preg_replace_callback()](http://php.net/preg_replace_callback),
+based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member/69,mrniceguy) on
+[developers-guide.net](http://www.developers-guide.net/c/152-bbcode-parser-mit-noparse-tag-selbst-gemacht.html). 
+Handles nested tags as well as matching brackets and doesn't stumble across invalid tags.
+
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
 [![Travis][travis-badge]][travis]
 [![Coverage][coverage-badge]][coverage]
 [![Scrunitizer][scrutinizer-badge]][scrutinizer]
-[![CodeClimate][codeclimate-badge]][codeclimate]
-[![GitterChat][gitter-badge]][gitter]
+[![Packagist downloads][downloads-badge]][downloads]
+[![PayPal donate][donate-badge]][donate]
 
-[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/bbcode.svg
-[packagist]: https://packagist.org/packages/chillerlan/bbcode
-[license-badge]: https://img.shields.io/packagist/l/chillerlan/bbcode.svg
-[license]: https://github.com/codemasher/php-bbcode/blob/master/LICENSE
-[travis-badge]: https://img.shields.io/travis/codemasher/php-bbcode.svg
-[travis]: https://travis-ci.org/codemasher/php-bbcode
-[coverage-badge]: https://img.shields.io/codecov/c/github/codemasher/php-bbcode.svg
-[coverage]: https://codecov.io/github/codemasher/php-bbcode
-[scrutinizer-badge]: https://img.shields.io/scrutinizer/g/codemasher/php-bbcode.svg
-[scrutinizer]: https://scrutinizer-ci.com/g/codemasher/php-bbcode
-[codeclimate-badge]: https://img.shields.io/codeclimate/github/codemasher/php-bbcode.svg
-[codeclimate]: https://codeclimate.com/github/codemasher/php-bbcode
-[gitter-badge]: https://img.shields.io/gitter/room/nwjs/nw.js.svg
-[gitter]: https://gitter.im/chillerlan/bbcode
+[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/php-bbcode.svg?style=flat-square
+[packagist]: https://packagist.org/packages/chillerlan/php-bbcode
+[license-badge]: https://img.shields.io/github/license/chillerlan/php-bbcode.svg?style=flat-square
+[license]: https://github.com/chillerlan/php-bbcode/blob/master/LICENSE
+[travis-badge]: https://img.shields.io/travis/chillerlan/php-bbcode.svg?style=flat-square
+[travis]: https://travis-ci.org/chillerlan/php-bbcode
+[coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/php-bbcode.svg?style=flat-square
+[coverage]: https://codecov.io/github/chillerlan/php-bbcode
+[scrutinizer-badge]: https://img.shields.io/scrutinizer/g/chillerlan/php-bbcode.svg?style=flat-square
+[scrutinizer]: https://scrutinizer-ci.com/g/chillerlan/php-bbcode
+[downloads-badge]: https://img.shields.io/packagist/dt/chillerlan/php-bbcode.svg?style=flat-square
+[downloads]: https://packagist.org/packages/chillerlan/php-bbcode/stats
+[donate-badge]: https://img.shields.io/badge/donate-paypal-ff33aa.svg?style=flat-square
+[donate]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WLYUNAT9ZTJZ4
 
-# chillerlan/bbcode
+# Requirements
+- PHP 7+ ([PHP 5.6+ compatible branch](https://github.com/chillerlan/php-bbcode/tree/php5))
 
-A recursive regexp [BBCode](http://en.wikipedia.org/wiki/BBCode) parser using [preg_replace_callback()](http://php.net/preg_replace_callback),
-based on an example by [MrNiceGuy](http://www.developers-guide.net/forums/member/69,mrniceguy) on
-[developers-guide.net](http://www.developers-guide.net/c/152-bbcode-parser-mit-noparse-tag-selbst-gemacht.html). 
-Handles nested tags aswell as matching brackets and doesn't stumble across invalid tags.
+# Documentation
+## BBCode docs
+A documentation of the included BBCodes is planned and will be available soon&trade; on [the wiki](https://github.com/chillerlan/php-bbcode/wiki).
 
-## Requirements
-- PHP 7 ([PHP 5.6+ compatible branch](https://github.com/codemasher/php-bbcode/tree/php5))
+## Installation
+**requires [composer](https://getcomposer.org)**
 
-----
-
-## Documentation
-### API
-The API docs can be found [over here on github.io](http://codemasher.github.io/docs/) (auto generated from the 
-source, using [phpDocumentor](http://www.phpdoc.org/)).
-
-### BBCode docs
-A documentation of the included BBCodes is planned and will be available on [the wiki](https://github.com/codemasher/php-bbcode/wiki).
-
-### Installation
-#### Using [composer](https://getcomposer.org)
-
-*Terminal*
-```sh
-composer require chillerlan/bbcode:dev-master
-```
-
-*composer.json*
+### *composer.json*
+ (note: replace `dev-master` with a [version boundary](https://getcomposer.org/doc/articles/versions.md#summary))
 ```json
 {
 	"require": {
 		"php": ">=7.0.3",
-		"chillerlan/bbcode": "dev-master"
+		"chillerlan/php-bbcode": "dev-master"
 	}
 }
 ```
 
-#### Manual installation
-Download the desired version of the package from [master](https://github.com/codemasher/php-bbcode/archive/master.zip) or 
-[release](https://github.com/codemasher/php-bbcode/releases) and extract the contents to your project folder. 
-Point the namespace `chillerlan/bbcode` to the folder `src` of the package.
+### Manual installation
+Download the desired version of the package from [master](https://github.com/chillerlan/php-bbcode/archive/master.zip) or 
+[release](https://github.com/chillerlan/php-bbcode/releases) and extract the contents to your project folder. After that:
+- run `composer install` to install the required dependencies and generate `/vendor/autoload.php`.
+- if you use a custom autoloader, point the namespace `chillerlan\Database` to the folder `src` of the package 
 
 Profit!
 
-### Usage
+## Usage
 First of all, you'll need to import the needed classes of course:
 ```php
 namespace MyProject;
@@ -75,7 +66,7 @@ use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 ```
 
-#### Parser options
+### Parser options
 In order to create a `Parser` instance, you'll first want to create an instance of `ParserOptions` and alter it if needed.
 However, this step is optional (meta, eh?).
 ```php
@@ -91,7 +82,7 @@ $options->allowed_tags = ['mybbcode', 'somebbcode', 'whatever'];
 $options->allow_all = false;
 ```
 
-#### Parser
+### Parser
 Now we're ready to create the `Parser`:
 ```php
 $bbcode = new Parser($options);
@@ -120,8 +111,8 @@ $module_tags = array_keys($bbcode->getTagmap(), MyAwesomeModule::class);
 
 That's all!
 
-### Extend the parser
-#### Base module
+## Extend the parser
+### Base module
 In order to create your own modules, you'll first need an empty base module which contains 
 all basic settings and methods for each module. To do so, you'll need to extend 
 `\chillerlan\bbcode\Modules\BaseModuleAbstract` . There's really not much to do, the only and most 
@@ -148,7 +139,7 @@ class MyAwesomeBaseModule extends BaseModuleAbstract{
 }
 ```
 
-#### Encoder module
+### Encoder module
 Now that we have our base module, we're able to create the encoder module, where the actual transform happens.
 Each encoder module extends a base module depending on output type (`MyAwesomeBaseModule` here) 
 and implements `\chillerlan\bbcode\Modules\ModuleInterface`. The property `$tags` and the method `__transform()` are mandatory.
@@ -194,7 +185,7 @@ class MyAwesomeModule extends Simpletext implements ModuleInterface{
 }
 ```
 
-#### Parser extension
+### Parser extension
 The parser features an extension which allows you to alter the bbcode during the parsing process,
 namely before and after the main parser unit runs. If you want to create your own parser extension,
 just implement `\chillerlan\bbcode\ParserExtensionInterface`, set it in the parser options and you're done.
@@ -226,15 +217,16 @@ class MyAwesomeParserExtension implements ParserExtensionInterface{
 
 }
 ```
-#### Language
-
-### Notes
+### Language
+ - @todo
+ 
+## Notes
 The parser may cause some high CPU load, depending on the input. You should never consider to use it somewhere
 in your output subsystem - not even with strong caching. Encode on input - you'll want a preview anyway. ;)
 
 You may also run into several bugs. In fact, the BBCoder is essentially a tool to squeeze out any PCRE related bug in PHP known to man (and perhaps unknown). Have fun! ;)
-[It is highly recommended to use these php.ini settings](https://github.com/codemasher/php-bbcode/blob/master/travis-php.ini), especially to disable the PCRE JIT in PHP7 which is a troublemaker.
+[It is highly recommended to use these php.ini settings](https://github.com/chillerlan/php-bbcode/blob/master/travis-php.ini), especially to disable the PCRE JIT in PHP7 which is a troublemaker.
 In case you happen to run into a PCRE related bug, i ask you to open an issue over here along with the bbcode which caused the error and further information.
 
-### Disclaimer!
+## Disclaimer!
 I don't take responsibility for molten CPUs, smashed keyboards, broken HTML etc.. Use at your own risk!
