@@ -15,7 +15,7 @@ use chillerlan\bbcode\Modules\Html5\Html5BaseModule;
 use chillerlan\bbcode\Parser;
 use chillerlan\bbcode\ParserOptions;
 use chillerlan\bbcodeTest\Includes\Modules\HTML5TestBase;
-use Dotenv\Dotenv;
+use chillerlan\Traits\DotEnv;
 
 /**
  * Class VideoTest
@@ -23,7 +23,7 @@ use Dotenv\Dotenv;
 class VideoTest extends HTML5TestBase{
 
 	protected function setUp(){
-		(new Dotenv(self::TESTDIR, self::DOTENV))->load();
+		(new DotEnv(self::TESTDIR, self::DOTENV))->load();
 
 		$options = new ParserOptions;
 		$options->google_api_key      = getenv('GOOGLE_API');
