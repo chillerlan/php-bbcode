@@ -1,27 +1,32 @@
 {
-	"name": "chillerlan/bbcode",
+	"name": "chillerlan/php-bbcode",
 	"description": "A powerful, extensive recursive regexp BBCode parser. PHP 7+",
-	"homepage": "https://github.com/codemasher/php-bbcode",
+	"homepage": "https://github.com/chillerlan/php-bbcode",
 	"license": "MIT",
 	"type": "library",
 	"keywords": [
-		"bbcode",
-		"parser"
+		"bbcode", "parser", "html5", "markdown"
 	],
 	"authors": [
 		{
 			"name": "Smiley",
-			"email": "smiley@chillerlan.net"
+			"email": "smiley@chillerlan.net",
+			"homepage": "https://github.com/codemasher"
 		}
 	],
+	"support": {
+		"issues": "https://github.com/chillerlan/php-bbcode/issues",
+		"source": "https://github.com/chillerlan/php-bbcode"
+	},
+	"minimum-stability": "stable",
 	"require": {
 		"php": ">=7.0.0",
-		"chillerlan/database": "dev-master",
-		"chillerlan/php-curl": "dev-master"
+		"chillerlan/php-curl": "^1.0",
+		"chillerlan/php-traits": "^1.1"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "6.0.*",
-		"vlucas/phpdotenv": "2.*"
+		"phpunit/phpunit": "^6.5",
+		"chillerlan/database": "^1.0"
 	},
 	"autoload": {
 		"psr-4": {
