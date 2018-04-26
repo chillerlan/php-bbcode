@@ -1,1 +1,0 @@
-<div data-id="abcdef12"  class="expander code-header code">Code</div><pre id="abcdef12" class="code-body" style="display:block"><code class="language-code">some arbitrary code</code></pre>

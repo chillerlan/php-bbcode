@@ -1,1 +1,0 @@
-<div data-id="abcdef12"  class="expander code-header pre">Code</div><pre id="abcdef12" class="code-body" style="display:block"><code class="language-pre">some preformatted code (equal to [code])</code></pre>
