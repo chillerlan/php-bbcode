@@ -1,14 +1,8 @@
 language: php
 
 php:
-  - 7.0
-  - 7.1
   - 7.2
 
 install: travis_retry composer install --no-interaction --prefer-source
-
 script: vendor/bin/phpunit --configuration phpunit.xml --coverage-clover clover.xml
-
-before_script: phpenv config-add travis-php.ini
-
 after_script: bash <(curl -s https://codecov.io/bash)
