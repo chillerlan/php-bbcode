@@ -3,20 +3,13 @@
  * Class BBCodeException
  *
  * @filesource   BBCodeException.php
- * @created      12.10.2015
- * @package      chillerlan\bbcode
- * @author       Smiley <smiley@chillerlan.net>
- * @copyright    2015 Smiley
+ * @created      19.04.2018
+ * @package      chillerlan\BBCode
+ * @author       smiley <smiley@chillerlan.net>
+ * @copyright    2018 smiley
  * @license      MIT
  */
 
-namespace chillerlan\bbcode;
+namespace chillerlan\BBCode;
 
-use Exception;
-
-/**
- * Placeholder
- */
-class BBCodeException extends Exception{
-
-}
+class BBCodeException extends \Exception{}
