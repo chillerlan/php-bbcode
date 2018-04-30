@@ -271,8 +271,13 @@ class BBCode implements LoggerAwareInterface{
 	protected function parseAttributes(string $attributes):array{
 		$attr = [];
 
+		if(empty($attributes)){
+			return $attr;
+		}
+
 		// @todo: fix attributes pattern: accept single and double quotes around the value
-		if(preg_match_all('#(?<name>^|\w+)\=(\'?)(?<value>[^\']*?)\2(?: |$)#', $attributes, $matches, PREG_SET_ORDER) > 0){
+		if(preg_match_all('#(?<name>^|[[a-z]+)\=(["\']?)(?<value>[^"\']*?)\2(?: |$)#i', $attributes, $matches, PREG_SET_ORDER) > 0){
+			print_r(['$attributes' => $attributes, '$matches' => $matches]);
 
 			foreach($matches as $attribute){
 				$name = empty($attribute['name']) ? $this->options->placeholder_bbtag : strtolower(trim($attribute['name']));
@@ -285,6 +290,7 @@ class BBCode implements LoggerAwareInterface{
 
 		if($e !== PREG_NO_ERROR){
 			$this->logger->debug('preg_error', ['errno' => $e, '$attributes' => $attributes]);
+			$attr['__error__'] = $attributes;
 		}
 
 		return $attr;
