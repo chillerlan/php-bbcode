@@ -277,7 +277,7 @@ class BBCode implements LoggerAwareInterface{
 
 		// @todo: fix attributes pattern: accept single and double quotes around the value
 		if(preg_match_all('#(?<name>^|[[a-z]+)\=(["\']?)(?<value>[^"\']*?)\2(?: |$)#i', $attributes, $matches, PREG_SET_ORDER) > 0){
-			print_r(['$attributes' => $attributes, '$matches' => $matches]);
+#			print_r(['$attributes' => $attributes, '$matches' => $matches]);
 
 			foreach($matches as $attribute){
 				$name = empty($attribute['name']) ? $this->options->placeholder_bbtag : strtolower(trim($attribute['name']));
