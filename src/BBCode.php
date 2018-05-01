@@ -197,7 +197,7 @@ class BBCode implements LoggerAwareInterface{
 		}
 
 		// replace the newline placeholders
-		$bbcode = str_replace($this->options->placeholder_eol, PHP_EOL, $bbcode);
+		$bbcode = str_replace($this->options->placeholder_eol, $this->outputInterface->getEOL(), $bbcode);
 
 		// run the sanitizer/html purifier/whatever as a final step
 		if($this->options->sanitizeOutput){

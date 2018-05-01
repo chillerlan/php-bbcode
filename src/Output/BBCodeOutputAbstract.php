@@ -66,6 +66,11 @@ abstract class BBCodeOutputAbstract implements BBCodeOutputInterface{
 	protected $moduleInterfaces = [];
 
 	/**
+	 * @var string
+	 */
+	protected $eol = PHP_EOL;
+
+	/**
 	 * BBCodeOutputInterface constructor.
 	 *
 	 * @param \chillerlan\Traits\ContainerInterface $options
@@ -73,6 +78,8 @@ abstract class BBCodeOutputAbstract implements BBCodeOutputInterface{
 	 * @param \Psr\Log\LoggerInterface         $logger
 	 */
 	public function __construct(ContainerInterface $options, CacheInterface $cache, LoggerInterface $logger){
+		$options->replacement_eol = $options->replacement_eol ?? $this->eol;
+
 		$this->options = $options;
 		$this->cache   = $cache;
 		$this->logger  = $logger;
@@ -111,6 +118,13 @@ abstract class BBCodeOutputAbstract implements BBCodeOutputInterface{
 	 */
 	public function getNoparse():array{
 		return $this->noparse;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEOL():string{
+		return $this->options->replacement_eol;
 	}
 
 	/**

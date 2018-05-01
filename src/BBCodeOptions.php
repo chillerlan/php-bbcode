@@ -27,6 +27,7 @@ use chillerlan\Traits\ContainerAbstract;
  * @property int    $pcre_recursion_limit
  * @property int    $pcre_jit
  * @property string $placeholder_eol
+ * @property string $replacement_eol
  * @property string $placeholder_bbtag
  * @property array  $allowedTags
  * @property bool   $allowAvailableTags

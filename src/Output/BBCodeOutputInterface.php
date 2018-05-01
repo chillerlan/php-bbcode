@@ -49,6 +49,11 @@ interface BBCodeOutputInterface{
 	public function getNoparse():array;
 
 	/**
+	 * @return string
+	 */
+	public function getEOL():string;
+
+	/**
 	 * transforms the current bbcode
 	 *
 	 * @param string $tag

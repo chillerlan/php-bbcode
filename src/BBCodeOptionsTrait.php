@@ -102,6 +102,13 @@ trait BBCodeOptionsTrait{
 	protected $placeholder_eol = '{EOL}';
 
 	/**
+	 * optional EOL replacement
+	 *
+	 * @var string
+	 */
+	protected $replacement_eol = null;
+
+	/**
 	 * The key name of the tag attribute
 	 *
 	 * [bbtag=val ...]
