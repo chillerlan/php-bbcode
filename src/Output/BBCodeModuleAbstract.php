@@ -12,7 +12,7 @@
 
 namespace chillerlan\BBCode\Output;
 
-use chillerlan\Traits\ContainerInterface;
+use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
@@ -60,7 +60,14 @@ abstract class BBCodeModuleAbstract implements BBCodeModuleInterface{
 	 */
 	protected $logger;
 
-	public function __construct(ContainerInterface $options, CacheInterface $cache, LoggerInterface $logger){
+	/**
+	 * BBCodeModuleAbstract constructor.
+	 *
+	 * @param \chillerlan\Settings\SettingsContainerInterface $options
+	 * @param \Psr\SimpleCache\CacheInterface                 $cache
+	 * @param \Psr\Log\LoggerInterface                        $logger
+	 */
+	public function __construct(SettingsContainerInterface $options, CacheInterface $cache, LoggerInterface $logger){
 		$this->options = $options;
 		$this->cache   = $cache;
 		$this->logger  = $logger;

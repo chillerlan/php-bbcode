@@ -12,9 +12,7 @@
 
 namespace chillerlan\BBCode\Output;
 
-use chillerlan\Traits\{
-	ClassLoader, ContainerInterface
-};
+use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
@@ -73,11 +71,11 @@ abstract class BBCodeOutputAbstract implements BBCodeOutputInterface{
 	/**
 	 * BBCodeOutputInterface constructor.
 	 *
-	 * @param \chillerlan\Traits\ContainerInterface $options
+	 * @param \chillerlan\Settings\SettingsContainerInterface $options
 	 * @param \Psr\SimpleCache\CacheInterface  $cache
 	 * @param \Psr\Log\LoggerInterface         $logger
 	 */
-	public function __construct(ContainerInterface $options, CacheInterface $cache, LoggerInterface $logger){
+	public function __construct(SettingsContainerInterface $options, CacheInterface $cache, LoggerInterface $logger){
 		$options->replacement_eol = $options->replacement_eol ?? $this->eol;
 
 		$this->options = $options;
@@ -86,7 +84,8 @@ abstract class BBCodeOutputAbstract implements BBCodeOutputInterface{
 
 		foreach($this->modules as $module){
 			/** @var \chillerlan\BBCode\Output\BBCodeModuleInterface $moduleInterface */
-			$moduleInterface = $this->loadClass($module, BBCodeModuleInterface::class, $this->options, $this->cache, $this->logger);
+			$moduleInterface = new $module($this->options, $this->cache, $this->logger);
+
 			foreach($moduleInterface->getTags() as $tag){
 				$this->tagmap[$tag] = $module;
 			}

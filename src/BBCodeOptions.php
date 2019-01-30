@@ -12,7 +12,8 @@
 
 namespace chillerlan\BBCode;
 
-use chillerlan\Traits\ContainerAbstract;
+
+use chillerlan\Settings\SettingsContainerAbstract;
 
 /**
  * @property string $sanitizerInterface
@@ -32,6 +33,6 @@ use chillerlan\Traits\ContainerAbstract;
  * @property array  $allowedTags
  * @property bool   $allowAvailableTags
  */
-class BBCodeOptions extends ContainerAbstract{
+class BBCodeOptions extends SettingsContainerAbstract{
 	use BBCodeOptionsTrait;
 }

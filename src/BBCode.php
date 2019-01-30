@@ -13,19 +13,17 @@
 namespace chillerlan\BBCode;
 
 use chillerlan\BBCode\Output\BBCodeOutputInterface;
-use chillerlan\Traits\{
-	ClassLoader, ContainerInterface
-};
+use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\{
 	LoggerAwareInterface, LoggerAwareTrait, LoggerInterface, NullLogger
 };
 use Psr\SimpleCache\CacheInterface;
 
 class BBCode implements LoggerAwareInterface{
-	use ClassLoader, LoggerAwareTrait;
+	use LoggerAwareTrait;
 
 	/**
-	 * @var \chillerlan\BBCode\BBCodeOptions|\chillerlan\Traits\ContainerInterface
+	 * @var \chillerlan\BBCode\BBCodeOptions|\chillerlan\Settings\SettingsContainerInterface
 	 */
 	protected $options;
 
@@ -67,11 +65,11 @@ class BBCode implements LoggerAwareInterface{
 	/**
 	 * BBCode constructor.
 	 *
-	 * @param \chillerlan\Traits\ContainerInterface|null $options
-	 * @param \Psr\SimpleCache\CacheInterface|null       $cache
-	 * @param \Psr\Log\LoggerInterface|null              $logger
+	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
+	 * @param \Psr\SimpleCache\CacheInterface|null                 $cache
+	 * @param \Psr\Log\LoggerInterface|null                        $logger
 	 */
-	public function __construct(ContainerInterface $options = null, CacheInterface $cache = null, LoggerInterface $logger = null){
+	public function __construct(SettingsContainerInterface $options = null, CacheInterface $cache = null, LoggerInterface $logger = null){
 		$this
 			->setCache($cache ?? new BBCache)
 			->setLogger($logger ?? new NullLogger);
@@ -112,12 +110,12 @@ class BBCode implements LoggerAwareInterface{
 	/**
 	 * @todo
 	 *
-	 * @param \chillerlan\Traits\ContainerInterface $options
+	 * @param \chillerlan\Settings\SettingsContainerInterface $options
 	 *
 	 * @throws \chillerlan\BBCode\BBCodeException
 	 * @return \chillerlan\BBCode\BBCode
 	 */
-	public function setOptions(ContainerInterface $options):BBCode{
+	public function setOptions(SettingsContainerInterface $options):BBCode{
 		$this->options = $options;
 
 		mb_internal_encoding('UTF-8');
@@ -138,16 +136,28 @@ class BBCode implements LoggerAwareInterface{
 		}
 
 		if($this->options->sanitizeInput || $this->options->sanitizeOutput){
-			$this->sanitizerInterface  = $this->loadClass($this->options->sanitizerInterface, SanitizerInterface::class, $this->options);
+			$this->sanitizerInterface  = new $this->options->sanitizerInterface($this->options);
+
+			if(!$this->sanitizerInterface instanceof SanitizerInterface){
+				throw new BBcodeException('invalid SanitizerInterface');
+			}
 		}
 
 
 
 		if($this->options->preParse || $this->options->postParse){
-			$this->parserMiddleware = $this->loadClass($this->options->parserMiddlewareInterface, ParserMiddlewareInterface::class, $this->options, $this->cache, $this->logger);
+			$this->parserMiddleware = new $this->options->parserMiddlewareInterface($this->options, $this->cache, $this->logger);
+
+			if(!$this->parserMiddleware instanceof ParserMiddlewareInterface){
+				throw new BBcodeException('invalid ParserMiddlewareInterface');
+			}
 		}
 
-		$this->outputInterface = $this->loadClass($this->options->outputInterface, BBCodeOutputInterface::class, $this->options, $this->cache, $this->logger);
+		$this->outputInterface = new $this->options->outputInterface($this->options, $this->cache, $this->logger);
+
+		if(!$this->outputInterface instanceof BBCodeOutputInterface){
+			throw new BBcodeException('invalid BBCodeOutputInterface');
+		}
 
 		$this->tags    = $this->outputInterface->getTags();
 		$this->noparse = $this->outputInterface->getNoparse();

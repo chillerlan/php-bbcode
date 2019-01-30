@@ -12,7 +12,7 @@
 
 namespace chillerlan\BBCode;
 
-use chillerlan\Traits\ContainerInterface;
+use chillerlan\Settings\SettingsContainerInterface;
 
 abstract class SanitizerAbstract implements SanitizerInterface{
 
@@ -24,9 +24,9 @@ abstract class SanitizerAbstract implements SanitizerInterface{
 	/**
 	 * SanitizerInterface constructor.
 	 *
-	 * @param \chillerlan\Traits\ContainerInterface $options
+	 * @param \chillerlan\Settings\SettingsContainerInterface $options
 	 */
-	public function __construct(ContainerInterface $options){
+	public function __construct(SettingsContainerInterface $options){
 		$this->options = $options;
 	}
 
