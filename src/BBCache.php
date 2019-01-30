@@ -14,7 +14,7 @@ namespace chillerlan\BBCode;
 
 use Psr\SimpleCache\CacheInterface;
 
-class BBCache implements CacheInterface{
+final class BBCache implements CacheInterface{
 
 	/**
 	 * @var array

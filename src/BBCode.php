@@ -28,7 +28,7 @@ class BBCode implements LoggerAwareInterface{
 	protected $options;
 
 	/**
-	 * @var \Psr\SimpleCache\CacheInterface
+	 * @var \Psr\SimpleCache\CacheInterface|\chillerlan\BBCode\BBCache
 	 */
 	protected $cache;
 
@@ -61,6 +61,11 @@ class BBCode implements LoggerAwareInterface{
 	 * @var array
 	 */
 	protected $allowed = [];
+
+	/**
+	 * @var int
+	 */
+	protected $limit;
 
 	/**
 	 * BBCode constructor.
@@ -143,8 +148,6 @@ class BBCode implements LoggerAwareInterface{
 			}
 		}
 
-
-
 		if($this->options->preParse || $this->options->postParse){
 			$this->parserMiddleware = new $this->options->parserMiddlewareInterface($this->options, $this->cache, $this->logger);
 
@@ -161,6 +164,7 @@ class BBCode implements LoggerAwareInterface{
 
 		$this->tags    = $this->outputInterface->getTags();
 		$this->noparse = $this->outputInterface->getNoparse();
+		$this->limit   = (int)$this->options->nestingLimit;
 
 		if(is_array($this->options->allowedTags) && !empty($this->options->allowedTags)){
 			$this->allowTags($this->options->allowedTags);
@@ -196,6 +200,9 @@ class BBCode implements LoggerAwareInterface{
 
 		// close singletags: [br] -> [br][/br]
 		$bbcode = preg_replace('#\[('.implode('|', $singleTags).')((?:\s|=)[^]]*)?]#is', '[$1$2][/$1]', $bbcode);
+
+		// @todo: find non-singletags without a closing tag and close them (or convert the brackets to entities)
+
 		// protect newlines
 		$bbcode = str_replace(["\r", "\n"], ['', $this->options->placeholder_eol], $bbcode);
 		// parse the bbcode
@@ -246,7 +253,7 @@ class BBCode implements LoggerAwareInterface{
 			return '';
 		}
 
-		if($callback_count < (int)$this->options->nestingLimit && !in_array($tag, $this->noparse , true)){
+		if($callback_count < $this->limit && !in_array($tag, $this->noparse , true)){
 			$content = preg_replace_callback('#\[(\w+)((?:\s|=)[^]]*)?]((?:[^[]|\[(?!/?\1((?:\s|=)[^]]*)?])|(?R))*)\[/\1]#', __METHOD__, $content);
 			$e = preg_last_error();
 

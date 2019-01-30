@@ -18,10 +18,39 @@ use Psr\SimpleCache\CacheInterface;
 
 abstract class BBCodeModuleAbstract implements BBCodeModuleInterface{
 
+	/**
+	 * The current bbcode tag
+	 *
+	 * @var string
+	 */
 	protected $tag;
+
+	/**
+	 * The attributes of the current bbcode
+	 *
+	 * @var array
+	 */
 	protected $attributes;
+
+	/**
+	 * The content of the current bbcode
+	 *
+	 * @var string
+	 */
 	protected $content;
+
+	/**
+	 * The full matched string of the current bbcode
+	 *
+	 * @var
+	 */
 	protected $match;
+
+	/**
+	 * The callback counter
+	 *
+	 * @var
+	 */
 	protected $callback_count;
 
 	/**
@@ -248,6 +277,5 @@ abstract class BBCodeModuleAbstract implements BBCodeModuleInterface{
 			? $default !== false ? $this->tag : true
 			: $default;
 	}
-
 
 }

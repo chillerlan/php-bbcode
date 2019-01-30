@@ -17,7 +17,6 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
 abstract class BBCodeOutputAbstract implements BBCodeOutputInterface{
-	use ClassLoader;
 
 	/**
 	 * @var string[]
@@ -44,6 +43,11 @@ abstract class BBCodeOutputAbstract implements BBCodeOutputInterface{
 	protected $noparse = [];
 
 	/**
+	 * @var string
+	 */
+	protected $eol = PHP_EOL;
+
+	/**
 	 * @var \chillerlan\BBCode\BBCodeOptions
 	 */
 	protected $options;
@@ -62,11 +66,6 @@ abstract class BBCodeOutputAbstract implements BBCodeOutputInterface{
 	 * @var \chillerlan\BBCode\Output\BBCodeModuleInterface[]
 	 */
 	protected $moduleInterfaces = [];
-
-	/**
-	 * @var string
-	 */
-	protected $eol = PHP_EOL;
 
 	/**
 	 * BBCodeOutputInterface constructor.

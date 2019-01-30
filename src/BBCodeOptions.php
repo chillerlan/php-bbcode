@@ -12,7 +12,6 @@
 
 namespace chillerlan\BBCode;
 
-
 use chillerlan\Settings\SettingsContainerAbstract;
 
 /**

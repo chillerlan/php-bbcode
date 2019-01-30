@@ -12,9 +12,7 @@
 
 namespace chillerlan\BBCode;
 
-use chillerlan\BBCode\Output\HTML\{
-	HTMLOutput, HTMLSanitizer
-};
+use chillerlan\BBCode\Output\HTML\{HTMLOutput, HTMLSanitizer};
 
 trait BBCodeOptionsTrait{
 
