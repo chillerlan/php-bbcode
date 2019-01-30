@@ -58,7 +58,7 @@ Profit!
 
 - @todo
 
-For an [implementation example](https://github.com/codemasher/gw1-database/blob/master/public/gwbbcode.php) see the over here: [gw1-database/GWBBCode](https://github.com/codemasher/gw1-database/tree/master/src/GWBBCode).
+For an [implementation example](https://github.com/codemasher/gw1-database/blob/master/public/gwbbcode.php) see the GWBBCoder over here: [gw1-database/GWBBCode](https://github.com/codemasher/gw1-database/tree/master/src/GWBBCode).
 
 ### Language
  - @todo
