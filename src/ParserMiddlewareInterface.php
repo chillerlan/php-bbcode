@@ -12,7 +12,7 @@
 
 namespace chillerlan\BBCode;
 
-use chillerlan\Traits\ContainerInterface;
+use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
@@ -21,11 +21,11 @@ interface ParserMiddlewareInterface{
 	/**
 	 * ParserMiddlewareInterface constructor.
 	 *
-	 * @param \chillerlan\Traits\ContainerInterface $options
-	 * @param \Psr\SimpleCache\CacheInterface  $cache
-	 * @param \Psr\Log\LoggerInterface         $logger
+	 * @param \chillerlan\Settings\SettingsContainerInterface $options
+	 * @param \Psr\SimpleCache\CacheInterface                 $cache
+	 * @param \Psr\Log\LoggerInterface                        $logger
 	 */
-	public function __construct(ContainerInterface $options, CacheInterface $cache, LoggerInterface $logger);
+	public function __construct(SettingsContainerInterface $options, CacheInterface $cache, LoggerInterface $logger);
 
 	/**
 	 * Pre-parser
