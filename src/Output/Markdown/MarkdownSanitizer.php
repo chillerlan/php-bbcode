@@ -1,20 +1,20 @@
 <?php
 /**
- * Class HTMLSanitizer
+ * Class MarkdownSanitizer
  *
- * @filesource   HTMLSanitizer.php
- * @created      24.04.2018
- * @package      chillerlan\BBCode\Output\HTML
+ * @filesource   MarkdownSanitizer.php
+ * @created      25.04.2018
+ * @package      chillerlan\BBCode\Output\Markdown
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2018 smiley
  * @license      MIT
  */
 
-namespace chillerlan\BBCode\Output\HTML;
+namespace chillerlan\BBCode\Output\Markdown;
 
 use chillerlan\BBCode\SanitizerAbstract;
 
-final class HTMLSanitizer extends SanitizerAbstract{
+final class MarkdownSanitizer extends SanitizerAbstract{
 
 	/**
 	 * Sanitizes the input before parsing to prevent vulnerabilities or compatibility problems.
@@ -24,7 +24,9 @@ final class HTMLSanitizer extends SanitizerAbstract{
 	 * @return string
 	 */
 	public function sanitizeInput(string $content):string{
-		return htmlspecialchars($content, ENT_NOQUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED | ENT_HTML5, 'UTF-8', false);
+		// TODO: Implement sanitizeInput() method.
+		return $content;
+#		return htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED | ENT_HTML5, 'UTF-8', false);
 	}
 
 	/**
@@ -36,6 +38,7 @@ final class HTMLSanitizer extends SanitizerAbstract{
 	 * @return string
 	 */
 	public function sanitizeOutput(string $content):string{
+		// TODO: Implement sanitizeOutput() method.
 		return $content;
 	}
 }
